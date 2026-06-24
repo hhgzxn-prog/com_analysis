@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小米集团(1810.HK) 完整分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f6f8; --card-bg: #ffffff; --text: #1a1a2e; --text-secondary: #666;
+    --border: #e8ecf1; --red: #cf2030; --green: #1ca01c; --blue: #2563eb;
+    --blue-light: #eff6ff; --orange: #e67e22; --purple: #7c3aed;
+    --gold: #b8860b; --teal: #0d9488; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  .header {
+    background: linear-gradient(135deg, #ff6700 0%, #ff8533 100%);
+    color: #fff; padding: 28px 40px 20px;
+  }
+  .header h1 { font-size: 26px; margin-bottom: 4px; }
+  .header .sub { font-size: 14px; opacity: 0.85; }
+  .header .meta { margin-top: 8px; display: flex; gap: 20px; font-size: 13px; opacity: 0.7; flex-wrap: wrap; }
+  .tab-nav {
+    background: #fff; border-bottom: 1px solid var(--border);
+    display: flex; gap: 0; padding: 0 40px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .tab-nav button {
+    background: none; border: none; padding: 14px 24px;
+    font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    cursor: pointer; position: relative; transition: color 0.2s;
+    font-family: inherit;
+  }
+  .tab-nav button:hover { color: var(--text); }
+  .tab-nav button.active { color: #ff6700; font-weight: 600; }
+  .tab-nav button.active::after {
+    content: ''; position: absolute; bottom: 0; left: 12px; right: 12px;
+    height: 3px; background: #ff6700; border-radius: 3px 3px 0 0;
+  }
+  .tab-nav .tab-badge {
+    display: inline-block; background: #fff3e0; color: #ff6700;
+    font-size: 10px; padding: 1px 6px; border-radius: 8px; margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .container { max-width: 1320px; margin: 0 auto; padding: 24px 20px; }
+  .card {
+    background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow);
+    padding: 24px; margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 18px; color: var(--text); margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 2px solid #ff6700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card h3 { font-size: 15px; color: var(--text); margin: 16px 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: #fff8f0; padding: 10px 6px; text-align: center;
+    font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border);
+    font-size: 12px; white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; padding-left: 10px; }
+  tbody td {
+    padding: 8px 6px; text-align: center; border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+    font-family: "SF Mono", "Consolas", "Menlo", monospace; font-size: 12px;
+  }
+  tbody td:first-child { text-align: left; padding-left: 10px; font-weight: 500; font-family: inherit; color: var(--text); }
+  tbody tr:hover { background: #fff8f0; }
+  .forecast { background: #fffbeb; }
+  .forecast td { color: #92400e; font-style: italic; }
+  .highlight { background: #fff3e0; font-weight: 600; }
+  .sub-total { background: #fff8f0; font-weight: 700; }
+  .sub-total td { font-weight: 700; color: #e65100; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .chart-wrap { position: relative; height: 320px; }
+  .chart-wrap canvas { width: 100% !important; }
+  .kpi-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .kpi {
+    flex: 1; min-width: 150px;
+    background: var(--card-bg); border-radius: 8px; padding: 16px 20px;
+    box-shadow: var(--shadow); border-left: 4px solid #ff6700;
+  }
+  .kpi .label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .kpi .value { font-size: 24px; font-weight: 700; }
+  .kpi .value-sub { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
+  .kpi .change { font-size: 12px; margin-top: 2px; }
+  .note {
+    background: #fffbeb; border: 1px solid #fde68a;
+    border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #92400e; margin-top: 12px;
+  }
+  .note-info {
+    background: #eff6ff; border: 1px solid #bfdbfe;
+    border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #1e40af; margin-top: 12px;
+  }
+  .note-orange {
+    background: #fff3e0; border: 1px solid #ffcc80;
+    border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #e65100; margin-top: 12px;
+  }
+  .note-green {
+    background: #ecfdf5; border: 1px solid #6ee7b7;
+    border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #065f46; margin-top: 12px;
+  }
+  .legend-row { display: flex; gap: 20px; font-size: 12px; color: var(--text-secondary); margin-top: 8px; }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+  .summary-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #fff8f0 100%);
+    border: 1px solid #ffcc80; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+  }
+  .summary-box h3 { font-size: 15px; margin-bottom: 10px; color: #e65100; }
+  .summary-box p, .summary-box li { font-size: 13px; line-height: 1.8; }
+  .summary-box ul { padding-left: 20px; }
+  .segment-bar { display: flex; border-radius: 6px; overflow: hidden; height: 24px; margin-top: 8px; }
+  .segment-bar div { display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 600; min-width: 30px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .badge-red { background: #fecaca; color: #991b1b; }
+  .badge-green { background: #bbf7d0; color: #166534; }
+  .badge-blue { background: #bfdbfe; color: #1e40af; }
+  .badge-yellow { background: #fef08a; color: #854d0e; }
+  .badge-orange { background: #ffedd5; color: #9a3412; }
+  summary { cursor: pointer; font-weight: 600; font-size: 14px; color: #ff6700; margin: 12px 0 8px; }
+  summary:hover { color: #e65100; }
+  .up { color: #cf2030; }
+  .down { color: #1ca01c; }
+  .corrected { background: #ecfdf5; }
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .kpi-row { flex-direction: column; }
+    .header, .tab-nav { padding: 16px; }
+    table { font-size: 10px; }
+    thead th, tbody td { padding: 5px 3px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📱 小米集团 (1810.HK) 完整分析</h1>
+  <div class="sub">Xiaomi Corporation | 资讯科技器材 · 北京市海淀区 | 2020年—2030年 <span style="background:#16a34a;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;margin-left:8px;">✓ 基于2025年报修正</span></div>
+  <div class="meta">
+    <span>当前股价: HK$22.72 (2026-06-24)</span>
+    <span>总市值: ~5,871亿港元</span>
+    <span>TTM PE: ~14.6x</span>
+    <span>PB: ~1.95</span>
+    <span>52周区间: HK$22.26 - 61.45</span>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="active" onclick="switchTab('tab-finance')">📊 综合财务分析<span class="tab-badge">KPI+估值+图表</span></button>
+  <button onclick="switchTab('tab-segments')">🏗️ 业务板块分析<span class="tab-badge">收入·毛利·利润拆分</span></button>
+</div>
+
+<!-- ================================================================ -->
+<!-- TAB 1: 综合财务分析 -->
+<!-- ================================================================ -->
+<div id="tab-finance" class="tab-panel active">
+<div class="container">
+
+<div class="kpi-row">
+  <div class="kpi" style="border-left-color: #ff6700;">
+    <div class="label">2025年营业收入</div>
+    <div class="value">4,573<span style="font-size:14px;font-weight:400;"> 亿</span></div>
+    <div class="change up">↑ +25.0% YoY</div>
+  </div>
+  <div class="kpi" style="border-left-color: #16a34a;">
+    <div class="label">2025年经调整净利润</div>
+    <div class="value">392<span style="font-size:14px;font-weight:400;"> 亿</span></div>
+    <div class="change up">↑ +43.8% YoY</div>
+  </div>
+  <div class="kpi" style="border-left-color: #7c3aed;">
+    <div class="label">2025年 ROE</div>
+    <div class="value">18.50<span style="font-size:14px;font-weight:400;">%</span></div>
+    <div class="change up">↑ 大幅改善</div>
+  </div>
+  <div class="kpi" style="border-left-color: #2563eb;">
+    <div class="label">2025年 EPS（基本）</div>
+    <div class="value">1.73<span style="font-size:14px;font-weight:400;"> 元</span></div>
+    <div class="change up">↑ +71.98%</div>
+  </div>
+  <div class="kpi" style="border-left-color: #e67e22;">
+    <div class="label">研发投入（2025）</div>
+    <div class="value">331<span style="font-size:14px;font-weight:400;"> 亿</span></div>
+    <div class="change">占营收 7.2%</div>
+  </div>
+</div>
+
+<div class="summary-box">
+  <h3>📊 核心发现与估值概览</h3>
+  <ul>
+    <li><strong>业绩创历史新高：</strong>2025年营收4,573亿（+25%）、经调整净利润392亿（+43.8%），双双创历史新高。汽车业务收入1,061亿（+223.8%），首次实现年度盈利（毛利率24.3%），成为第二增长曲线。</li>
+    <li><strong>估值处于合理区间：</strong>当前TTM PE约14.6倍，距2021年高点（PE~35x）和2025年高点（股价61.45港元对应PE~25x）仍有较大空间。41位分析师平均目标价48.85港元，较现价有115%上行空间。</li>
+    <li><strong>盈利能力持续改善：</strong>ROE从2022年低谷（~2%）快速恢复至2025年18.5%，整体毛利率从2020年14.9%提升至2025年22.3%。但智能手机毛利率从2024年12.6%下滑至10.9%（存储成本上涨+竞争加剧），利润增量主要来自IoT（毛利率23.1%）和汽车（毛利率24.3%）。</li>
+    <li><strong>汽车业务超预期：</strong>2025年交付41.1万台（+200%），收入1,033亿，毛利率24.3%，首次实现年度盈利，远超市场预期。</li>
+    <li><strong>风险：</strong>手机毛利率持续下行（Q4仅8.35%）、存储成本上涨、华为/荣耀竞争加剧、港股流动性折价。</li>
+  </ul>
+</div>
+
+<!-- 一、核心财务数据总表 -->
+<div class="card">
+  <h2>📋 一、核心财务数据总表（2020-2028E）</h2>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr><th>指标</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026E</th><th>2027E</th><th>2028E</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>营业收入（亿元）</td><td>2,459</td><td>3,283</td><td>2,800</td><td>2,710</td><td>3,659</td><td>4,573</td><td class="forecast">4,983</td><td class="forecast">5,516</td><td class="forecast">6,069</td></tr>
+      <tr><td>营收增速</td><td class="up">+19.4%</td><td class="up">+33.5%</td><td class="down">-14.7%</td><td class="down">-3.2%</td><td class="up">+35.0%</td><td class="up">+25.0%</td><td class="forecast">+8.9%</td><td class="forecast">+10.7%</td><td class="forecast">+10.0%</td></tr>
+      <tr><td>归母净利润（亿元）</td><td>204</td><td>193</td><td>25</td><td>~175</td><td>~236</td><td>416.4</td><td class="forecast">274</td><td class="forecast">349</td><td class="forecast">410</td></tr>
+      <tr><td>经调整净利润（亿元）</td><td>130</td><td>220</td><td>85</td><td>193</td><td>272</td><td>392</td><td class="forecast" colspan="3" style="color:#92400e;">见注</td></tr>
+      <tr><td>净利润增速（经调整）</td><td class="up">+12.8%</td><td class="up">+69.5%</td><td class="down">-61.4%</td><td class="up">+126.3%</td><td class="up">+41.3%</td><td class="up">+43.8%</td><td class="forecast">—</td><td class="forecast">—</td><td class="forecast">—</td></tr>
+      <tr><td>EPS 基本（元）</td><td>~0.53</td><td>~0.87</td><td>~0.10</td><td>0.76</td><td>1.00</td><td>1.73</td><td class="forecast">1.07</td><td class="forecast">1.36</td><td class="forecast">1.60</td></tr>
+      <tr><td>毛利率</td><td>14.9%</td><td>17.7%</td><td>17.0%</td><td>21.2%</td><td>20.9%</td><td>22.3%</td><td class="forecast" colspan="3" style="color:#999;">~22-23%</td></tr>
+      <tr><td>净利率（经调整）</td><td>5.3%</td><td>6.7%</td><td>3.0%</td><td>7.1%</td><td>7.4%</td><td>8.6%</td><td class="forecast" colspan="3" style="color:#999;">~8-9%</td></tr>
+      <tr><td>ROE</td><td>~13%</td><td>~17%</td><td>~2%</td><td>11.3%</td><td>13.3%</td><td>18.5%</td><td class="forecast">~12%</td><td class="forecast">~14%</td><td class="forecast">~15%</td></tr>
+      <tr><td>资产负债率</td><td>~55%</td><td>~54%</td><td>~53%</td><td>~53%</td><td>53.1%</td><td>~52%</td><td class="forecast" colspan="3" style="color:#999;">~50-53%</td></tr>
+      <tr><td>自由现金流（亿元）</td><td>~80</td><td>~50</td><td>~(-20)</td><td>~280</td><td>~200</td><td>~200</td><td class="forecast" colspan="3" style="color:#999;">—</td></tr>
+      <tr><td>研发费用（亿元）</td><td>93</td><td>132</td><td>160</td><td>191</td><td>241</td><td>331</td><td class="forecast">380</td><td class="forecast">430</td><td class="forecast">480</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    ⚠️ 注：黄色底为预测数据（E），来源：高盛/国盛证券/华兴证券等主流券商一致预期均值。<br>
+    2020-2022年EPS为估算值（基于归母净利润÷加权平均股数）。经调整净利润为非IFRS口径，剔除股权激励、投资收益等一次性项目。<br>
+    2026E营收4,983亿取自高盛等券商均值；2027-2028E基于国盛证券预测（2027E 5,516亿 / 2028E 6,069亿）。<br>
+    数据来源：公司年报（IR官网）、富途牛牛、新浪财经、国盛证券、高盛研报、雪球。
+  </div>
+</div>
+
+<!-- 二、估值与股价区间 -->
+<div class="card">
+  <h2>📈 二、PE区间 · 股价区间 · 估值分析（2020-2026）</h2>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr><th>年份</th><th>港股PE(TTM)均值</th><th>港股股价区间（港元）</th><th>EPS（元RMB）</th><th>对应股价区间（估算）</th><th>重大事件</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2020</td><td>~25-35x</td><td>10～35</td><td>~0.53</td><td>13～18</td><td>疫情后复苏，手机出货创新高</td></tr>
+      <tr><td>2021</td><td>~30-45x</td><td>18～35</td><td>~0.87</td><td>26～39</td><td>营收破3,000亿，高端化起步</td></tr>
+      <tr><td>2022</td><td>~10-25x</td><td><span style="color:#cf2030;">8.28～20</span></td><td>~0.10</td><td>1～5</td><td>港股熊市，历史最低8.28港元</td></tr>
+      <tr><td>2023</td><td>~15-30x</td><td>9～18</td><td>0.76</td><td>11～23</td><td>盈利翻倍，汽车发布</td></tr>
+      <tr><td>2024</td><td>~18-35x</td><td>12～35</td><td>1.00</td><td>18～35</td><td>汽车SU7上市，营收破3,600亿</td></tr>
+      <tr><td>2025</td><td>~20-35x</td><td>20～<span style="color:#cf2030;">61.45</span></td><td>1.73</td><td>35～60</td><td>汽车放量+首次年盈利，6月创历史新高61.45港元</td></tr>
+      <tr class="highlight"><td>2026至今</td><td>~12-18x</td><td>22～25</td><td>1.07E</td><td>23～32</td><td>回调约60%，现价22.72港元</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend-row" style="margin-top:12px;">
+    <span><span class="legend-dot" style="background:#ff6700;"></span>股价数据为港股1810.HK港元计价</span>
+    <span><span class="legend-dot" style="background:#e67e22;"></span>EPS为人民币计价，港股PE通常以港元市值÷RMB净利润计算</span>
+  </div>
+  <div class="note-orange">
+    📌 <strong>估值分析：</strong>
+    历史上小米PE波动极大（10x-45x），反映市场对"硬件制造"vs"互联网生态"的定价分歧。<br>
+    <strong>乐观情景：</strong>汽车年销50万台+互联网收入占比提升→估值回归25-30x PE → 目标价50-60港元。<br>
+    <strong>中性情景：</strong>维持15-20x PE → 目标价32-40港元（分析师平均目标价48.85港元）。<br>
+    <strong>悲观情景：</strong>手机份额下滑+汽车亏损扩大 → PE回落至10-12x → 目标价18-22港元。<br>
+    当前股价22.72港元，对应2025年PE约13x，处于历史中位数偏下，安全边际尚可。
+  </div>
+</div>
+
+<!-- 三、图表区域 -->
+<div class="grid-2">
+  <div class="card"><h2>📊 营收 & 经调整净利润趋势</h2><div class="chart-wrap"><canvas id="chartRevenue"></canvas></div></div>
+  <div class="card"><h2>📊 毛利率 & 净利率趋势（经调整）</h2><div class="chart-wrap"><canvas id="chartMargin"></canvas></div></div>
+</div>
+<div class="grid-2">
+  <div class="card"><h2>📊 ROE & 资产负债率</h2><div class="chart-wrap"><canvas id="chartROE"></canvas></div></div>
+  <div class="card"><h2>📊 EPS 趋势（基本每股收益，元/股）</h2><div class="chart-wrap"><canvas id="chartEPS"></canvas></div></div>
+</div>
+<div class="grid-2">
+  <div class="card"><h2>📊 港股股价走势（港元）</h2><div class="chart-wrap"><canvas id="chartPrice"></canvas></div></div>
+  <div class="card"><h2>📊 研发投入 & 占营收比</h2><div class="chart-wrap"><canvas id="chartRDSpend"></canvas></div></div>
+</div>
+
+<!-- 四、业务板块结构（2025年） -->
+<div class="card corrected">
+  <h2>🏗️ 四、业务板块结构（2025年 · 基于年报修正）</h2>
+  <div class="grid-2">
+    <div><div class="chart-wrap" style="height:300px;"><canvas id="chartSegment"></canvas></div></div>
+    <div style="font-size:13px; line-height:2;">
+      <table>
+        <thead><tr><th>板块</th><th>2025年收入</th><th>占比</th><th>毛利率</th></tr></thead>
+        <tbody>
+          <tr><td>🟠 手机×AIoT</td><td>3,512亿</td><td>76.8%</td><td>21.7%</td></tr>
+          <tr><td style="padding-left:20px;">— 智能手机</td><td>1,864亿</td><td>40.8%</td><td>10.9%</td></tr>
+          <tr><td style="padding-left:20px;">— IoT&生活消费品</td><td>1,232亿</td><td>26.9%</td><td>23.1%</td></tr>
+          <tr><td style="padding-left:20px;">— 互联网服务</td><td>374亿</td><td>8.2%</td><td>76.5%</td></tr>
+          <tr><td>🔵 智能电动汽车等创新业务</td><td>1,061亿</td><td>23.2%</td><td>24.3%</td></tr>
+        </tbody>
+      </table>
+      <div class="note-green" style="margin-top:12px;">🔬 <strong>基于2025年年报修正：</strong>智能手机收入1,864亿（毛利率10.9%），IoT收入1,232亿（毛利率23.1%），互联网收入374亿（毛利率76.5%），智能电动汽车等创新业务1,061亿（毛利率24.3%，首次实现年度盈利）。手机×AIoT分部毛利率21.7%创历史新高。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 五、券商研报汇总 -->
+<div class="card">
+  <h2>🏦 五、券商盈利预测与评级（2026年6月）</h2>
+  <table>
+    <thead><tr><th>券商</th><th>评级</th><th>2026E营收</th><th>2026E经调整净利</th><th>2027E营收</th><th>2027E经调整净利</th><th>目标价（港元）</th></tr></thead>
+    <tbody>
+      <tr><td>国盛证券</td><td style="color:#cf2030;font-weight:600;">买入</td><td>—</td><td>274亿</td><td>—</td><td>349亿</td><td>—</td></tr>
+      <tr><td>高盛</td><td style="color:#e67e22;font-weight:600;">中性</td><td>—</td><td>334亿</td><td>—</td><td>414亿</td><td>41.0</td></tr>
+      <tr><td>华兴证券</td><td style="color:#cf2030;font-weight:600;">买入</td><td colspan="5" style="text-align:center;">预测2026年总营收约4,983亿（综合多家）</td></tr>
+      <tr><td><strong>分析师一致（41位）</strong></td><td style="color:#cf2030;font-weight:600;">强力买入</td><td><strong>4,983亿</strong></td><td><strong>~300亿</strong></td><td><strong>5,516亿</strong></td><td><strong>~380亿</strong></td><td><strong>平均48.85</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:12px;">
+    📌 <strong>核心逻辑：</strong>①手机高端化持续提升ASP；②汽车年交付量2026E 35-40万台、2027E 60-80万台；③IoT出海+大家电放量；④互联网服务（高毛利）占比提升，海外市场变现加速。<br>
+    <strong>风险因素：</strong>华为/荣耀竞争加剧、存储成本上涨（手机毛利率已降至10.9%）、汽车交付不及预期、港股流动性风险。
+  </div>
+</div>
+
+<!-- 六、价值投资视角 -->
+<div class="card">
+  <h2>🎯 六、价值投资四维评估</h2>
+  <table>
+    <thead><tr><th style="width:80px;">维度</th><th>评估</th><th>详情</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700;">定位</td><td style="color:#16a34a;">⭐⭐⭐⭐</td><td>"手机×AIoT"生态平台+智能电动车新势力。从硬件制造向"消费电子+智能家居+电动车+AI生态"复合科技公司演进，估值逻辑正在重塑。</td></tr>
+      <tr><td style="font-weight:700;">定性</td><td style="color:#16a34a;">⭐⭐⭐⭐</td><td>商业模式：硬件获客（低毛利）+互联网服务变现（高毛利）+汽车新增长曲线。生态壁垒（AIoT 10.79亿连接设备）深厚，用户粘性极强。汽车2025年首次实现年度盈利，验证了新业务扩张能力。</td></tr>
+      <tr><td style="font-weight:700;">定量</td><td style="color:#e67e22;">⭐⭐⭐</td><td>当前PE约14x（历史中位数），ROE 18.5%优秀，整体毛利率22.3%。但手机毛利率持续下滑（10.9%，Q4仅8.35%），利润增量依赖IoT（毛利率23.1%）和汽车（毛利率24.3%）。估值合理。</td></tr>
+      <tr><td style="font-weight:700;">定心</td><td style="color:#16a34a;">⭐⭐⭐⭐</td><td>雷军领导力强，管理层执行力已被汽车业务验证（首款车型即实现24.3%毛利率+年度盈利）。研发强度（7.2%）持续提升，5年研发CAGR ~29%。"人车家全生态"战略清晰。</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /container -->
+</div><!-- /tab-finance -->
+
+<!-- ================================================================ -->
+<!-- TAB 2: 业务板块分析 -->
+<!-- ================================================================ -->
+<div id="tab-segments" class="tab-panel">
+<div class="container">
+
+<!-- 一、板块概览 -->
+<div class="card corrected">
+  <h2>📋 一、业务板块结构概览（2025年年报修正）</h2>
+  <table>
+    <thead><tr><th>板块</th><th>核心业务</th><th>2025年收入</th><th>占比</th><th>毛利率</th><th>定位</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-orange">手机×AIoT</span></td><td style="text-align:left;">智能手机 + IoT&生活消费品 + 互联网服务</td><td>3,512亿</td><td>76.8%</td><td>21.7%</td><td style="color:var(--text-secondary);">核心基本盘 · 高端化提升毛利 · 生态壁垒</td></tr>
+      <tr><td><span class="badge badge-blue">智能电动汽车</span></td><td style="text-align:left;">小米SU7系列 + 小米YU7 + AI创新</td><td>1,061亿</td><td>23.2%</td><td>24.3%</td><td style="color:var(--text-secondary);">第二增长曲线 · 首次年度盈利 · 超预期</td></tr>
+    </tbody>
+  </table>
+  <div class="segment-bar" style="margin-top:12px;">
+    <div style="width:40.8%; background:#ff6700;">智能手机 40.8%</div>
+    <div style="width:26.9%; background:#ff9800;">IoT 26.9%</div>
+    <div style="width:8.2%; background:#ffc107;">互联网 8.2%</div>
+    <div style="width:23.2%; background:#1976d2;">汽车 23.2%</div>
+  </div>
+  <div class="note-green" style="margin-top:16px;">
+    💡 <strong>关键洞察（基于2025年年报修正）：</strong>手机×AIoT分部2025年收入3,512亿（+5.4%），毛利率21.7%创历史新高。<br>
+    互联网服务（毛利率76.5%）是高毛利核心，收入374亿（+9.7%）；汽车业务收入1,061亿（+223.8%），首次实现年度盈利（毛利率24.3%）。<br>
+    AIoT平台连接设备数达10.79亿台，全球月活用户7.54亿，生态壁垒持续加固。<br>
+    ⚠️ 智能手机毛利率仅10.9%（Q4骤降至8.35%），是最大的利润风险点。
+  </div>
+</div>
+
+<!-- 二、智能手机板块 -->
+<div class="card">
+  <h2><span style="color:#ff6700;">🟠</span> 二、智能手机板块 2020-2030</h2>
+  <table>
+    <thead><tr><th>年份</th><th>营收（亿元）</th><th>同比</th><th>占总营收比</th><th>出货量（百万台）</th><th>ASP（元）</th><th>毛利率</th></tr></thead>
+    <tbody>
+      <tr><td>2020</td><td>1,522</td><td class="up">+24.6%</td><td>61.9%</td><td>146.4</td><td>1,040</td><td>8.7%</td></tr>
+      <tr><td>2021</td><td>2,089</td><td class="up">+37.2%</td><td>63.6%</td><td>190.0</td><td>1,097</td><td>11.9%</td></tr>
+      <tr><td>2022</td><td>1,672</td><td class="down">-19.9%</td><td>59.7%</td><td>150.5</td><td>1,111</td><td>9.0%</td></tr>
+      <tr><td>2023</td><td>1,575</td><td class="down">-5.8%</td><td>58.1%</td><td>145.6</td><td>1,082</td><td style="background:#ecfdf5;">14.6%</td></tr>
+      <tr><td>2024</td><td>1,918</td><td class="up">+21.8%</td><td>52.4%</td><td>168.5</td><td>1,138</td><td>12.6%</td></tr>
+      <tr style="background:#ecfdf5;"><td>2025</td><td>1,864</td><td class="down">-2.8%</td><td>40.8%</td><td>165.2</td><td>~1,129</td><td>10.9%</td></tr>
+      <tr class="forecast"><td>2026E</td><td>1,900</td><td>+2.0%</td><td>38.1%</td><td>~170</td><td>~1,180</td><td>~10.0%</td></tr>
+      <tr class="forecast"><td>2027E</td><td>2,020</td><td>+6.3%</td><td>36.6%</td><td>~178</td><td>~1,240</td><td>~10.5%</td></tr>
+      <tr class="forecast"><td>2028E</td><td>2,140</td><td>+5.9%</td><td>35.3%</td><td>~186</td><td>~1,300</td><td>~11.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-orange">
+    📌 <strong>趋势判断：</strong>智能手机收入2021年达顶峰2,089亿后，2022-2023年受全球消费电子下行影响回落。<br>
+    2025年实际收入1,864亿（同比-2.8%），毛利率骤降至10.9%（Q4仅8.35%），核心原因是存储成本上涨+竞争加剧。<br>
+    高端化成效仍在：中国大陆高端机（4,000-6,000元）市占率仍有17.3%，但海外市场面临华为/荣耀挤压。<br>
+    预计未来维持低速增长（2-6%），毛利率短期承压（2026E约10%），中长期随高端化和规模效应恢复。
+  </div>
+</div>
+
+<!-- 三、IoT与生活消费产品 -->
+<div class="card">
+  <h2><span style="color:#ff9800;">🟡</span> 三、IoT与生活消费产品 2020-2030</h2>
+  <table>
+    <thead><tr><th>年份</th><th>营收（亿元）</th><th>同比</th><th>占总营收比</th><th>毛利率</th><th>关键亮点</th></tr></thead>
+    <tbody>
+      <tr><td>2020</td><td>674</td><td class="up">+8.6%</td><td>27.4%</td><td>12.8%</td><td>疫情催化智能家居需求</td></tr>
+      <tr><td>2021</td><td>850</td><td class="up">+26.1%</td><td>25.9%</td><td>13.1%</td><td>大家电开始放量</td></tr>
+      <tr><td>2022</td><td>798</td><td class="down">-6.1%</td><td>28.5%</td><td>14.3%</td><td>空调/冰洗逆势增长</td></tr>
+      <tr><td>2023</td><td>801</td><td class="up">+0.4%</td><td>29.6%</td><td>16.3%</td><td>大家电收入+40%，毛利率创新高</td></tr>
+      <tr><td>2024</td><td>1,041</td><td class="up">+30.0%</td><td>28.5%</td><td style="background:#ecfdf5;">20.3%</td><td>空调680万台(+50%)，冰箱270万台(+30%)</td></tr>
+      <tr style="background:#ecfdf5;"><td>2025</td><td>1,232</td><td class="up">+18.3%</td><td>26.9%</td><td>23.1%</td><td>大家电出海加速，智能大家电+23%</td></tr>
+      <tr class="forecast"><td>2026E</td><td>1,420</td><td>+15.3%</td><td>28.5%</td><td>~24.0%</td><td>大家电海外放量，欧洲/东南亚市场</td></tr>
+      <tr class="forecast"><td>2027E</td><td>1,620</td><td>+14.1%</td><td>29.4%</td><td>~24.5%</td><td>全屋智能生态完善</td></tr>
+      <tr class="forecast"><td>2028E</td><td>1,830</td><td>+13.0%</td><td>30.1%</td><td>~25.0%</td><td>IoT平台全球化，服务收入占比提升</td></tr>
+    </tbody>
+  </table>
+  <div class="note-orange">
+    📌 <strong>趋势判断：</strong>IoT业务2024年突破千亿大关（+30%），2025年增长18.3%至1,232亿，毛利率大幅提升至23.1%（+2.8pp），是小米生态的核心壁垒所在。<br>
+    AIoT平台连接设备数：2020年~3.2亿台 → 2023年7.4亿台 → 2025年10.79亿台（5年CAGR ~27%）。<br>
+    毛利率从12.8%（2020）大幅提升至23.1%（2025），大家电（空调/冰箱/洗衣机）占比提升+规模效应是主要驱动。<br>
+    未来增长：①大家电出海（欧洲/东南亚/印度）；②全屋智能方案；③企业级IoT解决方案。
+  </div>
+</div>
+
+<!-- 四、互联网服务 -->
+<div class="card">
+  <h2><span style="color:#ffc107;">🟡</span> 四、互联网服务板块 2020-2030</h2>
+  <table>
+    <thead><tr><th>年份</th><th>营收（亿元）</th><th>同比</th><th>占总营收比</th><th>毛利率</th><th>境外互联网收入占比</th></tr></thead>
+    <tbody>
+      <tr><td>2020</td><td>238</td><td class="up">+19.7%</td><td>9.7%</td><td>64.7%</td><td>~12%</td></tr>
+      <tr><td>2021</td><td>282</td><td class="up">+18.5%</td><td>8.6%</td><td>~74%</td><td>~15%</td></tr>
+      <tr><td>2022</td><td>283</td><td class="up">+0.4%</td><td>10.1%</td><td>71.5%</td><td>~18%</td></tr>
+      <tr><td>2023</td><td>301</td><td class="up">+6.3%</td><td>11.1%</td><td>74.2%</td><td>~24%</td></tr>
+      <tr><td>2024</td><td>341</td><td class="up">+13.3%</td><td>9.3%</td><td>76.6%</td><td>32.2%</td></tr>
+      <tr style="background:#ecfdf5;"><td>2025</td><td>374</td><td class="up">+9.7%</td><td>8.2%</td><td>76.5%</td><td>33.8%</td></tr>
+      <tr class="forecast"><td>2026E</td><td>430</td><td>+15.0%</td><td>8.6%</td><td>~78%</td><td>~40%</td></tr>
+      <tr class="forecast"><td>2027E</td><td>500</td><td>+16.3%</td><td>9.1%</td><td>~79%</td><td>~45%</td></tr>
+      <tr class="forecast"><td>2028E</td><td>580</td><td>+16.0%</td><td>9.6%</td><td>~80%</td><td>~50%</td></tr>
+    </tbody>
+  </table>
+  <div class="note-orange">
+    📌 <strong>趋势判断：</strong>互联网服务是小米"硬件获客、互联网变现"商业模式的核心，毛利率高达76.5%，是利润贡献最重要的板块。<br>
+    收入增长稳健（CAGR 2020-2025 ~9.5%），但占比从9.7%下降至8.2%（被汽车业务大幅稀释）。2025年收入374亿创历史新高。<br>
+    <strong>核心驱动力：</strong>①全球月活用户7.54亿；②广告ARPU提升（高端机用户价值更高）；③境外互联网变现加速（收入占比12%→33.8%）；④游戏/金融/云服务多元变现。<br>
+    预计未来3年CAGR ~16%，境外互联网收入占比有望突破50%。
+  </div>
+</div>
+
+<!-- 五、智能电动汽车 -->
+<div class="card">
+  <h2><span style="color:#1976d2;">🔵</span> 五、智能电动汽车板块 2024-2030</h2>
+  <table>
+    <thead><tr><th>年份</th><th>营收（亿元）</th><th>同比</th><th>占总营收比</th><th>毛利率</th><th>经调整利润（亿元）</th><th>交付量（万台）</th><th>单车均价（万元）</th></tr></thead>
+    <tbody>
+      <tr><td>2024</td><td>328</td><td>—</td><td>9.0%</td><td>18.5%</td><td>-62</td><td>13.7</td><td>~24.0</td></tr>
+      <tr style="background:#ecfdf5;"><td>2025</td><td>1,061</td><td class="up">+223.8%</td><td>23.2%</td><td>24.3%</td><td style="color:#16a34a;font-weight:600;">首次年度盈利</td><td>41.1</td><td>~25.1</td></tr>
+      <tr class="forecast"><td>2026E</td><td>1,500</td><td>+41.4%</td><td>30.1%</td><td>~25%</td><td>~+50</td><td>~55</td><td>~27.3</td></tr>
+      <tr class="forecast"><td>2027E</td><td>2,000</td><td>+33.3%</td><td>36.3%</td><td>~26%</td><td>~+100</td><td>~75</td><td>~26.7</td></tr>
+      <tr class="forecast"><td>2028E</td><td>2,500</td><td>+25.0%</td><td>41.2%</td><td>~26%</td><td>~+160</td><td>~95</td><td>~26.3</td></tr>
+    </tbody>
+  </table>
+  <div class="note-green">
+    📌 <strong>趋势判断（基于2025年年报修正）：</strong>汽车业务2025年收入1,061亿（+223.8%），毛利率高达24.3%，首次实现年度盈利——远超市场预期。<br>
+    <strong>2024年：</strong>SU7上市首年交付13.7万台，收入328亿，经调整净亏损62亿。<br>
+    <strong>2025年：</strong>SU7持续放量+YU7（SUV）上市，全年交付41.1万台（+200%），收入1,061亿，毛利率24.3%，首次年度盈利。<br>
+    <strong>2026-2028E：</strong>交付量55→75→95万台，毛利率维持25%+，利润贡献持续放大。<br>
+    <strong>风险：</strong>新能源车市场竞争激烈（特斯拉/比亚迪/华为系/蔚小理），价格战压力，产能爬坡不及预期。
+  </div>
+</div>
+
+<!-- 六、可视化图表 -->
+<div class="grid-2">
+  <div class="card"><h2>📊 各板块营收趋势（亿元）</h2><div class="chart-wrap" style="height:340px;"><canvas id="chartRevBySeg"></canvas></div></div>
+  <div class="card"><h2>📊 各板块营收占比变化</h2><div class="chart-wrap" style="height:340px;"><canvas id="chartShareBySeg"></canvas></div></div>
+</div>
+<div class="grid-2">
+  <div class="card"><h2>📊 各板块毛利率对比</h2><div class="chart-wrap" style="height:340px;"><canvas id="chartGMBySeg"></canvas></div></div>
+  <div class="card"><h2>📊 互联网服务 & 汽车业务增长</h2><div class="chart-wrap" style="height:340px;"><canvas id="chartInternetEV"></canvas></div></div>
+</div>
+
+<!-- 七、AIoT生态数据 -->
+<details>
+<summary>📎 展开：AIoT生态平台数据（设备数 & 月活用户）</summary>
+<div class="card" style="margin-top:12px; box-shadow:none; border:1px solid var(--border);">
+  <table>
+    <thead><tr><th>年份</th><th>AIoT连接设备数（亿台）</th><th>同比</th><th>全球月活用户（亿）</th><th>同比</th><th>拥有5件+设备用户（万）</th></tr></thead>
+    <tbody>
+      <tr><td>2020</td><td>~3.2</td><td>—</td><td>~4.0</td><td>—</td><td>~600</td></tr>
+      <tr><td>2021</td><td>4.34</td><td>+35.6%</td><td>5.1</td><td>+27.5%</td><td>880</td></tr>
+      <tr><td>2022</td><td>5.89</td><td>+35.7%</td><td>5.8</td><td>+13.7%</td><td>1,160</td></tr>
+      <tr><td>2023</td><td>7.40</td><td>+25.6%</td><td>6.4</td><td>+10.3%</td><td>1,450</td></tr>
+      <tr><td>2024</td><td>8.61</td><td>+16.4%</td><td>7.0</td><td>+9.4%</td><td>~1,800</td></tr>
+      <tr style="background:#ecfdf5;"><td>2025</td><td>10.79</td><td>+19.3%</td><td>7.54</td><td>+7.7%</td><td>~2,200</td></tr>
+    </tbody>
+  </table>
+  <div class="note-orange">
+    📌 AIoT生态是小米最核心的竞争壁垒。10.79亿连接设备+7.54亿月活用户，构建了全球最大的消费级IoT平台。<br>
+    互联网服务变现潜力巨大：随着境外用户占比提升和高端机用户增加，ARPU（每用户平均收入）有较大提升空间。
+  </div>
+</div>
+</details>
+
+<!-- 八、板块综合评价 -->
+<div class="card">
+  <h2>🎯 八、板块价值综合评价</h2>
+  <table>
+    <thead><tr><th>评估维度</th><th>智能手机</th><th>IoT & 生活消费品</th><th>互联网服务</th><th>智能电动汽车</th></tr></thead>
+    <tbody>
+      <tr><td style="font-weight:700;">竞争壁垒</td><td style="color:var(--orange);">⭐⭐⭐<br>市场份额全球前三，但竞争激烈（华为/三星/苹果）</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>AIoT生态全球最大，连接设备10.79亿台，壁垒极深</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>生态内变现，用户粘性极高，境外拓展空间大</td><td style="color:var(--green);">⭐⭐⭐⭐<br>首款车毛利率24.3%+首年盈利，产品力已被验证</td></tr>
+      <tr><td style="font-weight:700;">增长前景</td><td style="color:var(--orange);">⭐⭐⭐<br>全球手机市场饱和，2025年收入同比-2.8%</td><td style="color:var(--green);">⭐⭐⭐⭐<br>大家电出海+全屋智能，2025年+18.3%</td><td style="color:var(--green);">⭐⭐⭐⭐<br>用户增长+ARPU提升+境外变现，2025年+9.7%</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>新能源车渗透率提升，2025年+223.8%</td></tr>
+      <tr><td style="font-weight:700;">盈利能力</td><td style="color:var(--red);">⭐⭐<br>毛利率10.9%（Q4仅8.35%），承压明显</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>毛利率23.1%且持续提升，净利率10%+</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>毛利率76.5%，净利率60%+，利润奶牛</td><td style="color:var(--green);">⭐⭐⭐⭐<br>毛利率24.3%，首年盈利，超预期</td></tr>
+      <tr><td style="font-weight:700;">现金流</td><td style="color:var(--green);">⭐⭐⭐⭐<br>存货周转较快，经营性现金流良好</td><td style="color:var(--green);">⭐⭐⭐⭐<br>预收款+存货管理优秀</td><td style="color:var(--green);">⭐⭐⭐⭐⭐<br>轻资产，现金牛，极高经营杠杆</td><td style="color:var(--green);">⭐⭐⭐⭐<br>2025年已转正，规模效应持续释放</td></tr>
+      <tr><td style="font-weight:700;">风险等级</td><td style="color:var(--red);">较高<br>华为/荣耀竞争、存储涨价、毛利率下行</td><td style="color:var(--green);">较低<br>生态壁垒深厚</td><td style="color:var(--green);">较低<br>生态内变现稳定</td><td style="color:var(--orange);">中等<br>产能/竞争，但已验证盈利能力</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /container -->
+</div><!-- /tab-segments -->
+
+<!-- ================================================================ -->
+<!-- SCRIPTS -->
+<!-- ================================================================ -->
+<script>
+const allChartInstances = [];
+
+function registerChart(chart) {
+  allChartInstances.push(chart);
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-nav button').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.tab-nav button[onclick="switchTab('${tabId}')"]`).classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  setTimeout(() => {
+    allChartInstances.forEach(c => { try { c.resize(); } catch(e) {} });
+  }, 50);
+}
+
+const orange = '#ff6700', green = '#16a34a', blue = '#2563eb';
+const gold = '#ffc107', purple = '#7c3aed', gray = '#94a3b8';
+
+// ================================================================
+// TAB 1 Charts
+// ================================================================
+const years1 = ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'];
+
+// chartRevenue
+registerChart(new Chart(document.getElementById('chartRevenue'), {
+  type: 'bar', data: {
+    labels: years1,
+    datasets: [
+      { label: '营业收入（亿元）', data: [2459,3283,2800,2710,3659,4573,4983,5516,6069],
+        backgroundColor: years1.map((_,i)=>i>=6?'rgba(255,103,0,0.3)':'rgba(255,103,0,0.7)'), borderColor: orange, borderWidth: 1, order: 2 },
+      { label: '经调整净利润（亿元）', data: [130,220,85,193,272,392,300,380,440],
+        type: 'line', borderColor: green, backgroundColor: 'rgba(22,163,74,0.1)', borderWidth: 2.5,
+        pointRadius: 4, pointBackgroundColor: green, tension: 0.3, order: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '营业收入（亿元）' }, min: 1500 },
+      y1: { position: 'right', title: { display: true, text: '净利润（亿元）' }, grid: { drawOnChartArea: false }, min: 0, max: 500 } }
+  }
+}));
+
+// chartMargin
+registerChart(new Chart(document.getElementById('chartMargin'), {
+  type: 'line', data: {
+    labels: ['2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      { label: '毛利率', data: [14.9,17.7,17.0,21.2,20.9,22.3], borderColor: orange, backgroundColor: 'rgba(255,103,0,0.1)', borderWidth: 2.5, pointRadius: 4, tension: 0.3, yAxisID: 'y' },
+      { label: '净利率（经调整）', data: [5.3,6.7,3.0,7.1,7.4,8.6], borderColor: green, backgroundColor: 'rgba(22,163,74,0.1)', borderWidth: 2.5, pointRadius: 4, tension: 0.3, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '毛利率 (%)' }, min: 10, max: 25 },
+      y1: { position: 'right', title: { display: true, text: '净利率 (%)' }, grid: { drawOnChartArea: false }, min: 0, max: 12 } }
+  }
+}));
+
+// chartROE
+registerChart(new Chart(document.getElementById('chartROE'), {
+  type: 'line', data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],
+    datasets: [
+      { label: 'ROE', data: [13,17,2,11.3,13.3,18.5,12,14,15], borderColor: purple, backgroundColor: 'rgba(124,58,237,0.1)', borderWidth: 2.5, pointRadius: 4, tension: 0.3, yAxisID: 'y' },
+      { label: '资产负债率', data: [55,54,53,53,53.1,52,52,51,51], borderColor: gray, backgroundColor: 'rgba(148,163,184,0.1)', borderWidth: 2.5, pointRadius: 4, tension: 0.3, borderDash: [5,5], yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: 'ROE (%)' }, min: 0, max: 22 },
+      y1: { position: 'right', title: { display: true, text: '资产负债率 (%)' }, grid: { drawOnChartArea: false }, min: 45, max: 60 } }
+  }
+}));
+
+// chartEPS
+registerChart(new Chart(document.getElementById('chartEPS'), {
+  type: 'bar', data: {
+    labels: years1, datasets: [{ label: 'EPS（元/股）', data: [0.53,0.87,0.10,0.76,1.00,1.73,1.07,1.36,1.60],
+      backgroundColor: function(ctx) { return ctx.dataIndex>=6?'rgba(255,103,0,0.3)':(ctx.raw>=1?'rgba(255,103,0,0.7)':'rgba(207,32,48,0.6)'); },
+      borderColor: orange, borderWidth: 1, borderRadius: 4 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: 'EPS (元)' }, min: 0 } } }
+}));
+
+// chartPrice
+registerChart(new Chart(document.getElementById('chartPrice'), {
+  type: 'line', data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026'],
+    datasets: [
+      { label: '最高价（港元）', data: [35,35,20,18,35,61.45,25], borderColor: '#cf2030', backgroundColor: 'rgba(207,32,48,0.05)', borderWidth: 2, pointRadius: 5, pointBackgroundColor: '#cf2030', tension: 0.2 },
+      { label: '最低价（港元）', data: [10,18,8.28,9,12,20,22.26], borderColor: '#1ca01c', backgroundColor: 'rgba(28,160,28,0.05)', borderWidth: 2, pointRadius: 5, pointBackgroundColor: '#1ca01c', tension: 0.2 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '港股价格（港元）' }, min: 0, max: 70 } } }
+}));
+
+// chartRDSpend
+registerChart(new Chart(document.getElementById('chartRDSpend'), {
+  type: 'bar', data: {
+    labels: years1,
+    datasets: [
+      { label: '研发费用（亿元）', data: [93,132,160,191,241,331,380,430,480],
+        backgroundColor: years1.map((_,i)=>i>=6?'rgba(230,126,34,0.3)':'rgba(230,126,34,0.7)'), borderColor: '#e67e22', borderWidth: 1, yAxisID: 'y' },
+      { label: '研发费用率', data: [3.8,4.0,5.7,7.0,6.6,7.2,7.6,7.8,7.9],
+        type: 'line', borderColor: purple, borderWidth: 2, pointRadius: 4, tension: 0.3, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '研发费用（亿元）' }, min: 0, max: 550 },
+      y1: { position: 'right', title: { display: true, text: '研发费用率 (%)' }, grid: { drawOnChartArea: false }, min: 0, max: 10 } } }
+}));
+
+// chartSegment (doughnut) - CORRECTED with 2025 annual report data
+registerChart(new Chart(document.getElementById('chartSegment'), {
+  type: 'doughnut', data: {
+    labels: ['智能手机','IoT&生活消费品','互联网服务','智能电动汽车&AI'],
+    datasets: [{ data: [1864,1232,374,1061],
+      backgroundColor: ['#ff6700','#ff9800','#ffc107','#1976d2'], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { padding: 15, usePointStyle: true, font: { size: 12 } } } } }
+}));
+
+// ================================================================
+// TAB 2 Charts - CORRECTED with 2025 annual report data
+// ================================================================
+const years2 = ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'];
+
+// chartRevBySeg - CORRECTED 2025 data points
+registerChart(new Chart(document.getElementById('chartRevBySeg'), {
+  type: 'line', data: {
+    labels: years2,
+    datasets: [
+      { label: '智能手机', data: [1522,2089,1672,1575,1918,1864,1900,2020,2140], borderColor: '#ff6700', backgroundColor: 'rgba(255,103,0,0.05)', borderWidth: 2.5, pointRadius: 3, tension: 0.3 },
+      { label: 'IoT&生活消费品', data: [674,850,798,801,1041,1232,1420,1620,1830], borderColor: '#ff9800', backgroundColor: 'rgba(255,152,0,0.05)', borderWidth: 2.5, pointRadius: 3, tension: 0.3 },
+      { label: '互联网服务', data: [238,282,283,301,341,374,430,500,580], borderColor: '#ffc107', backgroundColor: 'rgba(255,193,7,0.05)', borderWidth: 2.5, pointRadius: 3, tension: 0.3 },
+      { label: '智能电动汽车', data: [null,null,null,null,328,1061,1500,2000,2500], borderColor: '#1976d2', backgroundColor: 'rgba(25,118,210,0.05)', borderWidth: 2.5, pointRadius: 3, tension: 0.3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '营收（亿元）' }, min: 0, max: 2800 } } }
+}));
+
+// chartShareBySeg - CORRECTED 2025 percentages
+registerChart(new Chart(document.getElementById('chartShareBySeg'), {
+  type: 'bar', data: {
+    labels: years2,
+    datasets: [
+      { label: '智能手机', data: [61.9,63.6,59.7,58.1,52.4,40.8,38.1,36.6,35.3], backgroundColor: 'rgba(255,103,0,0.8)', borderColor: '#ff6700', borderWidth: 1 },
+      { label: 'IoT&生活消费品', data: [27.4,25.9,28.5,29.6,28.5,26.9,28.5,29.4,30.1], backgroundColor: 'rgba(255,152,0,0.8)', borderColor: '#ff9800', borderWidth: 1 },
+      { label: '互联网服务', data: [9.7,8.6,10.1,11.1,9.3,8.2,8.6,9.1,9.6], backgroundColor: 'rgba(255,193,7,0.8)', borderColor: '#ffc107', borderWidth: 1 },
+      { label: '智能电动汽车', data: [0,0,0,0,9.0,23.2,30.1,36.3,41.2], backgroundColor: 'rgba(25,118,210,0.8)', borderColor: '#1976d2', borderWidth: 1 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: '营收占比 (%)' }, min: 0, max: 100 } } }
+}));
+
+// chartGMBySeg - CORRECTED: 2023 phone 14.6%, 2024 IoT 20.3%, 2025 phone 10.9%, 2025 IoT 23.1%, 2025 internet 76.5%
+registerChart(new Chart(document.getElementById('chartGMBySeg'), {
+  type: 'line', data: {
+    labels: ['2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      { label: '智能手机毛利率', data: [8.7,11.9,9.0,14.6,12.6,10.9], borderColor: '#ff6700', borderWidth: 2.5, pointRadius: 4, tension: 0.3 },
+      { label: 'IoT毛利率', data: [12.8,13.1,14.3,16.3,20.3,23.1], borderColor: '#ff9800', borderWidth: 2.5, pointRadius: 4, tension: 0.3 },
+      { label: '互联网服务毛利率', data: [64.7,74.0,71.5,74.2,76.6,76.5], borderColor: '#ffc107', borderWidth: 2.5, pointRadius: 4, tension: 0.3, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '手机&IoT毛利率 (%)' }, min: 5, max: 26 },
+      y1: { position: 'right', title: { display: true, text: '互联网毛利率 (%)' }, grid: { drawOnChartArea: false }, min: 55, max: 85 } } }
+}));
+
+// chartInternetEV - CORRECTED 2025 data
+registerChart(new Chart(document.getElementById('chartInternetEV'), {
+  type: 'bar', data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],
+    datasets: [
+      { label: '互联网服务收入', data: [238,282,283,301,341,374,430,500,580], backgroundColor: 'rgba(255,193,7,0.7)', borderColor: '#ffc107', borderWidth: 1 },
+      { label: '汽车业务收入', data: [null,null,null,null,328,1061,1500,2000,2500], backgroundColor: 'rgba(25,118,210,0.7)', borderColor: '#1976d2', borderWidth: 1 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+    scales: { y: { title: { display: true, text: '收入（亿元）' }, min: 0 } } }
+}));
+
+// Initial resize
+window.addEventListener('load', function() {
+  setTimeout(() => {
+    allChartInstances.forEach(c => { try { c.resize(); } catch(e) {} });
+  }, 100);
+});
+</script>
+
+</body>
+</html>
