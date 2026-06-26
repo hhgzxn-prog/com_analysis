@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国海洋石油(0883.HK) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#0d47a1,#1565c0);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#1565c0;border-bottom-color:#1565c0;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#0d47a1;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#0d47a1;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#1565c0;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#e8f4fd;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>中国海洋石油 (00883.HK) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 数据来源：公司年报、同花顺、东方财富、券商研报</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">3,982亿</div><div class="sub">人民币，同比-5.3%</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">1,221亿</div><div class="sub">人民币，同比-11.5%</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2025)</div><div class="value">51.5%</div><div class="sub">同比-2.0pct</div></div>
+    <div class="kpi-card"><div class="label">净利率(2025)</div><div class="value">30.7%</div><div class="sub">同比-2.2pct</div></div>
+    <div class="kpi-card"><div class="label">ROE(2025)</div><div class="value">15.7%</div><div class="sub">同比-4.7pct</div></div>
+    <div class="kpi-card"><div class="label">资产负债率</div><div class="value">39.8%</div><div class="sub">稳健</div></div>
+    <div class="kpi-card"><div class="label">EPS(2025)</div><div class="value">2.57元</div><div class="sub">基本每股收益</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 ROE & 资产负债率</h2>
+    <div class="chart-box"><canvas id="chartRoeDebt"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 EPS趋势 & 股息率</h2>
+    <div class="chart-box"><canvas id="chartEps"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>资产负债率</th><th>EPS(元)</th><th>股息率</th></tr>
+      <tr><td>2020</td><td>1,550</td><td>550</td><td>52.1%</td><td>35.5%</td><td>18.2%</td><td>38.5%</td><td>1.25</td><td>5.8%</td></tr>
+      <tr><td>2021</td><td>2,460</td><td>920</td><td>50.8%</td><td>37.4%</td><td>25.1%</td><td>40.2%</td><td>2.10</td><td>6.2%</td></tr>
+      <tr><td>2022</td><td>3,224</td><td>1,180</td><td>51.2%</td><td>36.6%</td><td>26.8%</td><td>41.5%</td><td>2.65</td><td>6.8%</td></tr>
+      <tr><td>2023</td><td>3,836</td><td>1,380</td><td>50.5%</td><td>36.0%</td><td>26.2%</td><td>40.8%</td><td>3.10</td><td>7.1%</td></tr>
+      <tr><td>2024</td><td>4,206</td><td>1,379</td><td>53.5%</td><td>32.8%</td><td>20.4%</td><td>40.5%</td><td>2.90</td><td>6.5%</td></tr>
+      <tr><td>2025</td><td>3,982</td><td>1,221</td><td>51.5%</td><td>30.7%</td><td>15.7%</td><td>39.8%</td><td>2.57</td><td>5.8%</td></tr>
+      <tr class="highlight"><td>2026E</td><td>4,100</td><td>1,280</td><td>52.0%</td><td>31.2%</td><td>16.3%</td><td>39.5%</td><td>2.70</td><td>6.0%</td></tr>
+      <tr class="highlight"><td>2027E</td><td>4,200</td><td>1,320</td><td>52.5%</td><td>31.4%</td><td>16.8%</td><td>39.0%</td><td>2.78</td><td>6.2%</td></tr>
+      <tr class="highlight"><td>2028E</td><td>4,300</td><td>1,350</td><td>53.0%</td><td>31.4%</td><td>17.2%</td><td>38.5%</td><td>2.85</td><td>6.3%</td></tr>
+      <tr class="highlight"><td>2029E</td><td>4,380</td><td>1,380</td><td>53.2%</td><td>31.5%</td><td>17.5%</td><td>38.0%</td><td>2.91</td><td>6.4%</td></tr>
+      <tr class="highlight"><td>2030E</td><td>4,450</td><td>1,400</td><td>53.5%</td><td>31.5%</td><td>17.8%</td><td>37.5%</td><td>2.95</td><td>6.5%</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2026E–2030E基于布伦特原油价格70–80美元/桶假设，及公司产量年增长~4%假设。派息率维持45%左右。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#e3f2fd;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#1565c0;">
+      <p><strong>业绩韧性：</strong>2025年国际油价同比下跌约13%，但中海油营收降幅仅5.3%，远优于油价跌幅，主要得益于产量增长（+7%至777百万桶油当量）及成本管控优势。归母净利润1,221亿，虽同比-11.5%，仍处历史第二高位。</p>
+      <p style="margin-top:8px;"><strong>产量增长：</strong>2025年油气净产量777百万桶油当量（日均~213万桶），创历史新高。公司指引2026年产量继续保持增长，储量替代率>100%，保障长期产量。</p>
+      <p style="margin-top:8px;"><strong>高股息：</strong>派息率45%，全年股息1.28港元/股（含税），当前股息率约5.8%。在低利率环境下，具备类债券配置价值。</p>
+      <p style="margin-top:8px;"><strong>风险：</strong>油价波动是核心风险。若布伦特油价跌破60美元/桶，盈利将明显承压。新能源转型缓慢亦为长期隐忧。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">中国海洋石油以原油和天然气勘探开发为核心，业务结构相对单一。2025年油气销售收入3,357亿元，占总营收84.3%。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>营收构成（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细（2025）</h2>
+    <table>
+      <tr><th>板块</th><th>收入(亿)</th><th>占比</th><th>毛利率</th><th>经营利润(亿)</th><th>备注</th></tr>
+      <tr><td>原油销售</td><td>2,450</td><td>61.5%</td><td>~58%</td><td>1,420</td><td>核心板块，均价66.47美元/桶</td></tr>
+      <tr><td>天然气销售</td><td>907</td><td>22.8%</td><td>~42%</td><td>381</td><td>销量首次超1万亿立方英尺</td></tr>
+      <tr><td>贸易及其他</td><td>625</td><td>15.7%</td><td>~12%</td><td>75</td><td>贸易毛利较低</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>📈 原油/天然气产量趋势</h2>
+    <div class="chart-box"><canvas id="chartProd"></canvas></div>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#e8f5e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">原油开采（核心）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">公司最核心资产，2025年原油销量589.2百万桶。桶油成本全球领先（~28美元/桶），即使油价波动，仍能维持较强盈利能力。长期看，海上原油产量仍有增长空间。</p>
+      </div>
+      <div style="background:#e3f2fd;border-radius:8px;padding:14px 16px;border-left:4px solid #1565c0;">
+        <h4 style="color:#1565c0;font-size:14px;margin-bottom:6px;">天然气（增长引擎）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">2025年天然气产量首次超1万亿立方英尺，增速高于原油。天然气价格波动性低于原油，且受益"双碳"政策，长期需求稳健。是公司未来最确定的增长极。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">成本优势</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">桶油成本约28美元/桶（全球领先），即使在低油价环境下仍具盈利韧性。2025年桶油成本进一步优化，是公司穿越周期的核心护城河。</p>
+      </div>
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">风险提示</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">油价每下跌10美元/桶，净利润约减少250–300亿。地缘政治、OPEC+政策、全球经济衰退均可能影响油价。新能源替代长期威胁不可忽视。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E","2029E","2030E"];
+const charts = [];
+function registerChart(el, config) {
+  if(!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{ labels:years, datasets:[
+    { label:'营业收入(亿)', data:[1550,2460,3224,3836,4206,3982,4100,4200,4300,4380,4450], backgroundColor:'#1565c0', yAxisID:'y' },
+    { label:'归母净利润(亿)', data:[550,920,1180,1380,1379,1221,1280,1320,1350,1380,1400], type:'line', borderColor:'#0d47a1', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } } } }
+});
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'毛利率(%)', data:[52.1,50.8,51.2,50.5,53.5,51.5,52.0,52.5,53.0,53.2,53.5], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+    { label:'净利率(%)', data:[35.5,37.4,36.6,36.0,32.8,30.7,31.2,31.4,31.4,31.5,31.5], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+registerChart(document.getElementById('chartRoeDebt'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'ROE(%)', data:[18.2,25.1,26.8,26.2,20.4,15.7,16.3,16.8,17.2,17.5,17.8], borderColor:'#1565c0', backgroundColor:'transparent', tension:0.3, yAxisID:'y' },
+    { label:'资产负债率(%)', data:[38.5,40.2,41.5,40.8,40.5,39.8,39.5,39.0,38.5,38.0,37.5], borderColor:'#ff9800', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'ROE(%)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'资产负债率(%)' }, grid:{ drawOnChartArea:false } } } }
+});
+registerChart(document.getElementById('chartEps'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'EPS(元)', data:[1.25,2.10,2.65,3.10,2.90,2.57,2.70,2.78,2.85,2.91,2.95], borderColor:'#0d47a1', backgroundColor:'rgba(13,71,161,0.08)', fill:true, tension:0.3, pointRadius:4 },
+    { label:'股息率(%)', data:[5.8,6.2,6.8,7.1,6.5,5.8,6.0,6.2,6.3,6.4,6.5], borderColor:'#43a047', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'EPS(元)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'股息率(%)' }, grid:{ drawOnChartArea:false } } } }
+});
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{ labels:['原油销售','天然气销售','贸易及其他'], datasets:[{ data:[2450,907,625], backgroundColor:['#1565c0','#43a047','#ff9800'], borderWidth:2 }] },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+// 板块毛利率
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{ labels:['原油','天然气','贸易'], datasets:[{ label:'毛利率(%)', data:[58,42,12], backgroundColor:['#1565c0','#43a047','#ff9800'] }] },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:100 } } }
+});
+// 产量趋势
+registerChart(document.getElementById('chartProd'), {
+  type:'line',
+  data:{ labels:["2020","2021","2022","2023","2024","2025","2026E","2027E"], datasets:[
+    { label:'原油销量(百万桶)', data:[505,535,560,580,589,589,600,610], borderColor:'#1565c0', tension:0.3 },
+    { label:'天然气(十亿立方英尺)', data:[0.75,0.82,0.88,0.92,0.96,1.00,1.05,1.10], borderColor:'#43a047', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'原油(百万桶)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'天然气(百亿立方英尺)' }, grid:{ drawOnChartArea:false } } } }
+});
+</script>
+<footer>数据来源：中国海洋石油年报（2020–2025）、同花顺iFinD、东方财富 &nbsp;|&nbsp; 预测数据基于油价70–80美元/桶假设，仅供参考</footer>
+</body>
+</html>

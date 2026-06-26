@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恒瑞医药(01276.HK) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#1976d2,#0d47a1);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#1976d2;border-bottom-color:#1976d2;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#0d47a1;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#0d47a1;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#1976d2;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#e3f2fd;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>恒瑞医药 (01276.HK / 600276.SH) 完整财务分析</h1>
+  <p>A+H双平台上市 · 2020年 – 2030年（预测）· 数据来源：公司年报、同花顺、东方财富、券商研报</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📈 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">316.29亿</div><div class="sub">人民币，同比+13.02%</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">77.11亿</div><div class="sub">同比+21.69%</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2025)</div><div class="value">86.21%</div><div class="sub">极高，创新药占比提升</div></div>
+    <div class="kpi-card"><div class="label">净利率(2025)</div><div class="value">24.39%</div><div class="sub">同比+1.7pct</div></div>
+    <div class="kpi-card"><div class="label">ROE(2025)</div><div class="value">19.8%</div><div class="sub">同比+2.1pct</div></div>
+    <div class="kpi-card"><div class="label">研发投入(2025)</div><div class="value">67.28亿</div><div class="sub">占营收21.3%</div></div>
+    <div class="kpi-card"><div class="label">EPS(2025)</div><div class="value">1.19元</div><div class="sub">基本每股收益</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 ROE & 研发投入占比</h2>
+    <div class="chart-box"><canvas id="chartRoeDebt"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>研发占比</th><th>EPS(元)</th></tr>
+      <tr><td>2020</td><td>277.35</td><td>63.28</td><td>87.93%</td><td>22.82%</td><td>20.24%</td><td>23.2%</td><td>1.19</td></tr>
+      <tr><td>2021</td><td>259.06</td><td>45.30</td><td>85.56%</td><td>17.48%</td><td>13.95%</td><td>26.5%</td><td>0.71</td></tr>
+      <tr><td>2022</td><td>212.75</td><td>39.06</td><td>83.21%</td><td>18.35%</td><td>12.38%</td><td>29.8%</td><td>0.61</td></tr>
+      <tr><td>2023</td><td>228.20</td><td>43.72</td><td>84.54%</td><td>19.16%</td><td>13.52%</td><td>27.1%</td><td>0.68</td></tr>
+      <tr><td>2024</td><td>279.85</td><td>63.37</td><td>86.25%</td><td>22.65%</td><td>18.50%</td><td>29.4%</td><td>0.99</td></tr>
+      <tr><td>2025</td><td>316.29</td><td>77.11</td><td>86.21%</td><td>24.39%</td><td>19.80%</td><td>21.3%</td><td>1.19</td></tr>
+      <tr class="highlight"><td>2026E</td><td>358.00</td><td>88.00</td><td>86.5%</td><td>24.6%</td><td>20.5%</td><td>20.5%</td><td>1.36</td></tr>
+      <tr class="highlight"><td>2027E</td><td>405.00</td><td>100.00</td><td>86.8%</td><td>24.7%</td><td>21.0%</td><td>20.0%</td><td>1.55</td></tr>
+      <tr class="highlight"><td>2028E</td><td>455.00</td><td>112.00</td><td>87.0%</td><td>24.6%</td><td>21.5%</td><td>19.5%</td><td>1.74</td></tr>
+      <tr class="highlight"><td>2029E</td><td>500.00</td><td>124.00</td><td>87.2%</td><td>24.8%</td><td>21.8%</td><td>19.0%</td><td>1.92</td></tr>
+      <tr class="highlight"><td>2030E</td><td>545.00</td><td>136.00</td><td>87.3%</td><td>25.0%</td><td>22.0%</td><td>18.5%</td><td>2.10</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2026E–2030E基于创新药收入占比持续提升及海外BD进展假设。恒瑞2025年5月完成H股上市，募资约97亿港元，助力国际化。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#e3f2fd;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#0d47a1;">
+      <p><strong>创新药转型兑现：</strong>2025年创新药收入约180亿（含税，占营收约57%），同比+30%+。集采对仿制药的冲击已基本消化，创新药成为核心增长引擎。2025年营收+13.02%、净利+21.69%，均创历史新高。</p>
+      <p style="margin-top:8px;"><strong>H股上市：</strong>2025年5月于港交所主板上市（01276.HK），成为近五年港股医药板块最大IPO。H股上市打通国际融资通道，加速海外临床及BD布局。</p>
+      <p style="margin-top:8px;"><strong>研发强度：</strong>2025年研发投入67.28亿（占营收21.3%），研发人员占比约32%。在TROP2 ADC、PD-1/VEGF双抗等前沿领域处于全球第一梯队。</p>
+      <p style="margin-top:8px;"><strong>估值：</strong>当前PE约51x（基于2025年净利润），处于"高成长匹配高估值"区间。若创新药出海超预期（如ADC海外授权首付+里程碑），估值有上行空间。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">恒瑞医药业务由<strong>创新药</strong>（高增长、高毛利）和<strong>仿制药</strong>（集采压力、低毛利）双轮驱动。2025年创新药收入占比约57%，持续提升。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>收入构成（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细表（2025）</h2>
+    <table>
+      <tr><th>板块</th><th>收入(亿)</th><th>占比</th><th>毛利率</th><th>同比增速</th><th>趋势</th></tr>
+      <tr><td>创新药</td><td>~180（含税）</td><td>~57%</td><td>~92%</td><td>+30%+</td><td>核心增长引擎</td></tr>
+      <tr><td>仿制药</td><td>~136</td><td>~43%</td><td>~78%</td><td>-5%左右</td><td>集采压力持续</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：创新药收入含国内销售及海外BD首付款，仿制药含集采中标品种及非集采品种。</p>
+  </div>
+  <div class="section">
+    <h2>📈 创新药收入 & 在研管线数量趋势</h2>
+    <div class="chart-box"><canvas id="chartPipeline"></canvas></div>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#e8f5e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">创新药（核心增长引擎）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">毛利率~92%，2025年收入+30%+。核心品种：卡瑞利珠单抗（PD-1）、瑞康曲单抗（TROP2 ADC）、SHR-1701（PD-L1/TGF-β）。2026-2027年预计有5-8个新药/新适应症获批。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">仿制药（集采承压）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">集采冲击已基本消化（2021-2022年为最困难期），但仿制药业务仍面临每年集采续约降价压力。公司策略：聚焦高壁垒仿制药+改良新药，维持仿制药业务基本盘。</p>
+      </div>
+      <div style="background:#e3f2fd;border-radius:8px;padding:14px 16px;border-left:4px solid #1976d2;">
+        <h4 style="color:#1976d2;font-size:14px;margin-bottom:6px;">国际化（长期催化剂）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">H股上市后国际化加速。2025年海外BD首付款约15亿，ADC授权海外合作（如SHR-A1811授权海外）有望带来大额里程碑付款。长期看，创新药出海是恒瑞从"中国龙头"向"全球玩家"跃升的关键。</p>
+      </div>
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">风险提示</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">1）创新药医保谈判降价压力（每年医保目录调整）；2）ADC等前沿领域竞争加剧（全球多家在研）；3）海外临床失败风险；4）高估值（PE 51x）下业绩不及预期的风险。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E","2029E","2030E"];
+const charts = [];
+
+function registerChart(el, config) {
+  if (!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+
+// 图表1：营收 & 归母净利润
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'营业收入(亿)', data:[277.35,259.06,212.75,228.20,279.85,316.29,358,405,455,500,545], backgroundColor:'#1976d2', yAxisID:'y' },
+      { label:'归母净利润(亿)', data:[63.28,45.30,39.06,43.72,63.37,77.11,88,100,112,124,136], type:'line', borderColor:'#0d47a1', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'top' } },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'营业收入(亿)' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } }
+    }
+});
+
+// 图表2：毛利率 & 净利率
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'毛利率(%)', data:[87.93,85.56,83.21,84.54,86.25,86.21,86.5,86.8,87.0,87.2,87.3], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+      { label:'净利率(%)', data:[22.82,17.48,18.35,19.16,22.65,24.39,24.6,24.7,24.6,24.8,25.0], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+
+// 图表3：ROE & 研发占比
+registerChart(document.getElementById('chartRoeDebt'), {
+  type:'line',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'ROE(%)', data:[20.24,13.95,12.38,13.52,18.50,19.80,20.5,21.0,21.5,21.8,22.0], borderColor:'#1976d2', backgroundColor:'transparent', tension:0.3, yAxisID:'y' },
+      { label:'研发占比(%)', data:[23.2,26.5,29.8,27.1,29.4,21.3,20.5,20.0,19.5,19.0,18.5], borderColor:'#ff9800', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'top' } },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'ROE(%)' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'研发占比(%)' }, grid:{ drawOnChartArea:false } }
+    }
+});
+
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{
+    labels: ['创新药','仿制药'],
+    datasets:[{ data:[180,136], backgroundColor:['#1976d2','#43a047'], borderWidth:2 }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+
+// 板块毛利率对比
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{
+    labels: ['创新药','仿制药'],
+    datasets:[{ label:'毛利率(%)', data:[92,78], backgroundColor:['#1976d2','#43a047'] }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:100 } } }
+});
+
+// 创新药收入 & 在研管线
+registerChart(document.getElementById('chartPipeline'), {
+  type:'line',
+  data:{
+    labels: ["2020","2021","2022","2023","2024","2025","2026E"],
+    datasets:[
+      { label:'创新药收入(亿，含税)', data:[85,105,118,148,168,180,210], borderColor:'#1976d2', tension:0.3 },
+      { label:'在研创新药数量', data:[35,42,50,62,75,85,95], borderColor:'#2e7d32', tension:0.3, yAxisID:'y1' }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'top' } },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'创新药收入(亿)' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'在研数量' }, grid:{ drawOnChartArea:false } }
+    }
+});
+</script>
+
+<footer>数据来源：恒瑞医药年报（2020–2025）、同花顺iFinD、东方财富 &nbsp;|&nbsp; 预测数据基于券商一致预期，仅供参考，不构成投资建议</footer>
+
+</body>
+</html>

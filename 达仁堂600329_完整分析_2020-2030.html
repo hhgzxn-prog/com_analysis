@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>达仁堂(600329) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC',sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6}
+.header{background:linear-gradient(135deg,#2c3e50 0%,#3498db 50%,#2c3e50 100%);color:#fff;padding:35px 40px 20px;text-align:center}
+.header h1{font-size:28px;margin-bottom:6px;letter-spacing:1px}
+.header .sub{opacity:0.9;font-size:14px}
+.tabs{display:flex;background:#fff;border-bottom:2px solid #2980b9;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+.tab{padding:14px 28px;cursor:pointer;font-size:15px;font-weight:600;color:#636e72;border-bottom:3px solid transparent;transition:all .25s}
+.tab:hover{color:#2980b9;background:#f0f7ff}
+.tab.active{color:#2980b9;border-bottom-color:#3498db;background:#f0f7ff}
+.tab-content{display:none;padding:30px;max-width:1300px;margin:0 auto}
+.tab-content.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:15px;margin-bottom:30px}
+.kpi-card{background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-left:4px solid #2980b9}
+.kpi-card .label{font-size:13px;color:#888;margin-bottom:6px}
+.kpi-card .value{font-size:24px;font-weight:700;color:#2c3e50}
+.kpi-card .change{font-size:12px;margin-top:4px}
+.kpi-card .change.up{color:#e74c3c}
+.kpi-card .change.down{color:#27ae60}
+.section-title{font-size:20px;font-weight:700;color:#2c3e50;margin:35px 0 18px;padding-bottom:10px;border-bottom:3px solid #3498db;display:flex;align-items:center}
+.section-title::before{content:'';display:inline-block;width:8px;height:8px;background:#3498db;border-radius:50%;margin-right:10px}
+.tbl-wrap{overflow-x:auto;margin-bottom:25px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#2c3e50;color:#fff;padding:12px 10px;text-align:center;font-weight:600;white-space:nowrap}
+td{padding:10px;text-align:center;border-bottom:1px solid #eee;white-space:nowrap}
+tr:hover{background:#f0f7ff}
+tr:nth-child(even){background:#f6f9fc}
+.highlight-row{background:#fff9e6!important;font-weight:600}
+.warn-badge{display:inline-block;background:#ffeaa7;color:#d63031;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.good-badge{display:inline-block;background:#dfe6e9;color:#00b894;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.chart-wrap{background:#fff;border-radius:12px;padding:25px;margin-bottom:25px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.chart-wrap canvas{max-height:380px}
+.footer{text-align:center;padding:25px;color:#999;font-size:12px;border-top:1px solid #eee;margin-top:40px}
+.insight-box{background:linear-gradient(135deg,#e8f6f3 0%,#d1f2eb 100%);border:1px solid #1abc9c;border-radius:12px;padding:20px 25px;margin:20px 0;font-size:14px}
+.risk-box{background:linear-gradient(135deg,#fdedec 0%,#fadbd8 100%);border:1px solid #e74c3c;border-radius:12px;padding:20px 25px;margin:20px 0;font-size:14px}
+.insight-box strong{color:#2980b9}
+.valuation-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin-bottom:25px}
+.v-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.v-card h4{color:#2c3e50;margin-bottom:12px;font-size:15px}
+.v-card .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #eee;font-size:13px}
+.v-card .item:last-child{border-bottom:none}
+.transition-tag{display:inline-block;background:#3498db;color:#fff;padding:1px 8px;border-radius:8px;font-size:10px;margin-left:6px}
+@media(max-width:768px){.tabs{overflow-x:auto}.header{padding:25px 20px 15px}.header h1{font-size:22px}.tab-content{padding:15px}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>达仁堂(600329) 完整财务分析</h1>
+<div class="sub">"百年老字号" · 速效救心丸 · 战略聚焦中药工业 | 数据覆盖 2020-2028E</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="switchTab('t1',this)">📊 综合财务分析</div>
+<div class="tab" onclick="switchTab('t2',this)">🏗️ 业务板块分析</div>
+</div>
+
+<!-- ==================== TAB 1: 综合财务分析 ==================== -->
+<div id="t1" class="tab-content active">
+
+<div class="kpi-grid">
+<div class="kpi-card"><div class="label">2025年营收</div><div class="value">49.17亿</div><div class="change down">同比 -32.70%<br><small style="color:#888">（剥离商业后口径）</small></div></div>
+<div class="kpi-card"><div class="label">归母净利润</div><div class="value">21.31亿</div><div class="change">含13.08亿史克股权收益</div></div>
+<div class="kpi-card"><div class="label">扣非净利润</div><div class="value">7.95亿</div><div class="change up">同比 +6.56%</div></div>
+<div class="kpi-card"><div class="label">毛利率</div><div class="value">74.02%</div><div class="change up">同比 +25.84pct<br><small style="color:#888">（剥离低毛利商业）</small></div></div>
+<div class="kpi-card"><div class="label">ROE</div><div class="value">25.57%</div><div class="change">分红率 84.56%</div></div>
+<div class="kpi-card"><div class="label">当前PE(静态)</div><div class="value">~13x</div><div class="change">历史极低位</div></div>
+</div>
+
+<div class="insight-box">
+<strong>⚡ 核心判断：</strong>达仁堂正经历从"工商并举"到<span style="color:#2980b9;font-weight:700">"聚焦中药工业"</span>的历史性转型。2024-2025年分两次出售中美史克全部25%股权（税后收益合计27.58亿），剥离低毛利医药商业，利润质量大幅跃升——毛利率从39%→<strong>74%</strong>。但扣非净利润仅7.95亿（主业真实盈利），2025年报归母净利21.31亿中含13.08亿非经常收益。<strong>2026年起全面反映纯工业主业</strong>，券商一致预期净利润10.79亿（-49%），但这是"洗大澡"后的真实起点。速效救心丸21.66亿含税销售（+9.26%）、清咽滴丸5.75亿（+58.50%）引领成长，全年分红率128%彰显现金流实力。
+</div>
+
+<h2 class="section-title">核心财务数据总表（2020-2025）</h2>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>指标</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th style="background:#2980b9">2025</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left;font-weight:600">营业收入（亿元）</td><td>66.04</td><td>69.08</td><td>82.49</td><td>82.22</td><td>73.07</td><td style="background:#f0f7ff">49.17</td></tr>
+<tr><td style="text-align:left;font-weight:600">营收增速</td><td>-5.58%</td><td style="color:#e74c3c">+4.60%</td><td style="color:#e74c3c">+19.42%</td><td>-0.33%</td><td style="color:#27ae60">-11.14%</td><td style="color:#27ae60">-32.70%</td></tr>
+<tr><td style="text-align:left;font-weight:600">归母净利润（亿元）</td><td>6.62</td><td>7.69</td><td>8.62</td><td>9.87</td><td>22.29</td><td style="background:#f0f7ff">21.31</td></tr>
+<tr><td style="text-align:left;font-weight:600;color:#888">其中：扣非净利润</td><td>~6.1</td><td>~6.9</td><td>~7.6</td><td>~8.4</td><td>7.46</td><td style="background:#f0f7ff;color:#e74c3c">7.95</td></tr>
+<tr><td style="text-align:left;font-weight:600">EPS（元/股）</td><td>0.86</td><td>1.00</td><td>1.12</td><td>1.28</td><td>2.90</td><td style="background:#f0f7ff">2.77</td></tr>
+<tr><td style="text-align:left;font-weight:600">毛利率</td><td>39.01%</td><td>39.91%</td><td>39.93%</td><td>44.01%</td><td>48.18%</td><td style="background:#f0f7ff;color:#e74c3c">74.02%</td></tr>
+<tr><td style="text-align:left;font-weight:600">净利率</td><td>10.29%</td><td>11.39%</td><td>10.59%</td><td>11.78%</td><td>30.32%</td><td style="background:#f0f7ff">43.34%</td></tr>
+<tr><td style="text-align:left;font-weight:600">加权平均ROE</td><td>11.82%</td><td>12.64%</td><td>13.38%</td><td>15.04%</td><td>30.87%</td><td style="background:#f0f7ff">25.57%</td></tr>
+<tr><td style="text-align:left;font-weight:600">资产负债率</td><td>28.17%</td><td>28.16%</td><td>35.49%</td><td>35.04%</td><td>27.10%</td><td style="background:#f0f7ff">~22%</td></tr>
+<tr><td style="text-align:left;font-weight:600">自由现金流（亿元）</td><td>4.82</td><td>6.95</td><td>5.69</td><td>5.48</td><td>8.07</td><td style="background:#f0f7ff">~8.0</td></tr>
+<tr><td style="text-align:left;font-weight:600">研发投入（亿元）</td><td>~0.7</td><td>~0.9</td><td>~1.1</td><td>~1.4</td><td>~1.6</td><td style="background:#f0f7ff">1.90</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="insight-box">
+<strong>📌 数据说明：</strong>2024-2025年归母净利润包含一次性出售中美史克股权的非经常性收益（2024年14.5亿+2025年13.08亿=27.58亿）。<strong>扣非净利润</strong>更真实反映主业经营：2024=7.46亿（含亏损商业拖累），2025=7.95亿（纯工业，+6.56%）。评估达仁堂应以扣非为锚。
+</div>
+
+<h2 class="section-title">估值分析：PE 区间 & 股价区间</h2>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>年份</th><th>EPS（元）</th><th>PE 范围（估）</th><th>股价低（估）</th><th>股价高（估）</th><th>备注</th></tr>
+</thead>
+<tbody>
+<tr><td>2020</td><td>0.86</td><td>18 - 34x</td><td>~15</td><td>~29</td><td>工商并举时期</td></tr>
+<tr><td>2021</td><td>1.00</td><td>22 - 40x</td><td>~22</td><td>~40</td><td></td></tr>
+<tr><td>2022</td><td>1.12</td><td>20 - 36x</td><td>~22</td><td>~40</td><td>低估值中药股</td></tr>
+<tr><td>2023</td><td>1.28</td><td>25 - 35x</td><td>~32</td><td>~45</td><td>PE(动态) 29.63</td></tr>
+<tr><td>2024</td><td>2.90</td><td>10 - 18x</td><td>~29</td><td>~52</td><td>含14.5亿非经常</td></tr>
+<tr class="highlight-row"><td>2025</td><td>2.77</td><td>11 - 18x</td><td>~30</td><td>~50</td><td>PE(静) 13.69</td></tr>
+<tr><td style="font-weight:700">2026E</td><td>~1.40</td><td>25 - 32x</td><td>35</td><td>45</td><td style="color:#888">4家券商目标均价~42元</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="chart-wrap"><canvas id="chartPE"></canvas></div>
+
+<div class="valuation-grid">
+<div class="v-card">
+<h4>📊 当前估值水平</h4>
+<div class="item"><span>当前股价</span><span style="color:#2c3e50;font-weight:700">~37元</span></div>
+<div class="item"><span>PE(静态)</span><span style="color:#2c3e50;font-weight:700">13.3x</span></div>
+<div class="item"><span>PE(TTM)</span><span>~13x</span></div>
+<div class="item"><span>历史平均PE</span><span>30.03x</span></div>
+<div class="item"><span>PE历史分位</span><span style="color:#27ae60">近10年最低</span></div>
+<div class="item"><span>PB</span><span>~4.0x</span></div>
+<div class="item"><span>股息率(2025)</span><span style="color:#e74c3c;font-weight:700">6.3%</span></div>
+<div class="item"><span>总市值</span><span>~285亿</span></div>
+</div>
+<div class="v-card">
+<h4>🔍 战略转型后的真实估值</h4>
+<div class="item"><span>2025扣非净利</span><span style="color:#e74c3c;font-weight:700">7.95亿</span></div>
+<div class="item"><span>扣非PE</span><span style="color:#f39c12;font-weight:700">~35.8x</span></div>
+<div class="item"><span>2026E净利</span><span>10.79亿</span></div>
+<div class="item"><span>2026E PE</span><span style="color:#2980b9">~26.4x</span></div>
+<div class="item"><span>工业营收2025</span><span>47.72亿 (+8.6%)</span></div>
+</div>
+<div class="v-card">
+<h4>💰 分红价值</h4>
+<div class="item"><span>2025全年分红</span><span style="color:#e74c3c;font-weight:700">128%</span></div>
+<div class="item"><span>2025年度</span><span>10派23.4元</span></div>
+<div class="item"><span>近三年累计分红</span><span>56.60亿</span></div>
+<div class="item"><span>三年累计分红率</span><span style="color:#e74c3c;font-weight:700">318%</span></div>
+<div class="item"><span>2026-2028规划</span><span>现金分红优先</span></div>
+</div>
+</div>
+
+<h2 class="section-title">📊 营收 & 净利润趋势</h2>
+<div class="chart-wrap"><canvas id="chartRevProfit"></canvas></div>
+
+<h2 class="section-title">📊 毛利率 & 净利率趋势</h2>
+<div class="chart-wrap"><canvas id="chartMargin"></canvas></div>
+
+<h2 class="section-title">📊 ROE & 资产负债率趋势</h2>
+<div class="chart-wrap"><canvas id="chartROE"></canvas></div>
+
+<h2 class="section-title">📊 EPS 趋势（元/股）</h2>
+<div class="chart-wrap"><canvas id="chartEPS"></canvas></div>
+
+<h2 class="section-title">📊 自由现金流趋势（亿元）</h2>
+<div class="chart-wrap"><canvas id="chartFCF"></canvas></div>
+
+<div class="risk-box">
+<strong>⚠️ 四大核心风险：</strong><br>
+1. <strong>2026年利润断崖：</strong>失去中美史克股权收益后，归母净利从21.31亿→10.79亿（-49%），报表"难看"可能导致市场情绪波动<br>
+2. <strong>中药材成本上涨：</strong>三七、牛黄等核心原料价格波动，可能侵蚀刚刚优化的毛利率<br>
+3. <strong>速效救心丸天花板：</strong>21.66亿含税销售已占重点品种收入50%+，心脑血管赛道竞争激烈（同仁堂安宫牛黄丸等）<br>
+4. <strong>渠道改革阵痛：</strong>与国药控股深度合作转型，短期可能影响经销商体系和回款节奏
+</div>
+
+<div class="insight-box">
+<strong>✅ 四大核心优势：</strong><br>
+1. <strong>极致股东回报：</strong>2025年分红率128%（全年），近三年累计分红56.6亿=318%分红率，2026-2028承诺现金分红优先<br>
+2. <strong>主业真实增长：</strong>扣非净利润+6.56%、工业营收+8.64%，剥离商业后内生增速反而提升<br>
+3. <strong>清咽滴丸爆发：</strong>2025年含税销售5.75亿（+58.50%），第二增长极确立，渗透率仍有很大空间<br>
+4. <strong>国药控股合作：</strong>2025年合作覆盖30省、累计6亿，目标2026年冲击10亿——渠道壁垒大幅强化
+</div>
+
+</div>
+<!-- END TAB 1 -->
+
+<!-- ==================== TAB 2: 业务板块分析 ==================== -->
+<div id="t2" class="tab-content">
+
+<h2 class="section-title">业务结构概览（2025年年报，剥离商业后）</h2>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>业务板块</th><th>2025营收（亿）</th><th>占比</th><th>同比增长</th><th>毛利率</th><th>核心产品</th><th>角色</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left;font-weight:600">中成药（工业）</td><td>44.61</td><td>90.7%</td><td style="color:#e74c3c">+10.14%</td><td style="color:#e74c3c;font-weight:700">~75.2%</td><td style="text-align:left">速效救心丸(21.66亿)、清咽滴丸(5.75亿)</td><td>绝对核心⭐</td></tr>
+<tr><td style="text-align:left;font-weight:600">西药（工业）</td><td>0.90</td><td>1.8%</td><td style="color:#e74c3c">+7.79%</td><td>~40%</td><td style="text-align:left">抗生素等</td><td>微量</td></tr>
+<tr><td style="text-align:left;font-weight:600">商业（基本剥离）</td><td>1.46</td><td>3.0%</td><td style="color:#27ae60">-95.52%</td><td>~5-8%</td><td style="text-align:left">药品分销（尾量）</td><td>即将清零</td></tr>
+<tr><td style="text-align:left;font-weight:600">其他</td><td>2.20</td><td>4.5%</td><td>—</td><td>—</td><td style="text-align:left">其他收入</td><td>微量</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="insight-box">
+<strong>🔍 战略转型深度解读：</strong><br>
+- <strong>2021-2023（旧达仁堂）：</strong>医药工业（60%营收）+ 医药商业（40%营收）。商业毛利率仅5-8%，拖累整体毛利率至39%。业务庞杂、盈利低效<br>
+- <strong>2025（新达仁堂）：</strong>剥离商业后的纯净工业平台。中成药收入44.61亿（+10.14%），整体毛利率74%，相当于"换了一家公司"<br>
+- <strong>核心变化：</strong>旧模式下卖出100元赚39元毛利→新模式卖出100元赚74元毛利。虽然营收数字腰斩，但盈利质量翻天覆地
+</div>
+
+<h2 class="section-title">重点品种销售明细（2025，含税口径）</h2>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>品种</th><th>2025含税销售（亿元）</th><th>同比增速</th><th>所属品类</th><th>定位</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left;font-weight:600">速效救心丸</td><td style="color:#e74c3c;font-weight:700">21.66</td><td style="color:#e74c3c">+9.26%</td><td>心脑血管</td><td>核心大单品</td></tr>
+<tr><td style="text-align:left;font-weight:600">清咽滴丸</td><td style="color:#e74c3c;font-weight:700">5.75</td><td style="color:#e74c3c">+58.50%</td><td>呼吸系统</td><td>第二增长极🚀</td></tr>
+<tr><td style="text-align:left;font-weight:600">痹祺胶囊</td><td>~2.8</td><td>—</td><td>肌骨</td><td>二线主力</td></tr>
+<tr><td style="text-align:left;font-weight:600">癃清片</td><td>~2.0</td><td>—</td><td>泌尿</td><td>二线品种</td></tr>
+<tr style="font-weight:600"><td style="text-align:left">13项重点品种合计</td><td style="color:#e74c3c">>40</td><td>—</td><td>覆盖5大领域</td><td>品类矩阵</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 class="section-title">各板块营收趋势（2022-2025）</h2>
+<div class="tbl-wrap">
+<table>
+<thead>
+<tr><th>板块</th><th>2022</th><th>2023</th><th>2024</th><th style="background:#2980b9">2025</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left;font-weight:600">中成药（工业，亿）</td><td>~36</td><td>~38</td><td>~40.5</td><td style="background:#f0f7ff;color:#e74c3c">44.61</td></tr>
+<tr><td style="text-align:left;font-weight:600">西药（工业，亿）</td><td>~0.8</td><td>~0.8</td><td>~0.85</td><td style="background:#f0f7ff">0.90</td></tr>
+<tr><td style="text-align:left;font-weight:600">医药商业（亿）</td><td>~45</td><td>~43</td><td>~31.5</td><td style="background:#f0f7ff;color:#27ae60">1.46</td></tr>
+<tr style="font-weight:700"><td style="text-align:left">合计营收（亿）</td><td>82.49</td><td>82.22</td><td>73.07</td><td style="background:#f0f7ff">49.17</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="chart-wrap"><canvas id="chartSegRev"></canvas></div>
+
+<h2 class="section-title">📊 各板块毛利率对比</h2>
+<div class="chart-wrap"><canvas id="chartSegMargin"></canvas></div>
+
+<h2 class="section-title">📊 2025年营收结构（饼图）</h2>
+<div class="chart-wrap"><canvas id="chartPie"></canvas></div>
+
+<h2 class="section-title">📊 速效救心丸 & 清咽滴丸增长趋势</h2>
+<div class="chart-wrap"><canvas id="chartKeyProducts"></canvas></div>
+
+<h2 class="section-title">📊 扣非净利润 vs 归母净利润</h2>
+<div class="chart-wrap"><canvas id="chartDeducted"></canvas></div>
+
+<div class="insight-box">
+<strong>🔍 业务结构终极结论：</strong><br>
+- 达仁堂已从"四不像"（中成药+西药+商业批发+零售）蜕变为纯正中成药工业平台<br>
+- <strong>2025年工业收入47.72亿（+8.64%）</strong>，在行业整体承压背景下逆势增长，说明核心品类刚需属性强<br>
+- 速效救心丸在心血管急救领域品牌心智极强，2025年"速效救心公益行动"触达6亿+人次，品牌壁垒加深<br>
+- 二线梯队（清咽、痹祺、癃清等）潜力巨大，但与国药、上药、南药等平台合作将加速放量
+</div>
+
+</div>
+<!-- END TAB 2 -->
+
+<div class="footer">
+数据来源：达仁堂(600329)2020-2025年年报、同花顺F10、东方财富、长城证券/国海证券研报 | 预测数据基于4家券商一致预期 | 生成时间：2026年6月26日<br>
+⚠️ 2024-2025年归母净利润含中美史克股权出售一次性收益13.08-14.5亿，分析时应重点关注扣非净利润
+</div>
+
+<script>
+function switchTab(tid, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(tid).classList.add('active');
+  setTimeout(()=>{Object.values(charts).forEach(c=>c.resize())},100);
+}
+const charts={};
+const C={red:'#e74c3c',blue:'#2980b9',navy:'#2c3e50',green:'#27ae60',orange:'#f39c12',purple:'#8e44ad',grey:'#95a5a6',cyan:'#1abc9c'};
+
+function mkChart(id,cfg){const ctx=document.getElementById(id);if(ctx)charts[id]=new Chart(ctx,cfg);}
+
+// PE chart
+mkChart('chartPE',{type:'bar',data:{labels:['2020','2021','2022','2023','2024','2025'],datasets:[
+{label:'PE最低（估）',data:[18,22,20,25,10,11],backgroundColor:'rgba(52,152,219,0.3)',borderColor:C.blue,borderWidth:1},
+{label:'PE最高（估）',data:[34,40,36,35,18,18],backgroundColor:'rgba(41,128,185,0.6)',borderColor:C.navy,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'PE市盈率区间估算（2020-2025）',font:{size:16}}}}});</script>
+
+<script>
+mkChart('chartRevProfit',{type:'bar',data:{labels:['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],datasets:[
+{label:'营收（亿元）',data:[66.04,69.08,82.49,82.22,73.07,49.17,54.51,60.67,66.45],backgroundColor:'rgba(52,152,219,0.6)',borderColor:C.blue,borderWidth:1,yAxisID:'y'},
+{label:'归母净利润（亿元）',data:[6.62,7.69,8.62,9.87,22.29,21.31,10.79,13.01,15.16],type:'line',borderColor:C.purple,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,tension:0.3,yAxisID:'y1'},
+{label:'扣非净利润（亿元）',data:[6.1,6.9,7.6,8.4,7.46,7.95,10.79,13.01,15.16],type:'line',borderColor:C.orange,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,tension:0.3,borderDash:[5,5],yAxisID:'y1'}
+]},options:{responsive:true,plugins:{title:{display:true,text:'营收 & 净利润趋势',font:{size:16}}},scales:{y:{type:'linear',position:'left',title:{display:true,text:'营收（亿元）'}},y1:{type:'linear',position:'right',title:{display:true,text:'净利润（亿元）'},grid:{drawOnChartArea:false}}}}});</script>
+
+<script>
+mkChart('chartMargin',{type:'line',data:{labels:['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],datasets:[
+{label:'毛利率',data:[39.01,39.91,39.93,44.01,48.18,74.02,72,73,74],borderColor:C.blue,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,tension:0.3},
+{label:'净利率',data:[10.29,11.39,10.59,11.78,30.32,43.34,19.8,21.4,22.8],borderColor:C.cyan,backgroundColor:'transparent',borderWidth:2.5,pointRadius:5,tension:0.3,borderDash:[5,5]}
+]},options:{responsive:true,plugins:{title:{display:true,text:'毛利率 & 净利率趋势（%）',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartROE',{type:'line',data:{labels:['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],datasets:[
+{label:'ROE（%）',data:[11.82,12.64,13.38,15.04,30.87,25.57,15.50,18.10,20.37],borderColor:C.blue,backgroundColor:'rgba(52,152,219,0.1)',borderWidth:2.5,pointRadius:5,tension:0.3,fill:true},
+{label:'资产负债率（%）',data:[28.17,28.16,35.49,35.04,27.10,22,22,22,22],borderColor:C.grey,backgroundColor:'rgba(149,165,166,0.1)',borderWidth:2,pointRadius:4,tension:0.3,borderDash:[5,5]}
+]},options:{responsive:true,plugins:{title:{display:true,text:'ROE & 资产负债率趋势',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartEPS',{type:'bar',data:{labels:['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],datasets:[
+{label:'EPS（元/股）',data:[0.86,1.00,1.12,1.28,2.90,2.77,1.40,1.69,1.97],backgroundColor:['rgba(52,152,219,0.4)','rgba(52,152,219,0.4)','rgba(52,152,219,0.4)','rgba(52,152,219,0.4)','rgba(231,76,60,0.4)','rgba(231,76,60,0.4)','rgba(243,156,18,0.5)','rgba(243,156,18,0.5)','rgba(243,156,18,0.5)'],borderColor:C.blue,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'每股收益 EPS 趋势（红色=含非经常收益）',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartFCF',{type:'bar',data:{labels:['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],datasets:[
+{label:'自由现金流（亿元）',data:[4.82,6.95,5.69,5.48,8.07,8.0,8.5,10.0,12.0],backgroundColor:'rgba(26,188,156,0.6)',borderColor:C.cyan,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'自由现金流趋势',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartSegRev',{type:'bar',data:{labels:['2022','2023','2024','2025'],datasets:[
+{label:'中成药（工业）',data:[36,38,40.5,44.61],backgroundColor:'rgba(41,128,185,0.7)',borderColor:C.blue,borderWidth:1},
+{label:'西药（工业）',data:[0.8,0.8,0.85,0.90],backgroundColor:'rgba(26,188,156,0.7)',borderColor:C.cyan,borderWidth:1},
+{label:'医药商业',data:[45,43,31.5,1.46],backgroundColor:'rgba(189,195,199,0.7)',borderColor:C.grey,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'各板块营收趋势（亿元）',font:{size:16}}},scales:{x:{stacked:true},y:{stacked:true}}}});
+</script>
+
+<script>
+mkChart('chartSegMargin',{type:'line',data:{labels:['2022','2023','2024','2025'],datasets:[
+{label:'中成药毛利率（%）',data:[59,61,63,75],borderColor:C.blue,backgroundColor:'transparent',borderWidth:2.5,pointRadius:6,tension:0.3},
+{label:'西药毛利率（%）',data:[40,40,40,40],borderColor:C.cyan,backgroundColor:'transparent',borderWidth:2,pointRadius:5,tension:0.3},
+{label:'商业毛利率（%）',data:[6.5,6.5,6.5,6.5],borderColor:C.grey,backgroundColor:'transparent',borderWidth:2,pointRadius:5,tension:0.3,borderDash:[5,5]}
+]},options:{responsive:true,plugins:{title:{display:true,text:'各板块毛利率趋势（%）',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartPie',{type:'doughnut',data:{labels:['中成药 44.61亿','西药 0.90亿','商业 1.46亿','其他 2.20亿'],datasets:[{data:[44.61,0.90,1.46,2.20],backgroundColor:['rgba(41,128,185,0.8)','rgba(26,188,156,0.8)','rgba(189,195,199,0.8)','rgba(149,165,166,0.6)'],borderColor:'#fff',borderWidth:2}]},options:{responsive:true,plugins:{title:{display:true,text:'2025年营收结构',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartKeyProducts',{type:'bar',data:{labels:['2023','2024','2025'],datasets:[
+{label:'速效救心丸含税销售（亿）',data:[18.5,19.82,21.66],backgroundColor:'rgba(41,128,185,0.7)',borderColor:C.blue,borderWidth:1},
+{label:'清咽滴丸含税销售（亿）',data:[2.8,3.63,5.75],backgroundColor:'rgba(26,188,156,0.7)',borderColor:C.cyan,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'速效救心丸 & 清咽滴丸增长趋势（含税）',font:{size:16}}}}});
+</script>
+
+<script>
+mkChart('chartDeducted',{type:'bar',data:{labels:['2020','2021','2022','2023','2024','2025'],datasets:[
+{label:'归母净利润（亿）',data:[6.62,7.69,8.62,9.87,22.29,21.31],backgroundColor:'rgba(231,76,60,0.5)',borderColor:C.red,borderWidth:1},
+{label:'扣非净利润（亿）',data:[6.1,6.9,7.6,8.4,7.46,7.95],backgroundColor:'rgba(41,128,185,0.7)',borderColor:C.blue,borderWidth:1}
+]},options:{responsive:true,plugins:{title:{display:true,text:'归母净利润 vs 扣非净利润（2024-2025红色含非经常收益）',font:{size:16}}}}});
+</script>
+
+</body>
+</html>

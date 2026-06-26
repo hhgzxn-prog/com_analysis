@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>福寿园(01448.HK) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#4a148c,#6a1b9);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#4a148c;border-bottom-color:#4a148c;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#4a148c;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#4a148c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#4a148c;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#f3e5f5;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+.warning{background:#ffebee;border-left:4px solid #c62828;padding:12px 16px;margin:12px 0;border-radius:6px;font-size:13px;color:#b71c1c;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>福寿园 (01448.HK) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 殡葬服务龙头，2025年首亏 · 数据来源：公司年报、港交所披露</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+
+  <div class="warning">
+    ⚠️ <strong>业绩预警：</strong>福寿园2025年上半年录得上市以来首次报告期亏损（净亏损2.61亿元）。主因：收入减少5.9亿元 + 资产/商誉减值2.18亿元 + 税务成本上升。殡葬服务行业面临政策严监管（限制墓穴毛利率至65%的风险）及消费降级双重压力。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2024年营收</div><div class="value">20.78亿</div><div class="sub">同比-20.9%，疲软</div></div>
+    <div class="kpi-card"><div class="label">2024年归母净利润</div><div class="value">3.73亿</div><div class="sub">同比-52.8%</div></div>
+    <div class="kpi-card"><div class="label">2025H1营收</div><div class="value">6.11亿</div><div class="sub">同比-44.5%</div></div>
+    <div class="kpi-card"><div class="label">2025H1净亏损</div><div class="value">-2.61亿</div><div class="sub">上市后首次</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2024)</div><div class="value">34.2%</div><div class="sub">同比大幅下降</div></div>
+    <div class="kpi-card"><div class="label">净利率(2024)</div><div class="value">23.9%</div><div class="sub">同比-12.5pct</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势（2020–2025H1）</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030E）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>备注</th></tr>
+      <tr><td>2020</td><td>18.92</td><td>7.15</td><td>87.0%</td><td>37.8%</td><td>15.0%</td><td>高毛利，稳定</td></tr>
+      <tr><td>2021</td><td>23.06</td><td>8.81</td><td>86.5%</td><td>38.2%</td><td>16.2%</td><td>疫情后需求增</td></tr>
+      <tr><td>2022</td><td>22.49</td><td>8.45</td><td>85.8%</td><td>37.6%</td><td>15.8%</td><td>基本持平</td></tr>
+      <tr><td>2023</td><td>26.28</td><td>7.91</td><td>84.2%</td><td>30.1%</td><td>14.2%</td><td>高端墓穴销售好</td></tr>
+      <tr><td>2024</td><td>20.78</td><td>3.73</td><td>34.2%</td><td>23.9%</td><td>7.8%</td><td>消费降级+减值</td></tr>
+      <tr><td>2025E</td><td>14.00</td><td>-1.50</td><td>30.0%</td><td>-10.7%</td><td>-3.2%</td><td>全年预亏</td></tr>
+      <tr class="highlight"><td>2026E</td><td>16.00</td><td>1.00</td><td>32.0%</td><td>6.3%</td><td>2.5%</td><td>缓慢修复</td></tr>
+      <tr class="highlight"><td>2027E</td><td>18.00</td><td>2.00</td><td>35.0%</td><td>11.1%</td><td>4.8%</td><td>修复持续</td></tr>
+      <tr class="highlight"><td>2028E</td><td>20.00</td><td>2.80</td><td>37.0%</td><td>14.0%</td><td>6.5%</td><td>谨慎乐观</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2025E–2028E为悲观情形假设（消费降级持续、政策限制墓穴毛利率）。若行业政策放松或消费复苏，实际值可能高于预测。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年中报解读）</h2>
+    <div style="background:#f3e5f5;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#4a148c;">
+      <p><strong>上市首亏：</strong>2025H1营收6.11亿（同比-44.5%），净亏损2.61亿。这是福寿园2013年上市以来首次报告期亏损。核心原因：1）收入减少5.9亿（消费降级+高端墓穴销售下滑）；2）资产/商誉减值2.18亿；3）增值税等税务成本上升约1.4亿。</p>
+      <p style="margin-top:8px;"><strong>政策风险：</strong>若全国推广"上海模式"（限制墓穴毛利率至65%），福寿园毛利率或压缩至12%，合理PE或降至15倍，市值中枢可能腰斩。</p>
+      <p style="margin-top:8px;"><strong>长期逻辑：</strong>中国老龄化加速（65岁+人口占比已从2020年13.5%升至2025年15.6%），死亡人数长期看增。但短期消费降级+政策不确定性压制估值。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">福寿园业务分为<strong>墓园服务</strong>（墓穴销售+管理费）和<strong>殡仪服务</strong>（葬礼策划）。2024年墓园服务占比约82.3%，但收入同比-21%。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>业务收入占比（2024）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细表（2023–2024）</h2>
+    <table>
+      <tr><th>板块</th><th>2024年收入(亿)</th><th>占比</th><th>毛利率</th><th>2023年收入(亿)</th><th>趋势</th></tr>
+      <tr><td>墓园服务（墓穴销售）</td><td>17.10</td><td>82.3%</td><td>~40%</td><td>21.65</td><td>消费降级，销量-23%</td></tr>
+      <tr><td>殡仪服务</td><td>3.68</td><td>17.7%</td><td>~28%</td><td>4.63</td><td>基本持平</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#f3e5f5;border-radius:8px;padding:14px 16px;border-left:4px solid #4a148c;">
+        <h4 style="color:#4a148c;font-size:14px;margin-bottom:6px;">墓园服务（核心，但承压）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">高端墓穴销售均价约12.12万元/个（2024年），但销量同比-23.29%。消费降级下，居民倾向于选择更低价墓穴或生态葬（海葬、树葬）。长期看，老龄化是支撑，但短期承压。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">殡仪服务（稳定，低毛利）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">毛利率约28%，低于墓园服务。但收入相对稳定（葬礼是刚需）。公司正通过"生前契约"（预付葬礼）锁定未来客户，2025H1生前契约销售逆势增长。</p>
+      </div>
+      <div style="background:#e8f5e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">生前契约（亮点）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">预付葬礼模式，2025H1销售逆势增长。锁定未来客户+提前回笼现金，是福寿园对抗消费降级的有效工具。长期看，生前契约渗透率提升是核心增长极。</p>
+      </div>
+      <div style="background:#ffebee;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">政策风险（最大隐患）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">若全国推广"上海模式"（限制墓穴毛利率至65%），福寿园净利润率或压缩至12%，合理PE或降至15倍，市值中枢可能腰斩。当前估值已反映部分悲观预期，但政策不确定性仍高。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025E","2026E","2027E","2028E"];
+const charts = [];
+
+function registerChart(el, config) {
+  if (!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'营业收入(亿)', data:[18.92,23.06,22.49,26.28,20.78,14.00,16.00,18.00,20.00], backgroundColor:'#4a148c', yAxisID:'y' },
+      { label:'归母净利润(亿)', data:[7.15,8.81,8.45,7.91,3.73,-1.50,1.00,2.00,2.80], type:'line', borderColor:'#6a1b9', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'top' } },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } }
+    }
+});
+
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'毛利率(%)', data:[87.0,86.5,85.8,84.2,34.2,30.0,32.0,35.0,37.0], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+      { label:'净利率(%)', data:[37.8,38.2,37.6,30.1,23.9,-10.7,6.3,11.1,14.0], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{
+    labels: ['墓园服务','殡仪服务'],
+    datasets:[{ data:[17.10,3.68], backgroundColor:['#4a148c','#e65100'], borderWidth:2 }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+
+// 板块毛利率对比
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{
+    labels: ['墓园服务','殡仪服务'],
+    datasets:[{ label:'毛利率(%)', data:[40,28], backgroundColor:['#4a148c','#e65100'] }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:60 } } }
+});
+</script>
+
+<footer>数据来源：福寿园年报（2020–2024）、港交所披露 &nbsp;|&nbsp; 2025E–2028E为悲观情形假设下的预测，仅供参考，不构成投资建议</footer>
+
+</body>
+</html>

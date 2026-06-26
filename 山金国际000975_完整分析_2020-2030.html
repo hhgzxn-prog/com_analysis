@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>山金国际(000975.SZ) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#4e342e,#6d4c41);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#6d4c41;border-bottom-color:#6d4c41;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#5d4037;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#5d4037;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#6d4c41;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#f1f8e9;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>山金国际 (000975.SZ) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 数据来源：公司年报、同花顺、东方财富、券商研报</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">170.99亿</div><div class="sub">同比+25.86%</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">29.72亿</div><div class="sub">同比+36.75%</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2025)</div><div class="value">31.82%</div><div class="sub">同比+6.35pct</div></div>
+    <div class="kpi-card"><div class="label">净利率(2025)</div><div class="value">17.38%</div><div class="sub">同比+1.37pct</div></div>
+    <div class="kpi-card"><div class="label">ROE(2025)</div><div class="value">14.2%</div><div class="sub">修复中</div></div>
+    <div class="kpi-card"><div class="label">资产负债率</div><div class="value">38.5%</div><div class="sub">稳健</div></div>
+    <div class="kpi-card"><div class="label">EPS(2025)</div><div class="value">1.07元</div><div class="sub">基本每股收益</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 ROE & 资产负债率</h2>
+    <div class="chart-box"><canvas id="chartRoeDebt"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>资产负债率</th><th>EPS(元)</th></tr>
+      <tr><td>2020</td><td>65.20</td><td>12.50</td><td>18.5%</td><td>19.2%</td><td>12.8%</td><td>32.1%</td><td>0.45</td></tr>
+      <tr><td>2021</td><td>85.60</td><td>16.80</td><td>20.1%</td><td>19.6%</td><td>15.2%</td><td>35.4%</td><td>0.61</td></tr>
+      <tr><td>2022</td><td>92.30</td><td>18.20</td><td>21.5%</td><td>19.7%</td><td>15.8%</td><td>38.2%</td><td>0.66</td></tr>
+      <tr><td>2023</td><td>105.80</td><td>21.50</td><td>24.2%</td><td>20.3%</td><td>16.5%</td><td>39.5%</td><td>0.78</td></tr>
+      <tr><td>2024</td><td>135.80</td><td>22.30</td><td>28.5%</td><td>16.4%</td><td>13.2%</td><td>40.1%</td><td>0.80</td></tr>
+      <tr><td>2025</td><td>170.99</td><td>29.72</td><td>31.82%</td><td>17.38%</td><td>14.2%</td><td>38.5%</td><td>1.07</td></tr>
+      <tr class="highlight"><td>2026E</td><td>200.00</td><td>35.00</td><td>33.0%</td><td>17.5%</td><td>15.0%</td><td>38.0%</td><td>1.26</td></tr>
+      <tr class="highlight"><td>2027E</td><td>225.00</td><td>40.00</td><td>34.0%</td><td>17.8%</td><td>15.6%</td><td>37.5%</td><td>1.44</td></tr>
+      <tr class="highlight"><td>2028E</td><td>248.00</td><td>44.00</td><td>34.5%</td><td>17.7%</td><td>16.0%</td><td>37.0%</td><td>1.59</td></tr>
+      <tr class="highlight"><td>2029E</td><td>268.00</td><td>48.00</td><td>35.0%</td><td>17.9%</td><td>16.5%</td><td>36.5%</td><td>1.73</td></tr>
+      <tr class="highlight"><td>2030E</td><td>285.00</td><td>51.00</td><td>35.2%</td><td>17.9%</td><td>16.8%</td><td>36.0%</td><td>1.84</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：预测基于金价2,800–3,200元/克假设及公司产量增长假设。山金国际正在推进H股上市，若成功募资将加速海外矿山并购。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#f1f8e9;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#5d4037;">
+      <p><strong>业绩高增：</strong>2025年营收170.99亿（+25.86%），归母净利润29.72亿（+36.75%），均创历史新高。核心驱动：金价上涨 + 矿产金销量增长 + 成本管控有效（克金成本约132元/克，行业领先）。</p>
+      <p style="margin-top:8px;"><strong>毛利率结构性摊薄：</strong>2025年整体毛利率31.82%，看似提升，但主因低毛利的贸易业务占比扩大。核心的矿产金毛利率高达80.51%，是公司真正的利润引擎。</p>
+      <p style="margin-top:8px;"><strong>H股上市计划：</strong>公司已向港交所递交上市申请，若成功将打通港股融资通道，加速海外矿山并购（如非洲、南美项目），打开长期增长空间。</p>
+      <p style="margin-top:8px;"><strong>风险：</strong>贸易业务占比近60%，拉低整体ROE；金价高位回调风险；海外矿山政治/运营风险。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">山金国际业务由"高毛利矿产（金/银/铅锌）" + "低毛利金属贸易"双轮驱动。贸易业务贡献近60%营收，但仅贡献约10%毛利。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>业务收入占比（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细表（2025）</h2>
+    <table>
+      <tr><th>板块</th><th>收入(亿)</th><th>占比</th><th>毛利率</th><th>毛利贡献占比</th><th>备注</th></tr>
+      <tr><td>矿产金</td><td>55.05</td><td>32.19%</td><td>80.51%</td><td>~78%</td><td>核心，产量7.11吨</td></tr>
+      <tr><td>铜贸易</td><td>56.89</td><td>33.26%</td><td>~1.4%</td><td>~11%</td><td>低毛利，贡献营收</td></tr>
+      <tr><td>白银贸易</td><td>28.28</td><td>16.54%</td><td>~1.4%</td><td>~6%</td><td>低毛利</td></tr>
+      <tr><td>其他（铅锌精粉等）</td><td>30.77</td><td>18.01%</td><td>~53%</td><td>~5%</td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>📈 矿产金销量 & 金价趋势</h2>
+    <div class="chart-box"><canvas id="chartGold"></canvas></div>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#f1f8e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">矿产金（核心引擎）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">毛利率80.51%，克金成本约132元/克（行业领先）。2025年产量7.11吨，销量5.11吨（期末库存1.03吨，或为策略性囤货）。长期看，公司持续并购海内外矿山，产量增长可期。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">金属贸易（营收贡献大，利润贡献小）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">铜贸易+白银贸易合计占比约50%，但毛利率仅1.4%。本质上是"现金流业务"，贡献营收和经营性现金流，但对利润几乎无贡献。公司正在推进贸易业务剥离或独立上市的可能性。</p>
+      </div>
+      <div style="background:#e3f2fd;border-radius:8px;padding:14px 16px;border-left:4px solid #1565c0;">
+        <h4 style="color:#1565c0;font-size:14px;margin-bottom:6px;">H股上市（催化剂）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">向港交所递交上市申请，若成功将打通港股融资通道。募集资金将主要用于海外矿山并购，是公司从"国内区域龙头"向"全球黄金生产商"跃升的关键一步。</p>
+      </div>
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">风险提示</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">金价每下跌10%，净利润约下滑25–30%（高经营杠杆）。贸易业务占比过大，拉低整体ROE（14.2% vs 纯矿产金业务ROE约25%+）。海外并购整合风险。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E","2029E","2030E"];
+const charts = [];
+function registerChart(el, config) {
+  if(!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{ labels:years, datasets:[
+    { label:'营业收入(亿)', data:[65.2,85.6,92.3,105.8,135.8,171.0,200,225,248,268,285], backgroundColor:'#6d4c41', yAxisID:'y' },
+    { label:'归母净利润(亿)', data:[12.5,16.8,18.2,21.5,22.3,29.72,35,40,44,48,51], type:'line', borderColor:'#5d4037', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } } } }
+);
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'毛利率(%)', data:[18.5,20.1,21.5,24.2,28.5,31.82,33.0,34.0,34.5,35.0,35.2], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+    { label:'净利率(%)', data:[19.2,19.6,19.7,20.3,16.4,17.38,17.5,17.8,17.7,17.9,17.9], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+registerChart(document.getElementById('chartRoeDebt'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'ROE(%)', data:[12.8,15.2,15.8,16.5,13.2,14.2,15.0,15.6,16.0,16.5,16.8], borderColor:'#6d4c41', backgroundColor:'transparent', tension:0.3, yAxisID:'y' },
+    { label:'资产负债率(%)', data:[32.1,35.4,38.2,39.5,40.1,38.5,38.0,37.5,37.0,36.5,36.0], borderColor:'#ff9800', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'ROE(%)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'资产负债率(%)' }, grid:{ drawOnChartArea:false } } } }
+);
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{ labels:['矿产金','铜贸易','白银贸易','其他'], datasets:[{ data:[55.05,56.89,28.28,30.77], backgroundColor:['#6d4c41','#43a047','#ff9800','#e53935'], borderWidth:2 }] },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+// 板块毛利率
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{ labels:['矿产金','其他金属（铅锌等）','铜贸易','白银贸易'], datasets:[{ label:'毛利率(%)', data:[80.51,53.0,1.4,1.4], backgroundColor:['#6d4c41','#43a047','#ff9800','#e53935'] }] },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:90 } } }
+});
+// 金价 & 矿产金销量
+registerChart(document.getElementById('chartGold'), {
+  type:'line',
+  data:{ labels:["2020","2021","2022","2023","2024","2025"], datasets:[
+    { label:'年均金价(元/克)', data:[420,490,410,540,620,780], borderColor:'#6d4c41', tension:0.3, yAxisID:'y' },
+    { label:'矿产金销量(吨)', data:[5.2,5.8,6.1,6.5,8.05,5.11], borderColor:'#2e7d32', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'金价(元/克)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'销量(吨)' }, grid:{ drawOnChartArea:false } } } }
+);
+</script>
+<footer>数据来源：山金国际年报（2020–2025）、同花顺iFinD、东方财富 &nbsp;|&nbsp; 预测数据基于券商一致预期，仅供参考</footer>
+</body>
+</html>

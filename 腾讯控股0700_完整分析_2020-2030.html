@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腾讯控股(0700.HK) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+  .header{background:linear-gradient(135deg,#12b7f5 0%,#0052d9 100%);color:#fff;padding:24px 32px;display:flex;align-items:center;gap:16px;}
+  .header .logo{font-size:2.8rem;}
+  .header h1{font-size:1.6rem;font-weight:700;}
+  .header p{font-size:0.85rem;opacity:0.85;margin-top:4px;}
+  .tab-nav{display:flex;background:#fff;border-bottom:2px solid #eee;padding:0 32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .tab-btn{padding:14px 28px;font-size:0.95rem;font-weight:600;border:none;background:none;cursor:pointer;color:#666;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;}
+  .tab-btn.active{color:#0052d9;border-bottom-color:#0052d9;}
+  .tab-content{display:none;padding:24px 32px;}
+  .tab-content.active{display:block;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px;}
+  .kpi-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,0.07);text-align:center;border-top:4px solid #0052d9;}
+  .kpi-card .val{font-size:1.7rem;font-weight:700;color:#0052d9;}
+  .kpi-card .label{font-size:0.75rem;color:#888;margin-top:4px;}
+  .kpi-card .sub{font-size:0.7rem;color:#aaa;margin-top:2px;}
+  .section{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,0.07);margin-bottom:24px;}
+  .section h2{font-size:1.1rem;font-weight:700;color:#333;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #0052d9;display:flex;align-items:center;gap:8px;}
+  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:20px;margin-bottom:24px;}
+  .chart-box{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+  .chart-box h3{font-size:0.92rem;font-weight:600;color:#555;margin-bottom:14px;}
+  .chart-box canvas{max-height:260px;}
+  table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+  th{background:#EEF4FF;color:#0052d9;font-weight:700;padding:10px 8px;text-align:center;border-bottom:2px solid #C0D7FF;}
+  td{padding:8px;text-align:center;border-bottom:1px solid #f0f0f0;}
+  tr:hover td{background:#F5F8FF;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;font-weight:600;}
+  .badge-green{background:#EDFFF4;color:#27ae60;}
+  .badge-red{background:#FFF0F0;color:#e74c3c;}
+  .badge-blue{background:#EEF4FF;color:#0052d9;}
+  .note{background:#F0F6FF;border-left:4px solid #0052d9;padding:12px 16px;border-radius:0 8px 8px 0;font-size:0.82rem;color:#666;margin-top:16px;}
+  .seg-card{border-radius:10px;padding:16px;margin-bottom:12px;}
+  .seg-vzs{border:2px solid #0052d9;background:#EEF4FF;}
+  .seg-ad{border:2px solid #12b7f5;background:#F0FBFF;}
+  .seg-fin{border:2px solid #27ae60;background:#EDFFF4;}
+  .seg-title{font-size:1rem;font-weight:700;margin-bottom:8px;}
+  .seg-metrics{display:flex;gap:24px;flex-wrap:wrap;}
+  .seg-metric{text-align:center;}
+  .seg-metric .sv{font-size:1.2rem;font-weight:700;color:#0052d9;}
+  .seg-metric .sl{font-size:0.72rem;color:#888;margin-top:2px;}
+  .warn{color:#e74c3c;font-weight:600;}
+  .good{color:#27ae60;font-weight:600;}
+  .highlight{color:#0052d9;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🐧</div>
+  <div>
+    <h1>腾讯控股(0700.HK) 完整财务分析 2020–2030</h1>
+    <p>游戏+社交+广告+金融科技 · 中国互联网综合龙头 · 数据来源：历年年报 | 更新至2025年报</p>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab(0)">📊 综合财务分析</button>
+  <button class="tab-btn" onclick="switchTab(1)">🏗️ 业务板块分析</button>
+</div>
+
+<!-- TAB 1 -->
+<div class="tab-content active" id="tab0">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="val">7,518亿</div><div class="label">2025年营收</div><div class="sub">同比+14%</div></div>
+    <div class="kpi-card"><div class="val">2,248亿</div><div class="label">2025年归母净利润</div><div class="sub">同比+16%</div></div>
+    <div class="kpi-card"><div class="val">2,596亿</div><div class="label">非IFRS净利润</div><div class="sub">同比+17%</div></div>
+    <div class="kpi-card"><div class="val">56%</div><div class="label">2025年毛利率</div><div class="sub">2024年53%</div></div>
+    <div class="kpi-card"><div class="val">800亿港</div><div class="label">2025年回购</div><div class="sub">+股息派发</div></div>
+    <div class="kpi-card"><div class="val">14.32亿</div><div class="label">微信月活(MAU)</div><div class="sub">全球最大社交平台</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 核心财务数据总表（2020–2030E）</h2>
+    <div style="overflow-x:auto;">
+    <table>
+      <tr>
+        <th>年份</th>
+        <th>营收(亿)</th>
+        <th>YoY</th>
+        <th>归母净利润(亿)</th>
+        <th>非IFRS净利润(亿)</th>
+        <th>毛利率</th>
+        <th>非IFRS净利润率</th>
+        <th>EPS(港元)</th>
+        <th>ROE</th>
+        <th>负债率</th>
+        <th>PE区间(港股)</th>
+        <th>股价区间(港元)</th>
+      </tr>
+      <tr><td>2020</td><td>4,821</td><td>+28%</td><td>1,598</td><td>1,227</td><td>46%</td><td>25.4%</td><td>16.1</td><td>28%</td><td>~30%</td><td>35-60x</td><td>390–773</td></tr>
+      <tr><td>2021</td><td>5,601</td><td>+16%</td><td>1,279</td><td>1,238</td><td>44%</td><td>22.1%</td><td>12.8</td><td>20%</td><td>~33%</td><td>20-40x</td><td>390–776</td></tr>
+      <tr><td>2022</td><td>5,546</td><td>-1%</td><td>189</td><td>1,156</td><td>43%</td><td>20.8%</td><td>1.90</td><td>3%</td><td>~34%</td><td>10-25x</td><td>205–468</td></tr>
+      <tr><td>2023</td><td>6,090</td><td>+10%</td><td>1,577</td><td>1,577</td><td>48%</td><td>25.9%</td><td>16.6</td><td>21%</td><td>~31%</td><td>14-22x</td><td>248–388</td></tr>
+      <tr style="background:#EEF4FF;font-weight:700;"><td>2024</td><td>6,603</td><td>+8%</td><td>1,940</td><td>2,227</td><td>53%</td><td>33.7%</td><td>21.3</td><td>24%</td><td>~29%</td><td>15-22x</td><td>295–430</td></tr>
+      <tr style="background:#F0F6FF;font-weight:700;"><td>2025</td><td>7,518</td><td>+14%</td><td>2,248</td><td>2,596</td><td>56%</td><td>34.5%</td><td>24.7</td><td>26%</td><td>~28%</td><td>14-20x</td><td>420–683</td></tr>
+      <tr style="color:#999;"><td>2026E</td><td>8,550</td><td>+14%</td><td>2,600</td><td>3,000</td><td>57%</td><td>35.1%</td><td>28.5</td><td>27%</td><td>—</td><td>13-18x</td><td>370–540</td></tr>
+      <tr style="color:#999;"><td>2027E</td><td>9,600</td><td>+12%</td><td>3,000</td><td>3,400</td><td>58%</td><td>35.4%</td><td>33.0</td><td>28%</td><td>—</td><td>12-17x</td><td>400–560</td></tr>
+      <tr style="color:#999;"><td>2028E</td><td>10,700</td><td>+11%</td><td>3,400</td><td>3,800</td><td>59%</td><td>35.5%</td><td>37.5</td><td>28%</td><td>—</td><td>12-16x</td><td>450–600</td></tr>
+      <tr style="color:#999;"><td>2029E</td><td>11,700</td><td>+9%</td><td>3,800</td><td>4,200</td><td>60%</td><td>35.9%</td><td>42.0</td><td>28%</td><td>—</td><td>11-15x</td><td>460–630</td></tr>
+      <tr style="color:#999;"><td>2030E</td><td>12,700</td><td>+9%</td><td>4,200</td><td>4,600</td><td>60%</td><td>36.2%</td><td>46.5</td><td>29%</td><td>—</td><td>11-15x</td><td>510–700</td></tr>
+    </table>
+    </div>
+    <div class="note">📝 注：2022年净利润大幅下滑（189亿）主要因联营公司Meituan、Sea等公允价值损失。非IFRS口径持续稳健增长，更能代表经营实质。2026年起为券商一致预期估算。</div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>📊 营收 & 非IFRS净利润趋势（亿元）</h3>
+      <canvas id="chartRevProfit"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 毛利率 & 非IFRS净利润率</h3>
+      <canvas id="chartMargin"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 ROE & 资产负债率</h3>
+      <canvas id="chartROE"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 EPS趋势（港元/股，非IFRS）</h3>
+      <canvas id="chartEPS"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 港股股价区间（港元）</h3>
+      <canvas id="chartPrice"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 研发投入 & 占营收比</h3>
+      <canvas id="chartRD"></canvas>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📌 核心结论与投资观点</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#EEF4FF;padding:14px;border-radius:8px;">
+        <p style="font-weight:700;color:#0052d9;margin-bottom:8px;">✅ 核心竞争优势</p>
+        <ul style="font-size:0.83rem;color:#555;line-height:1.8;padding-left:16px;">
+          <li>微信月活14.32亿，全球最大社交网络</li>
+          <li>游戏+广告+金科三翼齐飞，ROE持续提升</li>
+          <li>2025年毛利率跃升至56%，历史新高</li>
+          <li>AI布局：混元大模型、腾讯云AI、小程序AI</li>
+          <li>2025年回购800亿港元+派息，资本回报提升</li>
+          <li>投资组合公允价值1.03万亿，相当于每股113港元</li>
+        </ul>
+      </div>
+      <div style="background:#FFF5EC;padding:14px;border-radius:8px;">
+        <p style="font-weight:700;color:#e67e22;margin-bottom:8px;">⚠️ 主要风险</p>
+        <ul style="font-size:0.83rem;color:#555;line-height:1.8;padding-left:16px;">
+          <li>监管政策风险（游戏版号、科技反垄断）</li>
+          <li>国际市场游戏增速放缓</li>
+          <li>AI投入加速导致费用端压力</li>
+          <li>宏观经济不确定性影响广告&金科收入</li>
+          <li>2026年迄今股价自683高点回调至428港元</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="tab-content" id="tab1">
+
+  <div class="section">
+    <h2>🏗️ 腾讯业务架构（2025年）</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;">
+      <div class="seg-card seg-vzs">
+        <div class="seg-title">🎮 增值服务</div>
+        <div class="seg-metrics">
+          <div class="seg-metric"><div class="sv">3,693亿</div><div class="sl">2025年收入</div></div>
+          <div class="seg-metric"><div class="sv">49.1%</div><div class="sl">占比</div></div>
+          <div class="seg-metric"><div class="sv good">+16%</div><div class="sl">同比</div></div>
+          <div class="seg-metric"><div class="sv">~60%</div><div class="sl">毛利率</div></div>
+        </div>
+        <p style="font-size:0.78rem;color:#777;margin-top:10px;">游戏（国内+国际）+ 社交网络（视频会员/音乐/直播）</p>
+      </div>
+      <div class="seg-card seg-ad">
+        <div class="seg-title">📢 营销服务（广告）</div>
+        <div class="seg-metrics">
+          <div class="seg-metric"><div class="sv">1,450亿</div><div class="sl">2025年收入</div></div>
+          <div class="seg-metric"><div class="sv">19.3%</div><div class="sl">占比</div></div>
+          <div class="seg-metric"><div class="sv good">+19%</div><div class="sl">同比</div></div>
+          <div class="seg-metric"><div class="sv">~58%</div><div class="sl">毛利率</div></div>
+        </div>
+        <p style="font-size:0.78rem;color:#777;margin-top:10px;">视频号+微信搜一搜+朋友圈+公众号广告</p>
+      </div>
+      <div class="seg-card seg-fin">
+        <div class="seg-title">💳 金融科技及企业服务</div>
+        <div class="seg-metrics">
+          <div class="seg-metric"><div class="sv">2,294亿</div><div class="sl">2025年收入</div></div>
+          <div class="seg-metric"><div class="sv">30.5%</div><div class="sl">占比</div></div>
+          <div class="seg-metric"><div class="sv good">+8%</div><div class="sl">同比</div></div>
+          <div class="seg-metric"><div class="sv">51%</div><div class="sl">毛利率</div></div>
+        </div>
+        <p style="font-size:0.78rem;color:#777;margin-top:10px;">微信支付+理财+贷款+腾讯云+企业微信</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📊 分业务历年收入数据（亿元）</h2>
+    <div style="overflow-x:auto;">
+    <table>
+      <tr>
+        <th>年份</th>
+        <th>总营收</th>
+        <th>增值服务</th>
+        <th>增值服务占比</th>
+        <th>增值服务毛利率</th>
+        <th>网络广告</th>
+        <th>广告占比</th>
+        <th>广告毛利率</th>
+        <th>金融科技及企业服务</th>
+        <th>金科占比</th>
+        <th>金科毛利率</th>
+      </tr>
+      <tr><td>2020</td><td>4,821</td><td>2,642</td><td>54.8%</td><td>~54%</td><td>824</td><td>17.1%</td><td>~48%</td><td>1,281</td><td>26.6%</td><td>~28%</td></tr>
+      <tr><td>2021</td><td>5,601</td><td>2,993</td><td>53.4%</td><td>~54%</td><td>887</td><td>15.8%</td><td>~42%</td><td>1,722</td><td>30.7%</td><td>~30%</td></tr>
+      <tr><td>2022</td><td>5,546</td><td>2,944</td><td>53.1%</td><td>~51%</td><td>822</td><td>14.8%</td><td>~42%</td><td>1,772</td><td>32.0%</td><td>~33%</td></tr>
+      <tr><td>2023</td><td>6,090</td><td>2,984</td><td>49.0%</td><td>54%</td><td>1,015</td><td>16.7%</td><td>51%</td><td>2,038</td><td>33.5%</td><td>40%</td></tr>
+      <tr style="background:#EEF4FF;font-weight:700;"><td>2024</td><td>6,603</td><td>3,192</td><td>48.3%</td><td>57%</td><td>1,215</td><td>18.4%</td><td>56%</td><td>2,120</td><td>32.1%</td><td>47%</td></tr>
+      <tr style="background:#F0F6FF;font-weight:700;"><td>2025</td><td>7,518</td><td>3,693</td><td>49.1%</td><td>60%</td><td>1,450</td><td>19.3%</td><td>58%</td><td>2,294</td><td>30.5%</td><td>51%</td></tr>
+      <tr style="color:#999;"><td>2026E</td><td>8,550</td><td>4,100</td><td>48.0%</td><td>61%</td><td>1,750</td><td>20.5%</td><td>59%</td><td>2,550</td><td>29.8%</td><td>52%</td></tr>
+      <tr style="color:#999;"><td>2027E</td><td>9,600</td><td>4,500</td><td>46.9%</td><td>62%</td><td>2,100</td><td>21.9%</td><td>60%</td><td>2,800</td><td>29.2%</td><td>53%</td></tr>
+      <tr style="color:#999;"><td>2028E</td><td>10,700</td><td>4,900</td><td>45.8%</td><td>63%</td><td>2,500</td><td>23.4%</td><td>61%</td><td>3,100</td><td>29.0%</td><td>54%</td></tr>
+    </table>
+    </div>
+    <div class="note">📊 趋势：增值服务占比小幅下降（游戏依然第一），广告占比提升（视频号货币化率持续爬升），金科毛利率大幅提升（2020年28%→2025年51%，消费贷款&理财贡献）。</div>
+  </div>
+
+  <div class="section">
+    <h2>🎮 增值服务细分（2024年）</h2>
+    <table>
+      <tr><th>子业务</th><th>收入(亿)</th><th>占增值服务</th><th>同比</th><th>关键驱动</th></tr>
+      <tr><td>国内游戏</td><td>1,397</td><td>43.8%</td><td>+10%</td><td>王者荣耀、和平精英、DNF手游</td></tr>
+      <tr><td>国际游戏</td><td>580</td><td>18.2%</td><td>+9%</td><td>PUBG Mobile、Clash、Valorant</td></tr>
+      <tr><td>社交网络</td><td>1,215</td><td>38.1%</td><td>+2%</td><td>腾讯视频/音乐会员+直播打赏</td></tr>
+    </table>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>📊 三大业务收入堆叠（亿元）</h3>
+      <canvas id="chartSegStack"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 各业务毛利率趋势</h3>
+      <canvas id="chartSegMargin"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 2025年收入结构</h3>
+      <canvas id="chartPie"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>📊 广告收入增长（亿元）</h3>
+      <canvas id="chartAd"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+const charts = [];
+function registerChart(id, config) {
+  const el = document.getElementById(id);
+  if (el) { const c = new Chart(el, config); charts.push(c); return c; }
+}
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  setTimeout(()=>charts.forEach(c=>c.resize()),50);
+}
+
+const yrs = ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'];
+const yrs6 = ['2020','2021','2022','2023','2024','2025'];
+
+registerChart('chartRevProfit',{
+  type:'bar',
+  data:{labels:yrs,datasets:[
+    {label:'营收(亿)',data:[4821,5601,5546,6090,6603,7518,8550,9600,10700],backgroundColor:'rgba(0,82,217,0.65)',yAxisID:'y'},
+    {label:'非IFRS净利润(亿)',data:[1227,1238,1156,1577,2227,2596,3000,3400,3800],type:'line',borderColor:'#27ae60',backgroundColor:'rgba(39,174,96,0.1)',borderWidth:2.5,pointRadius:4,fill:true,yAxisID:'y2'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,title:{display:true,text:'营收(亿)'}},y2:{position:'right',title:{display:true,text:'净利润(亿)'},grid:{drawOnChartArea:false}}}}
+});
+
+registerChart('chartMargin',{
+  type:'line',
+  data:{labels:yrs6,datasets:[
+    {label:'毛利率%',data:[46,44,43,48,53,56],borderColor:'#0052d9',borderWidth:2.5,fill:false,pointRadius:5},
+    {label:'非IFRS净利润率%',data:[25.4,22.1,20.8,25.9,33.7,34.5],borderColor:'#12b7f5',borderDash:[5,5],borderWidth:2,fill:false,pointRadius:5}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'百分比(%)'},min:15}}}
+});
+
+registerChart('chartROE',{
+  data:{labels:yrs6,datasets:[
+    {type:'bar',label:'ROE%',data:[28,20,3,21,24,26],backgroundColor:'rgba(0,82,217,0.6)',yAxisID:'y'},
+    {type:'line',label:'负债率%',data:[30,33,34,31,29,28],borderColor:'#e74c3c',borderDash:[4,4],borderWidth:2,fill:false,pointRadius:4,yAxisID:'y2'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'ROE(%)'},beginAtZero:true},y2:{position:'right',title:{display:true,text:'负债率(%)'},grid:{drawOnChartArea:false}}}}
+});
+
+registerChart('chartEPS',{
+  type:'line',
+  data:{labels:yrs,datasets:[{
+    label:'非IFRS EPS(港元)',
+    data:[12.9,12.8,11.9,16.6,21.3,24.7,28.5,33.0,37.5],
+    borderColor:'#0052d9',backgroundColor:'rgba(0,82,217,0.1)',borderWidth:2.5,fill:true,pointRadius:5
+  }]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'EPS(港元)'},beginAtZero:true}}}
+});
+
+registerChart('chartPrice',{
+  data:{labels:yrs6,datasets:[
+    {type:'bar',label:'年度最高价(港元)',data:[773,776,468,388,430,683],backgroundColor:'rgba(18,183,245,0.5)'},
+    {type:'bar',label:'年度最低价(港元)',data:[390,390,205,248,295,420],backgroundColor:'rgba(0,82,217,0.5)'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'股价(港元)'},beginAtZero:true}}}
+});
+
+registerChart('chartRD',{
+  data:{labels:yrs6,datasets:[
+    {type:'bar',label:'研发投入(亿)',data:[376,524,617,667,700,756],backgroundColor:'rgba(0,82,217,0.55)',yAxisID:'y'},
+    {type:'line',label:'研发/营收%',data:[7.8,9.4,11.1,11.0,10.6,10.1],borderColor:'#e74c3c',borderWidth:2.5,fill:false,pointRadius:4,yAxisID:'y2'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true},y2:{position:'right',grid:{drawOnChartArea:false}}}}
+});
+
+// Tab2
+registerChart('chartSegStack',{
+  type:'bar',
+  data:{labels:yrs,datasets:[
+    {label:'增值服务',data:[2642,2993,2944,2984,3192,3693,4100,4500,4900],backgroundColor:'rgba(0,82,217,0.7)',stack:'s'},
+    {label:'营销服务',data:[824,887,822,1015,1215,1450,1750,2100,2500],backgroundColor:'rgba(18,183,245,0.7)',stack:'s'},
+    {label:'金融科技&企业服务',data:[1281,1722,1772,2038,2120,2294,2550,2800,3100],backgroundColor:'rgba(39,174,96,0.7)',stack:'s'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{x:{stacked:true},y:{stacked:true,title:{display:true,text:'收入(亿)'}}}}
+});
+
+registerChart('chartSegMargin',{
+  type:'line',
+  data:{labels:yrs6,datasets:[
+    {label:'增值服务毛利率%',data:[54,54,51,54,57,60],borderColor:'#0052d9',borderWidth:2,pointRadius:4,fill:false},
+    {label:'广告毛利率%',data:[48,42,42,51,56,58],borderColor:'#12b7f5',borderWidth:2,pointRadius:4,fill:false},
+    {label:'金科毛利率%',data:[28,30,33,40,47,51],borderColor:'#27ae60',borderWidth:2,pointRadius:4,fill:false}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'毛利率(%)'},min:20}}}
+});
+
+registerChart('chartPie',{
+  type:'doughnut',
+  data:{
+    labels:['增值服务 49.1%','营销服务 19.3%','金融科技 30.5%','其他 1.1%'],
+    datasets:[{data:[3693,1450,2294,81],backgroundColor:['#0052d9','#12b7f5','#27ae60','#95a5a6'],borderWidth:2}]
+  },
+  options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+});
+
+registerChart('chartAd',{
+  type:'bar',
+  data:{labels:yrs6,datasets:[{
+    label:'广告收入(亿)',
+    data:[824,887,822,1015,1215,1450],
+    backgroundColor:yrs6.map((_,i)=>[824,887,822,1015,1215,1450][i]>850?'rgba(18,183,245,0.75)':'rgba(149,165,166,0.5)')
+  }]},
+  options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{title:{display:true,text:'广告收入(亿)'},beginAtZero:true}}}
+});
+</script>
+</body>
+</html>

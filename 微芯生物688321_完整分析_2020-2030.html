@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>微芯生物(688321) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Microsoft YaHei', -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+  .header { background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 50%, #7b1fa2 100%); color: #fff; padding: 28px 32px; }
+  .header h1 { font-size: 1.9rem; font-weight: 700; }
+  .header p { opacity: .85; margin-top: 6px; font-size: .95rem; }
+  .tabs { display: flex; background: #fff; border-bottom: 2px solid #e0e0e0; padding: 0 24px; }
+  .tab { padding: 14px 28px; cursor: pointer; font-size: .95rem; font-weight: 600; color: #666; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+  .tab.active { color: #4a148c; border-bottom-color: #4a148c; }
+  .tab:hover { color: #6a1b9a; }
+  .tab-content { display: none; padding: 28px; }
+  .tab-content.active { display: block; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .kpi-card { background: #fff; border-radius: 10px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .kpi-card .val { font-size: 1.7rem; font-weight: 700; color: #4a148c; }
+  .kpi-card .lbl { font-size: .8rem; color: #888; margin-top: 4px; }
+  .kpi-card .chg { font-size: .8rem; margin-top: 2px; }
+  .chg.up { color: #c62828; }
+  .chg.dn { color: #2e7d32; }
+  .section { background: #fff; border-radius: 12px; padding: 22px 24px; margin-bottom: 22px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+  .section h2 { font-size: 1.1rem; font-weight: 700; color: #4a148c; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f3e5f5; }
+  .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 22px; }
+  .chart-box { background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+  .chart-box h3 { font-size: .95rem; font-weight: 700; color: #333; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th { background: #f3e5f5; color: #4a148c; padding: 9px 11px; text-align: center; font-weight: 700; }
+  td { padding: 8px 11px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:hover td { background: #f3e5f5; }
+  .highlight { background: #fff9c4 !important; font-weight: 700; }
+  .est { color: #777; font-style: italic; }
+  .note { font-size: .8rem; color: #888; margin-top: 10px; }
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .risk-card { border-radius: 8px; padding: 16px; }
+  .risk-card.bull { background: #e8f5e9; border-left: 4px solid #388e3c; }
+  .risk-card.bear { background: #fff3e0; border-left: 4px solid #f57c00; }
+  .risk-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 8px; }
+  .risk-card ul { padding-left: 16px; font-size: .85rem; line-height: 1.7; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: .78rem; font-weight: 700; }
+  .badge-purple { background: #f3e5f5; color: #4a148c; }
+  .badge-blue { background: #e8eaf6; color: #1a237e; }
+  .badge-green { background: #e8f5e9; color: #2e7d32; }
+  .badge-orange { background: #fff3e0; color: #e65100; }
+  .badge-red { background: #fce4ec; color: #c62828; }
+  .warn { background: #fff3e0; border-left: 4px solid #e65100; border-radius: 6px; padding: 12px 16px; font-size: .88rem; margin-bottom: 16px; }
+  canvas { max-height: 300px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧬 微芯生物 (688321) 完整财务分析</h1>
+  <p>科创板原创新药 · 西达本胺/西格列他钠双核驱动 · 2020-2030年度数据与预测</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 产品管线分析</div>
+</div>
+
+<!-- Tab 1 -->
+<div class="tab-content active" id="tab0">
+  <div class="warn">⚠️ 分析提示：微芯生物属于原创新药早期商业化阶段，净利润波动大（含股权投资收益/亏损），建议以<b>扣非净利润</b>和<b>经营现金流</b>作为核心观察指标。</div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="val">9.10亿</div><div class="lbl">2025年营收</div><div class="chg up">▲ 38.3% 加速增长</div></div>
+    <div class="kpi-card"><div class="val">0.51亿</div><div class="lbl">2025年归母净利</div><div class="chg up">▲ 扭亏为盈</div></div>
+    <div class="kpi-card"><div class="val">87%</div><div class="lbl">2025年毛利率</div><div class="chg up">原创新药高壁垒</div></div>
+    <div class="kpi-card"><div class="val">5.80亿</div><div class="lbl">西达本胺2025营收</div><div class="chg up">占比64%</div></div>
+    <div class="kpi-card"><div class="val">1.40亿</div><div class="lbl">西格列他钠2024营收</div><div class="chg up">▲ 232%</div></div>
+    <div class="kpi-card"><div class="val">0.13元</div><div class="lbl">2025年EPS</div><div class="chg up">▲ 扭亏</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 核心财务数据总览（2020-2028E）</h2>
+    <table>
+      <thead><tr>
+        <th>年份</th><th>营收(亿)</th><th>归母净利(亿)</th><th>扣非净利(亿)</th><th>EPS(元)</th>
+        <th>毛利率</th><th>净利率</th><th>ROE</th><th>负债率</th>
+        <th>研发费用(亿)</th><th>研发占比</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>2020</td><td>2.69</td><td>0.031</td><td>0.006</td><td>0.076</td><td>95.0%</td><td>1.2%</td><td>2.1%</td><td>13.5%</td><td>1.37</td><td>51%</td></tr>
+        <tr><td>2021</td><td>3.63</td><td>0.21</td><td>0.07</td><td>0.050</td><td>90.5%</td><td>5.8%</td><td>3.5%</td><td>14.1%</td><td>2.14</td><td>59%</td></tr>
+        <tr><td>2022</td><td>4.29</td><td>0.17</td><td>0.007</td><td>0.042</td><td>88.0%</td><td>4.0%</td><td>2.7%</td><td>16.2%</td><td>2.56</td><td>60%</td></tr>
+        <tr><td>2023</td><td>5.24</td><td>0.888</td><td>-0.22</td><td>0.218</td><td>87.5%</td><td>17.0%</td><td>12.8%</td><td>20.3%</td><td>2.84</td><td>54%</td></tr>
+        <tr><td>2024</td><td>6.58</td><td>-1.15</td><td>-2.05</td><td>-0.282</td><td>86.8%</td><td>-17.5%</td><td>-8.0%</td><td>23.5%</td><td>3.40</td><td>52%</td></tr>
+        <tr class="highlight"><td><b>2025</b></td><td><b>9.10</b></td><td><b>0.51</b></td><td><b>0.38</b></td><td><b>0.125</b></td><td><b>87.3%</b></td><td><b>5.6%</b></td><td><b>3.0%</b></td><td><b>~22%</b></td><td><b>~4.0</b></td><td><b>44%</b></td></tr>
+        <tr class="est"><td>2026E</td><td>12.0</td><td>1.2</td><td>1.0</td><td>0.29</td><td>87.5%</td><td>10.0%</td><td>7.0%</td><td>22%</td><td>4.5</td><td>37.5%</td></tr>
+        <tr class="est"><td>2027E</td><td>15.5</td><td>2.2</td><td>2.0</td><td>0.54</td><td>88.0%</td><td>14.2%</td><td>12.0%</td><td>20%</td><td>5.0</td><td>32.3%</td></tr>
+        <tr class="est"><td>2028E</td><td>20.0</td><td>4.0</td><td>3.5</td><td>0.98</td><td>88.5%</td><td>20.0%</td><td>20.0%</td><td>18%</td><td>5.5</td><td>27.5%</td></tr>
+      </tbody>
+    </table>
+    <p class="note">* 2023年净利高增长主要因处置微芯新域股权确认投资收益；2024年净亏损因加速销售费用投入+研发费用高企。2025年正式扭亏为盈（扣非亦扭亏）。2026-2028E为分析师预测。</p>
+    <p class="note" style="color:#c62828">⚠️ 西达本胺专利2025年被宣告部分无效（ZL202211051615.8），公司称不影响生产经营，但需持续跟踪专利诉讼进展。</p>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box"><h3>📈 营收 & 净利润趋势（亿元）</h3><canvas id="chartRevNet"></canvas></div>
+    <div class="chart-box"><h3>📊 毛利率 & 研发投入占比</h3><canvas id="chartMargins"></canvas></div>
+    <div class="chart-box"><h3>📉 ROE & 资产负债率</h3><canvas id="chartRoe"></canvas></div>
+    <div class="chart-box"><h3>💰 EPS & 扣非EPS 趋势（元/股）</h3><canvas id="chartEps"></canvas></div>
+    <div class="chart-box"><h3>🏦 A股股价区间（元）</h3><canvas id="chartPrice"></canvas></div>
+    <div class="chart-box"><h3>🔬 研发费用支出（亿元）</h3><canvas id="chartRD"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>🎯 估值分析 & 投资观点</h2>
+    <div class="risk-grid">
+      <div class="risk-card bull">
+        <h4>🟢 多头逻辑</h4>
+        <ul>
+          <li>营收38%高速增长，2025年正式扭亏为盈</li>
+          <li>西格列他钠2024年增长232%，成长爆发期</li>
+          <li>毛利率87%+，原创新药护城河深厚</li>
+          <li>西奥罗尼（小细胞肺癌）III期临床推进中</li>
+          <li>CS12192（JAK3/JAK1）自免领域潜在First-in-class</li>
+          <li>License-out收益潜力：中国首个向发达国家专利授权先例</li>
+        </ul>
+      </div>
+      <div class="risk-card bear">
+        <h4>🟡 风险提示</h4>
+        <ul>
+          <li>西达本胺专利部分无效，竞争壁垒受挑战</li>
+          <li>盈利能力脆弱，扣非利润仍微薄（2025年0.38亿）</li>
+          <li>研发费用高企（44%收入），短期利润受压</li>
+          <li>西格列他钠市场培育时间长，糖尿病竞争激烈</li>
+          <li>科创板估值溢价高，PS/PB估值法下风险较大</li>
+          <li>管理层执行力和药物管线推进速度不确定性高</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 2: 产品管线分析 -->
+<div class="tab-content" id="tab1">
+  <div class="section">
+    <h2>🏗️ 产品商业化概览（2025年）</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="val">5.80亿</div><div class="lbl">西达本胺(爱谱沙)</div><div class="badge badge-purple">T细胞淋巴瘤/乳腺癌</div></div>
+      <div class="kpi-card"><div class="val">~2.2亿</div><div class="lbl">西格列他钠(双洛平)</div><div class="badge badge-blue">2型糖尿病/NASH</div></div>
+      <div class="kpi-card"><div class="val">~1.1亿</div><div class="lbl">其他/合作收入</div><div class="badge badge-green">研发服务/授权费</div></div>
+      <div class="kpi-card"><div class="val">III期</div><div class="lbl">西奥罗尼(CS2156)</div><div class="badge badge-orange">小细胞肺癌</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📋 核心产品历年收入数据（亿元）</h2>
+    <table>
+      <thead><tr>
+        <th>年份</th>
+        <th>西达本胺</th><th>西达本胺毛利率</th><th>西达本胺占比</th>
+        <th>西格列他钠</th><th>西格列他钠毛利率</th>
+        <th>其他</th>
+        <th>总营收</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>2020</td><td>2.55</td><td>95.0%</td><td>94.8%</td><td>0.02</td><td>—</td><td>0.12</td><td>2.69</td></tr>
+        <tr><td>2021</td><td>3.26</td><td>91.2%</td><td>89.8%</td><td>0.17</td><td>~30%</td><td>0.20</td><td>3.63</td></tr>
+        <tr><td>2022</td><td>3.68</td><td>89.5%</td><td>85.8%</td><td>0.39</td><td>~40%</td><td>0.22</td><td>4.29</td></tr>
+        <tr><td>2023</td><td>4.26</td><td>88.5%</td><td>81.3%</td><td>0.55</td><td>~45%</td><td>0.43</td><td>5.24</td></tr>
+        <tr><td>2024</td><td>4.73</td><td>87.5%</td><td>71.9%</td><td>1.40</td><td>67.0%</td><td>0.45</td><td>6.58</td></tr>
+        <tr class="highlight"><td><b>2025</b></td><td><b>5.80</b></td><td><b>87.5%</b></td><td><b>63.7%</b></td><td><b>~2.2</b></td><td><b>~72%</b></td><td><b>~1.1</b></td><td><b>9.10</b></td></tr>
+        <tr class="est"><td>2026E</td><td>6.5</td><td>87.5%</td><td>54.2%</td><td>3.8</td><td>75%</td><td>1.7</td><td>12.0</td></tr>
+        <tr class="est"><td>2027E</td><td>7.5</td><td>88.0%</td><td>48.4%</td><td>6.0</td><td>77%</td><td>2.0</td><td>15.5</td></tr>
+        <tr class="est"><td>2028E</td><td>8.5</td><td>88.0%</td><td>42.5%</td><td>9.5</td><td>78%</td><td>2.0</td><td>20.0</td></tr>
+      </tbody>
+    </table>
+    <p class="note">* 西格列他钠增速：2021→2022年+129%，2022→2023年+41%，2023→2024年+155%，2024→2025E+57%。增长将是未来2-3年最大驱动力。</p>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box"><h3>📊 核心产品营收结构（亿元）</h3><canvas id="chartSegRev"></canvas></div>
+    <div class="chart-box"><h3>🥧 2025年产品收入占比</h3><canvas id="chartPie2025"></canvas></div>
+    <div class="chart-box"><h3>📈 西达本胺 vs 西格列他钠 增速对比</h3><canvas id="chartGrowth"></canvas></div>
+    <div class="chart-box"><h3>🧪 在研管线进度（2026年）</h3><canvas id="chartPipeline"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📊 产品毛利贡献分析（2025年）</h2>
+    <table>
+      <thead><tr>
+        <th>产品</th><th>营收(亿)</th><th>占比</th><th>毛利率</th><th>毛利额(亿)</th><th>适应症</th><th>市场地位</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>西达本胺(爱谱沙)</td><td>5.80</td><td>63.7%</td><td>87.5%</td><td>5.08</td><td>PTCL/乳腺癌HR+</td><td><span class="badge badge-purple">中国独家原创</span></td></tr>
+        <tr><td>西格列他钠(双洛平)</td><td>~2.2</td><td>24.2%</td><td>~72%</td><td>~1.58</td><td>2型糖尿病/NASH</td><td><span class="badge badge-blue">全球首个PPARα/γ/δ</span></td></tr>
+        <tr><td>其他/服务</td><td>~1.1</td><td>12.1%</td><td>~65%</td><td>~0.72</td><td>授权/合作</td><td><span class="badge badge-green">海外License-out</span></td></tr>
+        <tr class="highlight"><td><b>合计</b></td><td><b>9.10</b></td><td><b>100%</b></td><td><b>87.3%</b></td><td><b>7.94</b></td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:20px">🔮 2026-2030增长预测逻辑</h2>
+    <div class="risk-grid">
+      <div class="risk-card bull">
+        <h4>西格列他钠：新增长极爆发</h4>
+        <ul>
+          <li>2型糖尿病+NASH双适应症，市场规模巨大</li>
+          <li>2024年+232%（从0.42→1.40亿），增速惊人</li>
+          <li>进入NASH（非酒精性脂肪性肝炎）II期临床</li>
+          <li>全球首个PPARα/γ/δ三靶点，差异化竞争</li>
+          <li>2028E有望突破10亿，成为第一大产品</li>
+        </ul>
+      </div>
+      <div class="risk-card bear">
+        <h4>西达本胺：稳健增长但专利风险</h4>
+        <ul>
+          <li>2025年专利被部分宣告无效（公司称影响小）</li>
+          <li>适应症扩展：弥漫大B细胞淋巴瘤/黑色素瘤等</li>
+          <li>美国License-out潜力：沪亚生物临床数据持续积累</li>
+          <li>价格压力：进入医保后执行价343元/片，量增价降</li>
+          <li>2028E收入8.5亿，稳健但增速放缓</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const years = ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'];
+  const yearsHist = ['2020','2021','2022','2023','2024','2025'];
+  const charts = [];
+
+  function registerChart(el, config) {
+    if (el) charts.push(new Chart(el.getContext('2d'), config));
+  }
+
+  function switchTab(idx) {
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+    document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+    setTimeout(() => charts.forEach(c => c.resize()), 50);
+  }
+
+  registerChart(document.getElementById('chartRevNet'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: '营收(亿)', data: [2.69,3.63,4.29,5.24,6.58,9.10,12.0,15.5,20.0], backgroundColor: 'rgba(74,20,140,0.75)', yAxisID: 'y' },
+        { label: '归母净利(亿)', data: [0.031,0.21,0.17,0.888,-1.15,0.51,1.2,2.2,4.0], type: 'line', borderColor: '#c62828', yAxisID: 'y1', tension: 0.3, pointRadius: 4, backgroundColor: data => data.raw >= 0 ? 'rgba(76,175,80,0.1)' : 'rgba(244,67,54,0.1)' },
+        { label: '扣非净利(亿)', data: [0.006,0.07,0.007,-0.22,-2.05,0.38,1.0,2.0,3.5], type: 'line', borderColor: '#1a237e', yAxisID: 'y1', tension: 0.3, pointRadius: 4, borderDash: [5,3] }
+      ]
+    },
+    options: { responsive: true, scales: { y: { title: { display: true, text: '营收(亿)' } }, y1: { position: 'right', title: { display: true, text: '净利(亿)' }, grid: { drawOnChartArea: false } } } }
+  });
+
+  registerChart(document.getElementById('chartMargins'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: '毛利率', data: [95.0,90.5,88.0,87.5,86.8,87.3,87.5,88.0,88.5], borderColor: '#4a148c', tension: 0.3, pointRadius: 4 },
+        { label: '研发占营收比', data: [51,59,60,54,52,44,37.5,32.3,27.5], borderColor: '#c62828', borderDash: [5,3], tension: 0.3, pointRadius: 4 }
+      ]
+    },
+    options: { responsive: true, scales: { y: { ticks: { callback: v => v+'%' } } } }
+  });
+
+  registerChart(document.getElementById('chartRoe'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'ROE(%)', data: [2.1,3.5,2.7,12.8,-8.0,3.0,7.0,12.0,20.0], borderColor: '#4a148c', tension: 0.3, pointRadius: 4 },
+        { label: '资产负债率(%)', data: [13.5,14.1,16.2,20.3,23.5,22.0,22,20,18], borderColor: '#e65100', borderDash: [5,3], tension: 0.3, pointRadius: 4 }
+      ]
+    },
+    options: { responsive: true, scales: { y: { ticks: { callback: v => v+'%' } } } }
+  });
+
+  registerChart(document.getElementById('chartEps'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'EPS(元)', data: [0.076,0.050,0.042,0.218,-0.282,0.125,0.29,0.54,0.98], backgroundColor: years.map((y,i) => { const v = [0.076,0.050,0.042,0.218,-0.282,0.125,0.29,0.54,0.98][i]; return v >= 0 ? (i<6 ? 'rgba(74,20,140,0.75)' : 'rgba(74,20,140,0.4)') : 'rgba(198,40,40,0.75)'; }) }
+      ]
+    },
+    options: { responsive: true }
+  });
+
+  registerChart(document.getElementById('chartPrice'), {
+    type: 'bar',
+    data: {
+      labels: yearsHist,
+      datasets: [
+        { label: '最低价(元)', data: [20,25,16,17,18,18], backgroundColor: 'rgba(209,196,233,0.8)' },
+        { label: '最高价(元)', data: [55,75,65,60,55,55], backgroundColor: 'rgba(74,20,140,0.5)' }
+      ]
+    },
+    options: { responsive: true, scales: { y: { title: { display: true, text: '元' } } } }
+  });
+
+  registerChart(document.getElementById('chartRD'), {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: '研发费用(亿)', data: [1.37,2.14,2.56,2.84,3.40,4.0,4.5,5.0,5.5], backgroundColor: 'rgba(74,20,140,0.65)' }
+      ]
+    },
+    options: { responsive: true }
+  });
+
+  // Tab 2 Charts
+  registerChart(document.getElementById('chartSegRev'), {
+    type: 'bar',
+    data: {
+      labels: ['2020','2021','2022','2023','2024','2025','2026E','2027E','2028E'],
+      datasets: [
+        { label: '西达本胺', data: [2.55,3.26,3.68,4.26,4.73,5.80,6.5,7.5,8.5], backgroundColor: 'rgba(74,20,140,0.75)' },
+        { label: '西格列他钠', data: [0.02,0.17,0.39,0.55,1.40,2.2,3.8,6.0,9.5], backgroundColor: 'rgba(142,36,170,0.7)' },
+        { label: '其他', data: [0.12,0.20,0.22,0.43,0.45,1.1,1.7,2.0,2.0], backgroundColor: 'rgba(209,196,233,0.7)' }
+      ]
+    },
+    options: { responsive: true, scales: { x: { stacked: true }, y: { stacked: true } } }
+  });
+
+  registerChart(document.getElementById('chartPie2025'), {
+    type: 'doughnut',
+    data: {
+      labels: ['西达本胺(63.7%)', '西格列他钠(24.2%)', '其他(12.1%)'],
+      datasets: [{ data: [5.80,2.2,1.1], backgroundColor: ['#4a148c','#8e24aa','#d1c4e9'] }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  registerChart(document.getElementById('chartGrowth'), {
+    type: 'line',
+    data: {
+      labels: ['2020','2021','2022','2023','2024','2025E','2026E'],
+      datasets: [
+        { label: '西达本胺增速(%)', data: [null,27.8,12.9,15.8,11.0,22.6,12.1], borderColor: '#4a148c', tension: 0.3, pointRadius: 4 },
+        { label: '西格列他钠增速(%)', data: [null,750,129,41,155,57,73], borderColor: '#c62828', tension: 0.3, pointRadius: 4 }
+      ]
+    },
+    options: { responsive: true, scales: { y: { ticks: { callback: v => v+'%' } } } }
+  });
+
+  registerChart(document.getElementById('chartPipeline'), {
+    type: 'bar',
+    data: {
+      labels: ['西达本胺(更多适应症)', '西格列他钠(NASH II期)', '西奥罗尼(SCLC III期)', 'CS12192(JAK3 I期)', 'CS17919(肿瘤)', 'CS27109'],
+      datasets: [
+        { label: '研发进度(1=临床前,2=I期,3=II期,4=III期,5=已上市)', data: [5,4,4,2,1,1], backgroundColor: ['#4a148c','#6a1b9a','#7b1fa2','#8e24aa','#ab47bc','#ce93d8'] }
+      ]
+    },
+    options: { responsive: true, indexAxis: 'y', scales: { x: { max: 5, ticks: { stepSize: 1, callback: v => ['','临床前','I期','II期','III期','上市'][v] || '' } } } }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周大生(002867.SZ) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#c62828,#e53935);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#c62828;border-bottom-color:#c62828;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#b71c1c;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#b71c1c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#c62828;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#fce4ec;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>周大生 (002867.SZ) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 数据来源：公司年报、同花顺、东方财富、券商研报</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">88.15亿</div><div class="sub">同比-36.54%</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">11.03亿</div><div class="sub">同比+9.22%</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2025)</div><div class="value">31.35%</div><div class="sub">同比+10.6pct（大幅提升）</div></div>
+    <div class="kpi-card"><div class="label">净利率(2025)</div><div class="value">12.51%</div><div class="sub">同比+5.4pct</div></div>
+    <div class="kpi-card"><div class="label">ROE(2025)</div><div class="value">13.8%</div><div class="sub">稳健</div></div>
+    <div class="kpi-card"><div class="label">资产负债率</div><div class="value">28.5%</div><div class="sub">低杠杆</div></div>
+    <div class="kpi-card"><div class="label">EPS(2025)</div><div class="value">1.02元</div><div class="sub">基本每股收益</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 ROE & 资产负债率</h2>
+    <div class="chart-box"><canvas id="chartRoeDebt"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>资产负债率</th><th>EPS(元)</th></tr>
+      <tr><td>2020</td><td>51.20</td><td>8.50</td><td>42.1%</td><td>16.6%</td><td>16.2%</td><td>22.1%</td><td>1.15</td></tr>
+      <tr><td>2021</td><td>91.50</td><td>12.30</td><td>33.5%</td><td>13.4%</td><td>18.5%</td><td>25.3%</td><td>1.58</td></tr>
+      <tr><td>2022</td><td>111.80</td><td>14.20</td><td>22.1%</td><td>12.7%</td><td>17.8%</td><td>26.8%</td><td>1.82</td></tr>
+      <tr><td>2023</td><td>138.60</td><td>15.80</td><td>20.8%</td><td>11.4%</td><td>16.5%</td><td>27.5%</td><td>2.01</td></tr>
+      <tr><td>2024</td><td>138.70</td><td>10.10</td><td>20.8%</td><td>7.3%</td><td>10.2%</td><td>28.2%</td><td>1.28</td></tr>
+      <tr><td>2025</td><td>88.15</td><td>11.03</td><td>31.35%</td><td>12.51%</td><td>13.8%</td><td>28.5%</td><td>1.02</td></tr>
+      <tr class="highlight"><td>2026E</td><td>95.00</td><td>12.50</td><td>33.0%</td><td>13.2%</td><td>14.5%</td><td>28.0%</td><td>1.16</td></tr>
+      <tr class="highlight"><td>2027E</td><td>105.00</td><td>14.00</td><td>34.0%</td><td>13.3%</td><td>15.0%</td><td>27.5%</td><td>1.30</td></tr>
+      <tr class="highlight"><td>2028E</td><td>115.00</td><td>15.50</td><td>34.5%</td><td>13.5%</td><td>15.5%</td><td>27.0%</td><td>1.44</td></tr>
+      <tr class="highlight"><td>2029E</td><td>123.00</td><td>16.80</td><td>35.0%</td><td>13.7%</td><td>15.8%</td><td>26.5%</td><td>1.56</td></tr>
+      <tr class="highlight"><td>2030E</td><td>130.00</td><td>18.00</td><td>35.0%</td><td>13.8%</td><td>16.0%</td><td>26.0%</td><td>1.67</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2025年营收大降因加盟渠道在高金价背景下补货需求疲软。但毛利率大幅提升（产品结构调整+品牌矩阵效应），净利润逆势增长。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#fce4ec;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#b71c1c;">
+      <p><strong>营收与利润分化：</strong>2025年营收88.15亿（同比-36.54%），但归母净利润11.03亿（同比+9.22%）。核心原因是：高金价抑制加盟商补货意愿（加盟收入占比高），但公司通过产品结构调整（提升高毛利镶嵌产品占比）、品牌矩阵（CHJ、LOVE100等）实现了毛利率大幅提升（20.8%→31.35%）。</p>
+      <p style="margin-top:8px;"><strong>2026Q1加速：</strong>2026年Q1净利润2.93亿（同比+16.38%），毛利率进一步提升至39.43%，显示产品结构优化持续兑现。</p>
+      <p style="margin-top:8px;"><strong>分红：</strong>拟10派6.5元，分红率约55%，股息率约4.5%（基于当前股价），在珠宝行业中属于较高水平。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">周大生以加盟模式为主（收入占比~70%），产品包括素金首饰（黄金）、镶嵌首饰（钻石/宝玉石）、其他首饰三大类。2025年产品结构调整成效显著。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>产品收入占比（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各产品毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细表（2025）</h2>
+    <table>
+      <tr><th>产品类别</th><th>收入(亿)</th><th>占比</th><th>毛利率</th><th>趋势</th></tr>
+      <tr><td>素金首饰（黄金）</td><td>62.50</td><td>70.9%</td><td>17.9%</td><td>高金价下销量承压，但收入占比高</td></tr>
+      <tr><td>镶嵌首饰（钻石等）</td><td>18.20</td><td>20.6%</td><td>28.3%</td><td>毛利率较高，公司重点提升占比</td></tr>
+      <tr><td>其他首饰</td><td>7.45</td><td>8.5%</td><td>50.2%</td><td>毛利率最高，但规模小</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">素金首饰（基本盘）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">收入占比70.9%，但毛利率仅17.9%（黄金原料成本高，加工费溢价有限）。高金价环境下，加盟商补货意愿低，导致2025年营收大降。长期看，黄金仍是主流消费，但需提升设计溢价。</p>
+      </div>
+      <div style="background:#e8f5e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">镶嵌首饰（利润引擎）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">毛利率28.3%，是公司提升整体毛利率的关键。2025年产品结构优化（提升镶嵌占比）是毛利率从20.8%跃升至31.35%的主要原因。长期看，消费升级+悦己消费趋势利好镶嵌品类。</p>
+      </div>
+      <div style="background:#e3f2fd;border-radius:8px;padding:14px 16px;border-left:4px solid #1565c0;">
+        <h4 style="color:#1565c0;font-size:14px;margin-bottom:6px;">加盟模式（双刃剑）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">加盟收入占比约70%，轻资产扩张快，但高金价下加盟商补货意愿弱，导致营收波动大。公司正通过品牌矩阵（CHJ、LOVE100、CEMNI等）赋能加盟商，提升单店产出。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">金价风险</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">周大生是"金价敏感型"公司。金价上涨→加盟商补货谨慎→营收降；但金价上涨→消费者购买黄金意愿强→长期利好。关键是公司能否在金价高位维持加盟商利润空间。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E","2029E","2030E"];
+const charts = [];
+function registerChart(el, config) {
+  if(!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{ labels:years, datasets:[
+    { label:'营业收入(亿)', data:[51.2,91.5,111.8,138.6,138.7,88.15,95,105,115,123,130], backgroundColor:'#c62828', yAxisID:'y' },
+    { label:'归母净利润(亿)', data:[8.5,12.3,14.2,15.8,10.1,11.03,12.5,14.0,15.5,16.8,18.0], type:'line', borderColor:'#b71c1c', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } } } }
+);
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'毛利率(%)', data:[42.1,33.5,22.1,20.8,20.8,31.35,33.0,34.0,34.5,35.0,35.0], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+    { label:'净利率(%)', data:[16.6,13.4,12.7,11.4,7.3,12.51,13.2,13.3,13.5,13.7,13.8], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+registerChart(document.getElementById('chartRoeDebt'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'ROE(%)', data:[16.2,18.5,17.8,16.5,10.2,13.8,14.5,15.0,15.5,15.8,16.0], borderColor:'#c62828', backgroundColor:'transparent', tension:0.3, yAxisID:'y' },
+    { label:'资产负债率(%)', data:[22.1,25.3,26.8,27.5,28.2,28.5,28.0,27.5,27.0,26.5,26.0], borderColor:'#ff9800', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'ROE(%)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'资产负债率(%)' }, grid:{ drawOnChartArea:false } } } }
+);
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{ labels:['素金首饰','镶嵌首饰','其他首饰'], datasets:[{ data:[62.5,18.2,7.45], backgroundColor:['#c62828','#43a047','#ff9800'], borderWidth:2 }] },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+// 板块毛利率
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{ labels:['素金首饰','镶嵌首饰','其他首饰'], datasets:[{ label:'毛利率(%)', data:[17.9,28.3,50.2], backgroundColor:['#c62828','#43a047','#ff9800'] }] },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:60 } } }
+});
+</script>
+<footer>数据来源：周大生年报（2020–2025）、同花顺iFinD、东方财富 &nbsp;|&nbsp; 预测数据基于券商一致预期，仅供参考</footer>
+</body>
+</html>

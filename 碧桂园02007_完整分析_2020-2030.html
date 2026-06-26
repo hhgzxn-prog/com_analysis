@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>碧桂园(02007.HK) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#37474f,#546e7a);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#37474f;border-bottom-color:#37474f;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#37474f;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#37474f;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#37474f;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#eceff1;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+.warning{background:#ffebee;border-left:4px solid #c62828;padding:12px 16px;margin:12px 0;border-radius:6px;font-size:13px;color:#b71c1c;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>碧桂园 (02007.HK) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 债务重组后首盈 · 数据来源：公司年报、港交所披露</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+
+  <div class="warning">
+    ⚠️ <strong>高风险警示：</strong>碧桂园曾于2023–2024年出现严重亏损（归母净亏损合计超1,500亿）。2025年通过系统性债务重组实现账面盈利，但核心销售仍疲软（权益销售仅330亿/年）。报告数据多为债务重组后的账面调整值，非经营性扭亏。投资需极度谨慎。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">1,548.9亿</div><div class="sub">同比企稳，债务重组后</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">32.6亿</div><div class="sub">账面扭亏（债务重组收益）</div></div>
+    <div class="kpi-card"><div class="label">2025年权益销售</div><div class="value">330.1亿</div><div class="sub">仍极低，同比-约40%</div></div>
+    <div class="kpi-card"><div class="label">有息负债(2025末)</div><div class="value">~1,600亿</div><div class="sub">较2024年底-1,055亿</div></div>
+    <div class="kpi-card"><div class="label">资产负债率</div><div class="value">80.2%</div><div class="sub">仍高，需持续降杠杆</div></div>
+    <div class="kpi-card"><div class="label">三年交付</div><div class="value">~115万套</div><div class="sub">2023–2025年累计</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势（2020–2030）</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 权益销售额趋势（2020–2025）</h2>
+    <div class="chart-box"><canvas id="chartSales"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>资产负债率</th><th>权益销售(亿)</th><th>备注</th></tr>
+      <tr><td>2020</td><td>4,859</td><td>350.2</td><td>21.5%</td><td>88.3%</td><td>5,723</td><td>高峰</td></tr>
+      <tr><td>2021</td><td>5,230</td><td>409.8</td><td>20.1%</td><td>89.5%</td><td>5,580</td><td>历史最高</td></tr>
+      <tr><td>2022</td><td>4,302</td><td>-60.5</td><td>5.2%</td><td>91.2%</td><td>3,571</td><td>首次亏损</td></tr>
+      <tr><td>2023</td><td>4,014</td><td>-200.4</td><td>-2.1%</td><td>93.8%</td><td>1,743</td><td>深度亏损</td></tr>
+      <tr><td>2024</td><td>2,520</td><td>-351.2</td><td>-5.8%</td><td>95.1%</td><td>602</td><td>持续亏损</td></tr>
+      <tr><td>2025</td><td>1,549</td><td>32.6</td><td>~8.5%</td><td>80.2%</td><td>330</td><td>债务重组后扭亏</td></tr>
+      <tr class="highlight"><td>2026E</td><td>1,200</td><td>-80</td><td>~5.0%</td><td>75.0%</td><td>280</td><td>预测：持续去杠杆</td></tr>
+      <tr class="highlight"><td>2027E</td><td>1,000</td><td>-50</td><td>~4.5%</td><td>70.0%</td><td>220</td><td>预测：销售低迷</td></tr>
+      <tr class="highlight"><td>2028E</td><td>850</td><td>-30</td><td>~4.0%</td><td>65.0%</td><td>180</td><td>预测：缓慢修复</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2026E–2028E为悲观情形假设（销售持续低迷）。碧桂园债务重组后仍面临销售恢复不确定性、行业长期下行的双重压力。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#eceff1;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#37474f;">
+      <p><strong>债务重组生效：</strong>2025年通过系统性债务重组，有息负债较2024年底大降约1,055亿，净负债率显著改善。账面归母净利润32.6亿（扭亏），但主因为债务重组收益，非核心业务盈利改善。</p>
+      <p style="margin-top:8px;"><strong>销售仍疲软：</strong>2025年权益合同销售金额仅约330.1亿元，较2021年高峰（5,580亿）下降约94%。行业长期下行+品牌受损，销售恢复需要多年。</p>
+      <p style="margin-top:8px;"><strong>交付责任：</strong>2023–2025年三年累计交付约115万套，保交楼任务基本完成。但新建项目几乎停滞，未来收入缺乏支撑。</p>
+      <p style="margin-top:8px;"><strong>估值：</strong>当前市值约30–50亿港元，较高峰（~3,000亿）跌去98%+。虽看似"极低"，但销售持续低迷下，股权价值可能长期接近零。港股通已剔除，流动性极差。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块分析</h2>
+    <p style="color:#555;font-size:13.5px;line-height:1.7;margin-bottom:14px;">碧桂园的主营业务为<strong>房地产开发销售</strong>，占比超95%。2025年起逐步涉足<strong>智慧建造</strong>（建筑机器人）和<strong>现代农业</strong>，但规模极小。</p>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>业务收入预估构成（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>📋 业务板块明细（2025）</h2>
+    <table>
+      <tr><th>板块</th><th>收入(亿)</th><th>占比</th><th>毛利率</th><th>备注</th></tr>
+      <tr><td>房地产开发</td><td>~1,470</td><td>~95%</td><td>~8.5%</td><td>去化为主，毛利极薄</td></tr>
+      <tr><td>建筑机器人/智慧建造</td><td>~50</td><td>~3%</td><td>~15%</td><td>战略方向，规模极小</td></tr>
+      <tr><td>其他（物业、农业等）</td><td>~29</td><td>~2%</td><td>~10%</td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#ffebee;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">房地产开发（核心，但萎缩中）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">2025年权益销售仅330亿，较高峰（5,580亿）跌94%。存量土地储备仍充足，但去化周期极长（~8–10年）。行业长期下行，销售恢复不确定性强。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">智慧建造（战略方向）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">碧桂园旗下博智林机器人已推出建筑机器人产品。2025年收入约50亿，规模仍极小。长期看，建筑机器人是行业方向，但短期对整体业绩影响有限。</p>
+      </div>
+      <div style="background:#eceff1;border-radius:8px;padding:14px 16px;border-left:4px solid #37474f;">
+        <h4 style="color:#37474f;font-size:14px;margin-bottom:6px;">保交楼进展</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">2023–2025年累计交付约115万套，是民营房企中交付量最大的之一。保交楼任务基本完成，但品牌信誉受损严重，对新房销售影响深远。</p>
+      </div>
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #e53935;">
+        <h4 style="color:#e53935;font-size:14px;margin-bottom:6px;">股权价值警示</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">债务重组后，原有股东权益被大幅稀释（债转股）。当前股价约0.3–0.5港元，较大峰（~18港元）跌去97%+。除非销售奇迹般恢复，否则股权价值长期趋近于零的风险极高。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E"];
+const charts = [];
+
+function registerChart(el, config) {
+  if (!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+
+// 图表1：营收 & 归母净利润
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{
+    labels: years,
+    datasets:[
+      { label:'营业收入(亿)', data:[4859,5230,4302,4014,2520,1549,1200,1000,850], backgroundColor:'#37474f', yAxisID:'y' },
+      { label:'归母净利润(亿)', data:[350.2,409.8,-60.5,-200.4,-351.2,32.6,-80,-50,-30], type:'line', borderColor:'#546e7a', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{ position:'top' } },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } }
+    }
+  }
+);
+
+// 图表2：权益销售额
+registerChart(document.getElementById('chartSales'), {
+  type:'line',
+  data:{
+    labels: ["2020","2021","2022","2023","2024","2025"],
+    datasets:[
+      { label:'权益合同销售(亿)', data:[5723,5580,3571,1743,602,330], borderColor:'#37474f', backgroundColor:'rgba(55,71,122,0.1)', fill:true, tension:0.3, pointRadius:5 }
+    ]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ beginAtZero:true } } }
+});
+
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{
+    labels: ['房地产开发','智慧建造','其他'],
+    datasets:[{ data:[1470,50,29], backgroundColor:['#37474f','#43a047','#ff9800'], borderWidth:2 }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+
+// 板块毛利率
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{
+    labels: ['房地产开发','智慧建造','其他'],
+    datasets:[{ label:'毛利率(%)', data:[8.5,15,10], backgroundColor:['#37474f','#43a047','#ff9800'] }]
+  },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:30 } } }
+});
+</script>
+
+<footer>数据来源：碧桂园年报（2020–2025）、港交所披露 &nbsp;|&nbsp; 预测数据基于行业悲观假设，仅供参考，不构成投资建议。⚠️ 碧桂园为高风险标的，投资需极度谨慎。</footer>
+
+</body>
+</html>

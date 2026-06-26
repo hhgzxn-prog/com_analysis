@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迈瑞医疗(300760.SZ) 完整财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'Microsoft YaHei',sans-serif;background:#f5f7fa;color:#333;}
+header{background:linear-gradient(135deg,#1a237e,#283593);color:white;padding:20px 40px;}
+header h1{font-size:24px;}
+header p{font-size:13px;opacity:0.85;margin-top:4px;}
+.tabs{display:flex;background:white;border-bottom:2px solid #e0e0e0;}
+.tab{padding:13px 26px;cursor:pointer;font-size:15px;font-weight:500;color:#666;border-bottom:3px solid transparent;}
+.tab.active{color:#1a237e;border-bottom-color:#1a237e;font-weight:600;}
+.tab-content{display:none;padding:24px 40px;}
+.tab-content.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(185px,1fr));gap:14px;margin:18px 0;}
+.kpi-card{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.kpi-card .label{font-size:12px;color:#888;}
+.kpi-card .value{font-size:20px;font-weight:700;color:#1a237e;margin:3px 0;}
+.kpi-card .sub{font-size:11px;color:#aaa;}
+.section{background:white;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.section h2{font-size:16px;color:#1a237e;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0;}
+.chart-box{background:#fafbfc;border-radius:8px;padding:14px;}
+.chart-box h3{font-size:13px;color:#555;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#1a237e;color:white;padding:7px 10px;text-align:right;font-weight:600;font-size:12px;}
+td{padding:7px 10px;text-align:right;border-bottom:1px solid #eee;font-size:12.5px;}
+tr:nth-child(even) td{background:#f9f9f9;}
+tr:hover td{background:#e8eaf6;}
+th:first-child,td:first-child{text-align:left;}
+.highlight{background:#fff8e1 !important;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>迈瑞医疗 (300760.SZ) 完整财务分析</h1>
+  <p>2020年 – 2030年（预测）· 数据来源：公司年报、同花顺、东方财富、券商研报</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<div class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">332.82亿</div><div class="sub">同比-9.38%，上市后首次双降</div></div>
+    <div class="kpi-card"><div class="label">2025年归母净利润</div><div class="value">81.36亿</div><div class="sub">同比-30.28%</div></div>
+    <div class="kpi-card"><div class="label">毛利率(2025)</div><div class="value">66.8%</div><div class="sub">维持高位</div></div>
+    <div class="kpi-card"><div class="label">净利率(2025)</div><div class="value">24.4%</div><div class="sub">同比-7.5pct</div></div>
+    <div class="kpi-card"><div class="label">ROE(2025)</div><div class="value">28.5%</div><div class="sub">同比-9.2pct</div></div>
+    <div class="kpi-card"><div class="label">资产负债率</div><div class="value">24.8%</div><div class="sub">低杠杆，财务稳健</div></div>
+    <div class="kpi-card"><div class="label">EPS(2025)</div><div class="value">6.71元</div><div class="sub">基本每股收益</div></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 营收 & 归母净利润趋势（2020–2030）</h2>
+    <div class="chart-box"><canvas id="chartRev"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 毛利率 & 净利率趋势</h2>
+    <div class="chart-box"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 ROE & 资产负债率</h2>
+    <div class="chart-box"><canvas id="chartRoeDebt"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📈 EPS趋势（基本每股收益，元/股）</h2>
+    <div class="chart-box"><canvas id="chartEps"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>📋 财务数据总表（2020–2030）</h2>
+    <table>
+      <tr><th>年度</th><th>营业收入(亿)</th><th>归母净利润(亿)</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>资产负债率</th><th>EPS(元)</th></tr>
+      <tr><td>2020</td><td>210.26</td><td>66.58</td><td>64.9%</td><td>31.7%</td><td>32.8%</td><td>25.1%</td><td>5.48</td></tr>
+      <tr><td>2021</td><td>252.70</td><td>80.02</td><td>65.1%</td><td>31.7%</td><td>33.2%</td><td>25.8%</td><td>6.58</td></tr>
+      <tr><td>2022</td><td>303.66</td><td>96.07</td><td>65.9%</td><td>31.6%</td><td>33.8%</td><td>24.2%</td><td>7.94</td></tr>
+      <tr><td>2023</td><td>349.28</td><td>115.82</td><td>67.6%</td><td>33.2%</td><td>36.2%</td><td>23.5%</td><td>9.56</td></tr>
+      <tr><td>2024</td><td>367.56</td><td>116.80</td><td>67.2%</td><td>31.8%</td><td>37.7%</td><td>24.1%</td><td>9.64</td></tr>
+      <tr><td>2025</td><td>332.82</td><td>81.36</td><td>66.8%</td><td>24.4%</td><td>28.5%</td><td>24.8%</td><td>6.71</td></tr>
+      <tr class="highlight"><td>2026E</td><td>360.00</td><td>95.00</td><td>67.0%</td><td>26.4%</td><td>30.5%</td><td>24.5%</td><td>7.84</td></tr>
+      <tr class="highlight"><td>2027E</td><td>395.00</td><td>110.00</td><td>67.2%</td><td>27.8%</td><td>32.0%</td><td>24.2%</td><td>9.07</td></tr>
+      <tr class="highlight"><td>2028E</td><td>430.00</td><td>125.00</td><td>67.5%</td><td>29.1%</td><td>33.2%</td><td>23.8%</td><td>10.31</td></tr>
+      <tr class="highlight"><td>2029E</td><td>462.00</td><td>138.00</td><td>67.8%</td><td>29.9%</td><td>34.0%</td><td>23.5%</td><td>11.38</td></tr>
+      <tr class="highlight"><td>2030E</td><td>495.00</td><td>150.00</td><td>68.0%</td><td>30.3%</td><td>34.5%</td><td>23.2%</td><td>12.40</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2025年系迈瑞上市后首次营收与净利双降，主因国内医疗设备招采延迟、海外市场竞争加剧。2026E–2030E基于行业复苏及新产品放量假设。</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 投资要点（2025年报解读）</h2>
+    <div style="background:#e8eaf6;border-radius:8px;padding:16px;line-height:1.8;font-size:13.5px;color:#1a237e;">
+      <p><strong>首次双降：</strong>迈瑞自2018年上市以来，2025年首次出现年度营收与净利双重下滑（营收-9.38%，净利-30.28%）。核心原因：国内医疗反腐+设备招采延迟，国际业务虽增长（+7.4%）但未能完全对冲。</p>
+      <p style="margin-top:8px;"><strong>三大板块全线下滑：</strong>生命信息与支持类（-20%+，含呼吸机）、体外诊断类（-5%）、医学影像类（-3%）均下滑。其中生命信息类受新冠疫情后呼吸机需求退潮影响最大。</p>
+      <p style="margin-top:8px;"><strong>2026Q1回暖信号：</strong>2025Q4单季营收已转正（+2.86%），2026Q1预计继续回暖。行业招采恢复+公司新产品（如AED、化学发光）放量，2026年有望重回增长轨道。</p>
+      <p style="margin-top:8px;"><strong>长期逻辑不变：</strong>迈瑞仍是"医械一哥"，毛利率66.8%维持高位，研发占比~10%，全球市占率持续提升。短期业绩波动不改长期竞争力。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="section">
+    <h2>🏗️ 业务板块收入结构（2025年）</h2>
+    <div class="chart-grid">
+      <div class="chart-box"><h3>业务收入占比（2025）</h3><canvas id="chartSegPie"></canvas></div>
+      <div class="chart-box"><h3>各板块毛利率对比</h3><canvas id="chartSegGm"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📋 业务板块明细表（2023–2025）</h2>
+    <table>
+      <tr><th>板块</th><th>2025年收入(亿)</th><th>占比</th><th>同比</th><th>毛利率</th><th>趋势</th></tr>
+      <tr><td>生命信息与支持</td><td>~120</td><td>~36.0%</td><td>-20%+</td><td>~68%</td><td>疫情后需求退潮，2026年有望企稳</td></tr>
+      <tr><td>体外诊断</td><td>~110</td><td>~33.0%</td><td>-5%</td><td>~65%</td><td>化学发光装机量持续增长</td></tr>
+      <tr><td>医学影像</td><td>~103</td><td>~31.0%</td><td>-3%</td><td>~68%</td><td>超声高端化，受益国产替代</td></tr>
+    </table>
+    <p style="font-size:12px;color:#888;margin-top:8px;">注：2025年板块数据为估算值（年报未完整披露分板块归母净利），具体数字以公司正式年报为准。</p>
+  </div>
+
+  <div class="section">
+    <h2>📈 各板块营收趋势（2020–2025）</h2>
+    <div class="chart-box"><canvas id="chartSegTrend"></canvas></div>
+  </div>
+
+  <div class="section">
+    <h2>🧭 业务板块评估矩阵</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;">
+      <div style="background:#e8eaf6;border-radius:8px;padding:14px 16px;border-left:4px solid #1a237e;">
+        <h4 style="color:#1a237e;font-size:14px;margin-bottom:6px;">生命信息与支持（承压复苏）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">含监护仪、呼吸机、麻醉机等。2020-2022年新冠疫情推动呼吸机需求爆发，2023-2025年需求退潮导致持续下滑。2025年降幅最大（-20%+），但2026年招采恢复后有望企稳回升。</p>
+      </div>
+      <div style="background:#e8f5e9;border-radius:8px;padding:14px 16px;border-left:4px solid #2e7d32;">
+        <h4 style="color:#2e7d32;font-size:14px;margin-bottom:6px;">体外诊断（增长引擎）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">含血球、生化、化学发光等。化学发光装机量持续高增长，国产替代加速。2025年降幅最小（-5%），是唯一接近正增长的板块。长期看，体外诊断是迈瑞最确定的增长极。</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:8px;padding:14px 16px;border-left:4px solid #e65100;">
+        <h4 style="color:#e65100;font-size:14px;margin-bottom:6px;">医学影像（稳健）</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">含超声、DR等。高端超声国产替代空间大，公司产品竞争力强。2025年降幅最小（-3%），显示韧性。长期受益于国产医疗设备政策利好。</p>
+      </div>
+      <div style="background:#fce4ec;border-radius:8px;padding:14px 16px;border-left:4px solid #c62828;">
+        <h4 style="color:#c62828;font-size:14px;margin-bottom:6px;">整体评估</h4>
+        <p style="font-size:13px;color:#555;line-height:1.6;">迈瑞2025年是"短期阵痛"，非"长期拐点"。随着国内招采恢复、国际业务占比提升（2025年占53%）、新产品（AED、手术机器人）放量，2026-2027年有望重回双位数增长。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const years = ["2020","2021","2022","2023","2024","2025","2026E","2027E","2028E","2029E","2030E"];
+const charts = [];
+function registerChart(el, config) {
+  if(!el) return;
+  charts.push(new Chart(el.getContext('2d'), config));
+}
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+registerChart(document.getElementById('chartRev'), {
+  type:'bar',
+  data:{ labels:years, datasets:[
+    { label:'营业收入(亿)', data:[210.26,252.70,303.66,349.28,367.56,332.82,360,395,430,462,495], backgroundColor:'#1a237e', yAxisID:'y' },
+    { label:'归母净利润(亿)', data:[66.58,80.02,96.07,115.82,116.80,81.36,95,110,125,138,150], type:'line', borderColor:'#283593', backgroundColor:'transparent', yAxisID:'y1', tension:0.3, pointRadius:4 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'营收(亿)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'净利润(亿)' }, grid:{ drawOnChartArea:false } } } }
+);
+registerChart(document.getElementById('chartMargin'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'毛利率(%)', data:[64.9,65.1,65.9,67.6,67.2,66.8,67.0,67.2,67.5,67.8,68.0], borderColor:'#2e7d32', backgroundColor:'rgba(46,125,50,0.1)', fill:true, tension:0.3 },
+    { label:'净利率(%)', data:[31.7,31.7,31.6,33.2,31.8,24.4,26.4,27.8,29.1,29.9,30.3], borderColor:'#e53935', backgroundColor:'rgba(229,57,53,0.1)', fill:true, tension:0.3 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+registerChart(document.getElementById('chartRoeDebt'), {
+  type:'line',
+  data:{ labels:years, datasets:[
+    { label:'ROE(%)', data:[32.8,33.2,33.8,36.2,37.7,28.5,30.5,32.0,33.2,34.0,34.5], borderColor:'#1a237e', backgroundColor:'transparent', tension:0.3, yAxisID:'y' },
+    { label:'资产负债率(%)', data:[25.1,25.8,24.2,23.5,24.1,24.8,24.5,24.2,23.8,23.5,23.2], borderColor:'#ff9800', backgroundColor:'transparent', tension:0.3, yAxisID:'y1' }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } }, scales:{ y:{ type:'linear', position:'left', title:{ display:true, text:'ROE(%)' } }, y1:{ type:'linear', position:'right', title:{ display:true, text:'资产负债率(%)' }, grid:{ drawOnChartArea:false } } } }
+);
+registerChart(document.getElementById('chartEps'), {
+  type:'line',
+  data:{ labels:years, datasets:[{ label:'EPS(元)', data:[5.48,6.58,7.94,9.56,9.64,6.71,7.84,9.07,10.31,11.38,12.40], borderColor:'#283593', backgroundColor:'rgba(40,53,147,0.08)', fill:true, tension:0.3, pointRadius:4 }] },
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+// 板块饼图
+registerChart(document.getElementById('chartSegPie'), {
+  type:'doughnut',
+  data:{ labels:['生命信息与支持','体外诊断','医学影像'], datasets:[{ data:[120,110,103], backgroundColor:['#1a237e','#43a047','#ff9800'], borderWidth:2 }] },
+  options:{ responsive:true, plugins:{ legend:{ position:'right' } } }
+});
+// 板块毛利率
+registerChart(document.getElementById('chartSegGm'), {
+  type:'bar',
+  data:{ labels:['生命信息与支持','体外诊断','医学影像'], datasets:[{ label:'毛利率(%)', data:[68,65,68], backgroundColor:['#1a237e','#43a047','#ff9800'] }] },
+  options:{ responsive:true, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:80 } } }
+});
+// 板块营收趋势
+registerChart(document.getElementById('chartSegTrend'), {
+  type:'line',
+  data:{ labels:["2020","2021","2022","2023","2024","2025"], datasets:[
+    { label:'生命信息与支持', data:[85,105,125,130,125,120], borderColor:'#1a237e', tension:0.3 },
+    { label:'体外诊断', data:[65,78,93,108,115,110], borderColor:'#43a047', tension:0.3 },
+    { label:'医学影像', data:[60,70,86,111,127,103], borderColor:'#ff9800', tension:0.3 }
+  ]},
+  options:{ responsive:true, plugins:{ legend:{ position:'top' } } }
+});
+</script>
+
+<footer>数据来源：迈瑞医疗年报（2020–2025）、同花顺iFinD、东方财富 &nbsp;|&nbsp; 预测数据基于券商一致预期，仅供参考，不构成投资建议</footer>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>优必选(09880.HK) 综合财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f0f4f8; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #6a1b9a, #4a148c); color: white; padding: 30px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.85; font-size: 14px; }
+.tabs { display: flex; background: #4a148c; justify-content: center; }
+.tab { padding: 14px 40px; color: white; cursor: pointer; font-size: 15px; border-bottom: 3px solid transparent; transition: 0.3s; }
+.tab:hover { background: rgba(255,255,255,0.1); }
+.tab.active { border-bottom: 3px solid #ffeb3b; background: rgba(255,255,255,0.08); font-weight: 600; }
+.tab-content { display: none; padding: 30px; max-width: 1400px; margin: 0 auto; }
+.tab-content.active { display: block; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+.kpi-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #4a148c; text-align: center; }
+.kpi-card .label { font-size: 12px; color: #888; margin-bottom: 8px; }
+.kpi-card .value { font-size: 26px; font-weight: 700; color: #4a148c; }
+.kpi-card .sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+.chart-box { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.chart-box h3 { font-size: 16px; color: #333; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.chart-container { position: relative; height: 320px; }
+.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
+.data-table th { background: #4a148c; color: white; padding: 12px 14px; font-size: 13px; text-align: center; }
+.data-table td { padding: 11px 14px; font-size: 13px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+.data-table tr:hover { background: #f8f4ff; }
+.summary-box { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.summary-box h3 { font-size: 16px; color: #4a148c; margin-bottom: 12px; }
+.summary-box p { font-size: 14px; line-height: 1.8; color: #444; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 2px; }
+.tag-green { background: #e8f5e9; color: #2e7d32; }
+.tag-red { background: #ffebee; color: #c62828; }
+.tag-blue { background: #e3f2fd; color: #1565c0; }
+.tag-yellow { background: #fff8e1; color: #f57f17; }
+.segment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.segment-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 3px solid #4a148c; }
+.segment-card h4 { font-size: 15px; color: #333; margin-bottom: 10px; }
+.segment-card .seg-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed #eee; }
+.segment-card .seg-row:last-child { border-bottom: none; }
+.warn-banner { background: #fff3e0; border: 1px solid #ffcc02; border-radius: 8px; padding: 14px 20px; margin-bottom: 20px; color: #e65100; font-size: 14px; }
+footer { text-align: center; padding: 20px; color: #aaa; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 优必选 (09880.HK) 综合财务分析</h1>
+  <p>2020 – 2030 年度 | 人形机器人第一股 | 数据更新：2026-06</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<!-- Tab 0: 综合财务分析 -->
+<div class="tab-content active" id="tab-0">
+
+  <div class="warn-banner">
+    ⚠️ <strong>投资提示：</strong>优必选处于高速增长+持续亏损阶段，人形机器人商业化前景广阔但盈利拐点尚未到来，适合风险偏好较高的成长型投资者。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">20.01亿</div><div class="sub">同比 +53.3%</div></div>
+    <div class="kpi-card"><div class="label">2025年净亏损</div><div class="value" style="color:#c62828;">-7.90亿</div><div class="sub">亏损同比收窄32%</div></div>
+    <div class="kpi-card"><div class="label">毛利率</div><div class="value">37.7%</div><div class="sub">同比提升8.3pct</div></div>
+    <div class="kpi-card"><div class="label">人形机器人收入</div><div class="value">8.20亿</div><div class="sub">同比 +2203.7%</div></div>
+    <div class="kpi-card"><div class="label">研发投入</div><div class="value">5.07亿</div><div class="sub">占营收比 25.6%</div></div>
+    <div class="kpi-card"><div class="label">现金储备</div><div class="value">49.2亿</div><div class="sub">资金充裕</div></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 营收 & 净亏损趋势（亿元）</h3>
+    <div class="chart-container"><canvas id="chartRevenue"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 毛利率 & 净利率趋势</h3>
+    <div class="chart-container"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 研发投入 & 占营收比</h3>
+    <div class="chart-container"><canvas id="chartRD"></canvas></div>
+  </div>
+
+  <div class="summary-box">
+    <h3>📝 盈利预测与投资建议</h3>
+    <p><strong>核心逻辑：</strong>优必选是人形机器人赛道稀缺标的，2025年人形机器人收入爆发式增长（+2203.7%），成为全球唯一实现全尺寸人形机器人全年交付超千台的企业。营收3年CAGR达53%+，但盈利拐点尚未到来。</p>
+    <p><strong>优势：</strong>①技术领先：人形机器人专利数全球第一，具身智能大模型Thinker开源；②商业化加速：Walker系列批量进入汽车制造、智慧物流、3C电子等工业场景；③资金充裕：账面现金49.2亿，近4年累计研发投入19亿；④客户优质：覆盖多家世界500强企业。</p>
+    <p><strong>风险：</strong>①持续亏损：2025年净亏损7.9亿，盈利拐点未现；②高估值：PS约15-20倍，估值泡沫风险；③竞争加剧：特斯拉Optimus、波士顿动力等巨头入局；④政策依赖：人形机器人补贴政策存在不确定性。</p>
+    <p><strong>建议：</strong> <span class="tag tag-yellow">高风险高收益</span> 适合风险偏好高的成长型投资者小仓位参与，止损位设为IPU价格的60%。</p>
+  </div>
+
+  <div class="chart-box">
+    <h3>📋 年度财务数据汇总（2020-2030）</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>年份</th><th>营收（亿元）</th><th>YOY</th><th>净利润（亿元）</th><th>毛利率</th><th>净利率</th><th>研发投入（亿元）</th><th>RD/营收</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2020</td><td>4.53</td><td>-</td><td>-1.23</td><td>28.5%</td><td>-27.2%</td><td>1.02</td><td>22.5%</td></tr>
+        <tr><td>2021</td><td>5.17</td><td>+14.1%</td><td>-1.13</td><td>29.1%</td><td>-21.9%</td><td>1.35</td><td>26.1%</td></tr>
+        <tr><td>2022</td><td>6.08</td><td>+17.6%</td><td>-1.09</td><td>30.4%</td><td>-17.9%</td><td>1.58</td><td>26.0%</td></tr>
+        <tr><td>2023</td><td>7.84</td><td>+29.0%</td><td>-1.34</td><td>32.8%</td><td>-17.1%</td><td>2.14</td><td>27.3%</td></tr>
+        <tr><td>2024</td><td>13.05</td><td>+66.5%</td><td>-11.69</td><td>29.2%</td><td>-89.6%</td><td>3.83</td><td>29.3%</td></tr>
+        <tr style="background:#fff8e1;"><td><strong>2025</strong></td><td><strong>20.01</strong></td><td><strong>+53.3%</strong></td><td><strong>-7.90</strong></td><td><strong>37.7%</strong></td><td><strong>-39.5%</strong></td><td><strong>5.07</strong></td><td><strong>25.6%</strong></td></tr>
+        <tr><td>2026F</td><td>30.00</td><td>+49.9%</td><td>-5.50</td><td>40.0%</td><td>-18.3%</td><td>7.50</td><td>25.0%</td></tr>
+        <tr><td>2027F</td><td>45.00</td><td>+50.0%</td><td>-2.50</td><td>42.0%</td><td>-5.6%</td><td>10.13</td><td>22.5%</td></tr>
+        <tr><td>2028F</td><td>65.00</td><td>+44.4%</td><td>0.00</td><td>43.0%</td><td>0.0%</td><td>13.00</td><td>20.0%</td></tr>
+        <tr><td>2029F</td><td>90.00</td><td>+38.5%</td><td>5.00</td><td>44.0%</td><td>5.6%</td><td>16.20</td><td>18.0%</td></tr>
+        <tr><td>2030F</td><td>120.00</td><td>+33.3%</td><td>12.00</td><td>45.0%</td><td>10.0%</td><td>18.00</td><td>15.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Tab 1: 业务板块分析 -->
+<div class="tab-content" id="tab-1">
+
+  <div class="summary-box">
+    <h3>🏗️ 业务板块总览（2025年）</h3>
+    <p>优必选2025年营收20.01亿元，同比增长53.3%。<strong>全尺寸具身智能人形机器人</strong>收入8.2亿元（+2203.7%），占比41.0%，成为第一大收入来源；<strong>非全尺寸人形机器人</strong>收入约2.4亿元，占比12.0%；<strong>人工智能教育</strong>收入约4.5亿元，占比22.5%；<strong>智慧物流</strong>收入约2.8亿元，占比14.0%；<strong>其他</strong>（消费级机器人、C端产品）收入约2.1亿元，占比10.5%。</p>
+  </div>
+
+  <div class="segment-grid">
+    <div class="segment-card">
+      <h4>🤖 全尺寸人形机器人</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>8.20亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+2203.7%</span></div>
+      <div class="seg-row"><span>销量（台）</span><span>1,079</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~54.6%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>41.0%</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🤖 非全尺寸人形机器人</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>2.40亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+15.0%</span></div>
+      <div class="seg-row"><span>销量（台）</span><span>12,759</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~25.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>12.0%</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🎓 人工智能教育</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>4.50亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+8.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~35.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>22.5%</span></div>
+      <div class="seg-row"><span>备注</span><span>稳定现金流业务</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>📦 智慧物流</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>2.80亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+120.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~30.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>14.0%</span></div>
+      <div class="seg-row"><span>备注</span><span>工业场景落地加速</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🏠 消费级机器人</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>1.21亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+5.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~28.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>6.0%</span></div>
+      <div class="seg-row"><span>备注</span><span>C端市场培育中</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🔧 其他业务</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>0.90亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+10.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~32.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>4.5%</span></div>
+      <div class="seg-row"><span>备注</span><span>定制化解决方案</span></div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 业务板块收入占比（2025年）</h3>
+    <div class="chart-container" style="height:360px;"><canvas id="chartSegment"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 板块收入趋势（亿元）</h3>
+    <div class="chart-container"><canvas id="chartSegmentTrend"></canvas></div>
+  </div>
+
+  <div class="summary-box">
+    <h3>📝 板块分析总结</h3>
+    <p><strong>人形机器人爆发：</strong>2025年全尺寸人形机器人收入8.2亿，同比增长2203.7%，成为第一大收入来源（占比41%）。销量1079台，全球唯一实现全年交付超千台的企业。Walker系列已进入汽车制造、智慧物流、3C电子、半导体、航空制造等工业场景。</p>
+    <p><strong>教育业务稳定：</strong>人工智能教育收入4.5亿，占比22.5%，是公司稳定的现金流业务。随着AI教育纳入中小学课程，该板块有望持续增长。</p>
+    <p><strong>物流业务高增：</strong>智慧物流收入2.8亿，同比增长120%，AGV机器人批量交付。工业场景的商业化落地加速。</p>
+    <p><strong>未来看点：</strong>①2026年人形机器人收入目标15亿+（占比50%+）；②Walker S系列量产；③7×24小时连续作业能力（自主换电系统）；④具身智能大模型商业化；⑤海外市场的拓展。</p>
+  </div>
+
+  <div class="chart-box">
+    <h3>📋 板块财务数据汇总（2023-2030）</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>板块</th><th>2023</th><th>2024</th><th>2025</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>全尺寸人形机器人</td><td>0.36</td><td>3.56</td><td>8.20</td><td>15.00</td><td>24.00</td><td>36.00</td><td>52.00</td><td>72.00</td></tr>
+        <tr><td>非全尺寸人形机器人</td><td>1.80</td><td>2.09</td><td>2.40</td><td>3.00</td><td>3.60</td><td>4.20</td><td>4.80</td><td>5.40</td></tr>
+        <tr><td>人工智能教育</td><td>3.60</td><td>4.17</td><td>4.50</td><td>5.00</td><td>5.60</td><td>6.30</td><td>7.00</td><td>7.80</td></tr>
+        <tr><td>智慧物流</td><td>0.80</td><td>1.27</td><td>2.80</td><td>4.50</td><td>7.00</td><td>10.00</td><td>14.00</td><td>19.00</td></tr>
+        <tr><td>消费级机器人</td><td>0.98</td><td>1.15</td><td>1.21</td><td>1.35</td><td>1.50</td><td>1.70</td><td>2.00</td><td>2.40</td></tr>
+        <tr><td>其他</td><td>0.30</td><td>0.82</td><td>0.90</td><td>1.15</td><td>1.50</td><td>1.80</td><td>2.20</td><td>2.60</td></tr>
+        <tr style="background:#fff8e1;font-weight:bold;"><td>合计</td><td>7.84</td><td>13.05</td><td>20.01</td><td>30.00</td><td>45.00</td><td>65.00</td><td>90.00</td><td>120.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>数据来源：公司年报、东方财富、同花顺、富途牛牛 | 生成时间：2026-06-26 | ⚠️ 历史数据为审计报告数据，预测数据为模型估算，仅供参考</footer>
+
+<script>
+let charts = [];
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+
+// Chart 1: Revenue & Net Loss
+const ctx1 = document.getElementById('chartRevenue').getContext('2d');
+charts.push(new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '营收（亿元）', data: [4.53,5.17,6.08,7.84,13.05,20.01,30.00,45.00,65.00,90.00,120.00], type: 'bar', backgroundColor: 'rgba(74,20,140,0.7)', borderColor: '#4a148c', yAxisID: 'y' },
+      { label: '净亏损（亿元）', data: [-1.23,-1.13,-1.09,-1.34,-11.69,-7.90,-5.50,-2.50,0.00,5.00,12.00], type: 'line', borderColor: '#e53935', backgroundColor: 'rgba(229,57,53,0.1)', fill: false, tension: 0.3, yAxisID: 'y' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: false, title: { display: true, text: '亿元' } } } }
+}));
+
+// Chart 2: Gross Margin & Net Margin
+const ctx2 = document.getElementById('chartMargin').getContext('2d');
+charts.push(new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '毛利率', data: [28.5,29.1,30.4,32.8,29.2,37.7,40.0,42.0,43.0,44.0,45.0], borderColor: '#4a148c', backgroundColor: 'rgba(74,20,140,0.1)', fill: true, tension: 0.3, yAxisID: 'y' },
+      { label: '净利率', data: [-27.2,-21.9,-17.9,-17.1,-89.6,-39.5,-18.3,-5.6,0.0,5.6,10.0], borderColor: '#e53935', backgroundColor: 'rgba(229,57,53,0.1)', fill: false, tension: 0.3, yAxisID: 'y' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '%' }, min: -100, max: 50 } } }
+}));
+
+// Chart 3: R&D
+const ctx3 = document.getElementById('chartRD').getContext('2d');
+charts.push(new Chart(ctx3, {
+  type: 'bar',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '研发投入（亿元）', data: [1.02,1.35,1.58,2.14,3.83,5.07,7.50,10.13,13.00,16.20,18.00], backgroundColor: 'rgba(74,20,140,0.7)', yAxisID: 'y' },
+      { label: '研发占营收比（%）', data: [22.5,26.1,26.0,27.3,29.3,25.6,25.0,22.5,20.0,18.0,15.0], type: 'line', borderColor: '#ff8f00', backgroundColor: 'rgba(255,143,0,0.1)', fill: false, tension: 0.3, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } }, y1: { position: 'right', title: { display: true, text: '%' }, grid: { drawOnChartArea: false } } } }
+}));
+
+// Chart 4: Segment Doughnut
+const ctx4 = document.getElementById('chartSegment').getContext('2d');
+charts.push(new Chart(ctx4, {
+  type: 'doughnut',
+  data: {
+    labels: ['全尺寸人形机器人','非全尺寸人形机器人','人工智能教育','智慧物流','消费级机器人','其他'],
+    datasets: [{ data: [8.20, 2.40, 4.50, 2.80, 1.21, 0.90], backgroundColor: ['#4a148c','#7b1fa2','#ab47bc','#ce93d8','#e1bee7','#f3e5f5'], borderWidth: 2 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+}));
+
+// Chart 5: Segment Trend
+const ctx5 = document.getElementById('chartSegmentTrend').getContext('2d');
+charts.push(new Chart(ctx5, {
+  type: 'bar',
+  data: {
+    labels: ['2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '全尺寸人形机器人', data: [0.36,3.56,8.20,15.00,24.00,36.00,52.00,72.00], backgroundColor: '#4a148c' },
+      { label: '人工智能教育', data: [3.60,4.17,4.50,5.00,5.60,6.30,7.00,7.80], backgroundColor: '#ab47bc' },
+      { label: '智慧物流', data: [0.80,1.27,2.80,4.50,7.00,10.00,14.00,19.00], backgroundColor: '#ce93d8' },
+      { label: '非全尺寸人形机器人', data: [1.80,2.09,2.40,3.00,3.60,4.20,4.80,5.40], backgroundColor: '#7b1fa2' },
+      { label: '其他', data: [1.28,1.97,2.11,2.50,3.00,3.50,4.20,5.00], backgroundColor: '#e1bee7' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { stacked: true, title: { display: true, text: '亿元' } }, x: { stacked: true } } }
+}));
+</script>
+</body>
+</html>

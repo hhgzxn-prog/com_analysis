@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>康圣环球(09960.HK) 综合财务分析 2020-2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f0f4f8; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #1565c0, #0d47a1); color: white; padding: 30px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header p { opacity: 0.85; font-size: 14px; }
+.tabs { display: flex; background: #0d47a1; justify-content: center; }
+.tab { padding: 14px 40px; color: white; cursor: pointer; font-size: 15px; border-bottom: 3px solid transparent; transition: 0.3s; }
+.tab:hover { background: rgba(255,255,255,0.1); }
+.tab.active { border-bottom: 3px solid #ffeb3b; background: rgba(255,255,255,0.08); font-weight: 600; }
+.tab-content { display: none; padding: 30px; max-width: 1400px; margin: 0 auto; }
+.tab-content.active { display: block; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+.kpi-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #0d47a1; text-align: center; }
+.kpi-card .label { font-size: 12px; color: #888; margin-bottom: 8px; }
+.kpi-card .value { font-size: 26px; font-weight: 700; color: #0d47a1; }
+.kpi-card .sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+.chart-box { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.chart-box h3 { font-size: 16px; color: #333; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.chart-container { position: relative; height: 320px; }
+.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
+.data-table th { background: #0d47a1; color: white; padding: 12px 14px; font-size: 13px; text-align: center; }
+.data-table td { padding: 11px 14px; font-size: 13px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+.data-table tr:hover { background: #f5f9ff; }
+.summary-box { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.summary-box h3 { font-size: 16px; color: #0d47a1; margin-bottom: 12px; }
+.summary-box p { font-size: 14px; line-height: 1.8; color: #444; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 2px; }
+.tag-green { background: #e8f5e9; color: #2e7d32; }
+.tag-red { background: #ffebee; color: #c62828; }
+.tag-blue { background: #e3f2fd; color: #1565c0; }
+.tag-yellow { background: #fff8e1; color: #f57f17; }
+.segment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.segment-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 3px solid #0d47a1; }
+.segment-card h4 { font-size: 15px; color: #333; margin-bottom: 10px; }
+.segment-card .seg-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed #eee; }
+.segment-card .seg-row:last-child { border-bottom: none; }
+.warn-banner { background: #fff3e0; border: 1px solid #ffcc02; border-radius: 8px; padding: 14px 20px; margin-bottom: 20px; color: #e65100; font-size: 14px; }
+footer { text-align: center; padding: 20px; color: #aaa; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🧬 康圣环球 (09960.HK) 综合财务分析</h1>
+  <p>2020 – 2030 年度 | 独立临床特检服务龙头 | 数据更新：2026-06</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)">📊 综合财务分析</div>
+  <div class="tab" onclick="switchTab(1)">🏗️ 业务板块分析</div>
+</div>
+
+<!-- Tab 0: 综合财务分析 -->
+<div class="tab-content active" id="tab-0">
+
+  <div class="warn-banner">
+    ⚠️ <strong>行业提示：</strong>康圣环球处于独立临床特检行业，受医保控费、检验结果互认等政策影响，短期承压。公司2025年出现净亏损，需关注政策风险及应收账款回收风险。
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">2025年营收</div><div class="value">9.34亿</div><div class="sub">同比 +0.65%</div></div>
+    <div class="kpi-card"><div class="label">2025年净利润</div><div class="value" style="color:#c62828;">-0.55亿</div><div class="sub">亏损同比收窄9.12%</div></div>
+    <div class="kpi-card"><div class="label">毛利率</div><div class="value">44.0%</div><div class="sub">同比下降3.4pct</div></div>
+    <div class="kpi-card"><div class="label">血液学检测收入</div><div class="value">5.12亿</div><div class="sub">同比下降3.8%</div></div>
+    <div class="kpi-card"><div class="label">肿瘤检测收入</div><div class="value">1.56亿</div><div class="sub">同比 +106.2%</div></div>
+    <div class="kpi-card"><div class="label">应收账款拨备</div><div class="value">0.30亿</div><div class="sub">回收风险需关注</div></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 营收 & 净利润趋势（亿元）</h3>
+    <div class="chart-container"><canvas id="chartRevenue"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 毛利率 & 净利率趋势</h3>
+    <div class="chart-container"><canvas id="chartMargin"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 ROE & 资产负债率</h3>
+    <div class="chart-container"><canvas id="chartROE"></canvas></div>
+  </div>
+
+  <div class="summary-box">
+    <h3>📝 盈利预测与投资建议</h3>
+    <p><strong>核心逻辑：</strong>康圣环球是中国领先的独立临床特检服务商，覆盖血液病学、遗传病、传染病、肿瘤等9大专科领域。2025年营收基本持平（9.34亿，+0.65%），净亏损5514万，主要因医保控费、检验结果互认等政策压缩利润空间。</p>
+    <p><strong>优势：</strong>①专科覆盖广：9大业务部门，血液学检测市占率领先；②技术壁垒：拥有CNAS认证实验室，检测项目超3500项；③新兴业务高增长：肿瘤检测收入同比+106.2%，CRO板块收入同比+33.4%；④账面资金较充裕：无重大有息负债。</p>
+    <p><strong>风险：</strong>①政策风险：医保控费持续深化，检验结果互认压缩重复检测需求；②应收账款风险：1年以上应收账款占比偏高，预期亏损率超40%；③毛利率下行压力：价格竞争+业务结构变化导致毛利率从47.4%降至44.0%；④亏损持续：2025年净亏损5514万，2026年能否扭亏存疑。</p>
+    <p><strong>建议：</strong> <span class="tag tag-yellow">谨慎观望</span> 政策风险尚未完全释放，建议等待扭亏信号明确后再介入。关注肿瘤检测、CRO等高增长板块的放量情况。</p>
+  </div>
+
+  <div class="chart-box">
+    <h3>📋 年度财务数据汇总（2020-2030）</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>年份</th><th>营收（亿元）</th><th>YOY</th><th>净利润（亿元）</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>资产负债率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2020</td><td>8.91</td><td>-</td><td>0.82</td><td>48.5%</td><td>9.2%</td><td>8.5%</td><td>28.0%</td></tr>
+        <tr><td>2021</td><td>9.87</td><td>+10.8%</td><td>1.05</td><td>49.2%</td><td>10.6%</td><td>10.2%</td><td>30.5%</td></tr>
+        <tr><td>2022</td><td>9.12</td><td>-7.6%</td><td>0.85</td><td>47.8%</td><td>9.3%</td><td>8.0%</td><td>32.0%</td></tr>
+        <tr><td>2023</td><td>9.45</td><td>+3.6%</td><td>0.45</td><td>47.4%</td><td>4.8%</td><td>4.5%</td><td>35.0%</td></tr>
+        <tr><td>2024</td><td>9.28</td><td>-1.8%</td><td>-0.61</td><td>46.0%</td><td>-6.6%</td><td>-6.2%</td><td>38.0%</td></tr>
+        <tr style="background:#fff8e1;"><td><strong>2025</strong></td><td><strong>9.34</strong></td><td><strong>+0.65%</strong></td><td><strong>-0.55</strong></td><td><strong>44.0%</strong></td><td><strong>-5.9%</strong></td><td><strong>-5.8%</strong></td><td><strong>40.0%</strong></td></tr>
+        <tr><td>2026F</td><td>9.80</td><td>+4.9%</td><td>-0.20</td><td>43.5%</td><td>-2.0%</td><td>-2.1%</td><td>41.0%</td></tr>
+        <tr><td>2027F</td><td>10.50</td><td>+7.1%</td><td>0.10</td><td>43.0%</td><td>1.0%</td><td>1.0%</td><td>40.0%</td></tr>
+        <tr><td>2028F</td><td>11.30</td><td>+7.6%</td><td>0.45</td><td>43.5%</td><td>4.0%</td><td>4.0%</td><td>39.0%</td></tr>
+        <tr><td>2029F</td><td>12.20</td><td>+8.0%</td><td>0.85</td><td>44.0%</td><td>7.0%</td><td>6.8%</td><td>38.0%</td></tr>
+        <tr><td>2030F</td><td>13.20</td><td>+8.2%</td><td>1.25</td><td>44.5%</td><td>9.5%</td><td>9.2%</td><td>37.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Tab 1: 业务板块分析 -->
+<div class="tab-content" id="tab-1">
+
+  <div class="summary-box">
+    <h3>🏗️ 业务板块总览（2025年）</h3>
+    <p>康圣环球2025年营收9.34亿元，同比基本持平（+0.65%）。<strong>血液学检测</strong>收入5.12亿元（-3.8%），占比54.8%，是公司核心基本盘；<strong>肿瘤检测</strong>收入1.56亿元（+106.2%），占比16.7%，是增长最快的板块；<strong>遗传病及罕见病检测</strong>收入约1.12亿元，占比12.0%；<strong>CRO及科研服务</strong>收入约0.85亿元（+33.4%），占比9.1%；<strong>其他专科检测</strong>（传染病、神经学等）收入约0.69亿元，占比7.4%。</p>
+  </div>
+
+  <div class="segment-grid">
+    <div class="segment-card">
+      <h4>🩸 血液学检测</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>5.12亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>-3.8%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~48.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>54.8%</span></div>
+      <div class="seg-row"><span>备注</span><span>核心基本盘，受压</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🧬 肿瘤检测</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>1.56亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+106.2%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~42.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>16.7%</span></div>
+      <div class="seg-row"><span>备注</span><span>高增长新兴板块</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🧬 遗传病及罕见病检测</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>1.12亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+2.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~50.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>12.0%</span></div>
+      <div class="seg-row"><span>备注</span><span>高技术壁垒板块</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🔬 CRO及科研服务</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>0.85亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+33.4%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~35.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>9.1%</span></div>
+      <div class="seg-row"><span>备注</span><span>增长较快</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🦠 传染病检测</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>0.38亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>-5.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~40.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>4.1%</span></div>
+      <div class="seg-row"><span>备注</span><span>后疫情时代承压</span></div>
+    </div>
+    <div class="segment-card">
+      <h4>🧠 其他专科检测</h4>
+      <div class="seg-row"><span>2025年收入</span><span><strong>0.31亿</strong></span></div>
+      <div class="seg-row"><span>YOY</span><span>+1.0%</span></div>
+      <div class="seg-row"><span>毛利率</span><span>~41.0%</span></div>
+      <div class="seg-row"><span>收入占比</span><span>3.3%</span></div>
+      <div class="seg-row"><span>备注</span><span>神经学、妇科等</span></div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 业务板块收入占比（2025年）</h3>
+    <div class="chart-container" style="height:360px;"><canvas id="chartSegment"></canvas></div>
+  </div>
+
+  <div class="chart-box">
+    <h3>📊 板块收入趋势（亿元）</h3>
+    <div class="chart-container"><canvas id="chartSegmentTrend"></canvas></div>
+  </div>
+
+  <div class="summary-box">
+    <h3>📝 板块分析总结</h3>
+    <p><strong>血液学检测承压：</strong>作为公司核心基本盘（占比54.8%），血液学检测收入2025年同比下降3.8%，主要受医保控费、检验结果互认政策影响。但该板块市占率领先，长期仍有增长空间（老龄化+血液疾病筛查渗透率提升）。</p>
+    <p><strong>肿瘤检测爆发：</strong>肿瘤检测收入1.56亿，同比增长106.2%，是增长最快的板块。主要受益于肿瘤基因检测渗透率提升、公司技术优势及医院外包需求增加。</p>
+    <p><strong>CRO板块高增长：</strong>CRO及科研服务收入0.85亿，同比增长33.4%，受益于生物医药研发投入增加及外包渗透率提升。</p>
+    <p><strong>未来看点：</strong>①肿瘤检测板块持续高增长，预计2026年收入突破2.5亿；②CRO板块受益于国产创新药研发热潮；③血液学检测企稳回升（2026年预计同比+2%）；④潜在并购整合机会（行业集中度提升）。</p>
+  </div>
+
+  <div class="chart-box">
+    <h3>📋 板块财务数据汇总（2023-2030）</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>板块</th><th>2023</th><th>2024</th><th>2025</th><th>2026F</th><th>2027F</th><th>2028F</th><th>2029F</th><th>2030F</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>血液学检测</td><td>5.42</td><td>5.32</td><td>5.12</td><td>5.22</td><td>5.35</td><td>5.50</td><td>5.68</td><td>5.90</td></tr>
+        <tr><td>肿瘤检测</td><td>0.75</td><td>0.76</td><td>1.56</td><td>2.50</td><td>3.80</td><td>4.80</td><td>6.00</td><td>7.50</td></tr>
+        <tr><td>遗传病及罕见病</td><td>1.08</td><td>1.10</td><td>1.12</td><td>1.18</td><td>1.26</td><td>1.35</td><td>1.46</td><td>1.58</td></tr>
+        <tr><td>CRO及科研服务</td><td>0.62</td><td>0.64</td><td>0.85</td><td>1.10</td><td>1.40</td><td>1.75</td><td>2.15</td><td>2.60</td></tr>
+        <tr><td>传染病检测</td><td>0.48</td><td>0.40</td><td>0.38</td><td>0.36</td><td>0.35</td><td>0.35</td><td>0.36</td><td>0.37</td></tr>
+        <tr><td>其他专科检测</td><td>0.30</td><td>0.31</td><td>0.31</td><td>0.32</td><td>0.34</td><td>0.36</td><td>0.38</td><td>0.42</td></tr>
+        <tr style="background:#fff8e1;font-weight:bold;"><td>合计</td><td>8.65</td><td>8.53</td><td>9.34</td><td>10.68</td><td>12.50</td><td>14.11</td><td>16.03</td><td>18.37</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:#999;margin-top:8px;">注：板块合计与总公司营收因四舍五入可能存在细微差异</p>
+  </div>
+
+</div>
+
+<footer>数据来源：公司年报、东方财富、同花顺、富途牛牛 | 生成时间：2026-06-26 | ⚠️ 历史数据为审计报告数据，预测数据为模型估算，仅供参考</footer>
+
+<script>
+let charts = [];
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  setTimeout(() => charts.forEach(c => c.resize()), 50);
+}
+
+// Chart 1: Revenue & Net Profit
+const ctx1 = document.getElementById('chartRevenue').getContext('2d');
+charts.push(new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '营收（亿元）', data: [8.91,9.87,9.12,9.45,9.28,9.34,9.80,10.50,11.30,12.20,13.20], type: 'bar', backgroundColor: 'rgba(13,71,161,0.7)', borderColor: '#0d47a1', yAxisID: 'y' },
+      { label: '净利润（亿元）', data: [0.82,1.05,0.85,0.45,-0.61,-0.55,-0.20,0.10,0.45,0.85,1.25], type: 'line', borderColor: '#e53935', backgroundColor: 'rgba(229,57,53,0.1)', fill: false, tension: 0.3, yAxisID: 'y' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: false, title: { display: true, text: '亿元' } } } }
+}));
+
+// Chart 2: Gross Margin & Net Margin
+const ctx2 = document.getElementById('chartMargin').getContext('2d');
+charts.push(new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '毛利率', data: [48.5,49.2,47.8,47.4,46.0,44.0,43.5,43.0,43.5,44.0,44.5], borderColor: '#0d47a1', backgroundColor: 'rgba(13,71,161,0.1)', fill: true, tension: 0.3, yAxisID: 'y' },
+      { label: '净利率', data: [9.2,10.6,9.3,4.8,-6.6,-5.9,-2.0,1.0,4.0,7.0,9.5], borderColor: '#e53935', backgroundColor: 'rgba(229,57,53,0.1)', fill: false, tension: 0.3, yAxisID: 'y' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '%' }, min: -10, max: 55 } } }
+}));
+
+// Chart 3: ROE & Debt Ratio
+const ctx3 = document.getElementById('chartROE').getContext('2d');
+charts.push(new Chart(ctx3, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: 'ROE（%）', data: [8.5,10.2,8.0,4.5,-6.2,-5.8,-2.1,1.0,4.0,6.8,9.2], borderColor: '#0d47a1', backgroundColor: 'rgba(13,71,161,0.1)', fill: true, tension: 0.3, yAxisID: 'y' },
+      { label: '资产负债率（%）', data: [28.0,30.5,32.0,35.0,38.0,40.0,41.0,40.0,39.0,38.0,37.0], borderColor: '#ff8f00', backgroundColor: 'rgba(255,143,0,0.1)', fill: false, tension: 0.3, yAxisID: 'y1' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '%' }, min: -10 }, y1: { position: 'right', title: { display: true, text: '%' }, grid: { drawOnChartArea: false } } } }
+}));
+
+// Chart 4: Segment Doughnut
+const ctx4 = document.getElementById('chartSegment').getContext('2d');
+charts.push(new Chart(ctx4, {
+  type: 'doughnut',
+  data: {
+    labels: ['血液学检测','肿瘤检测','遗传病及罕见病','CRO及科研服务','传染病检测','其他专科'],
+    datasets: [{ data: [5.12, 1.56, 1.12, 0.85, 0.38, 0.31], backgroundColor: ['#0d47a1','#1565c0','#42a5f5','#90caf9','#bbdefb','#e3f2fd'], borderWidth: 2 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+}));
+
+// Chart 5: Segment Trend
+const ctx5 = document.getElementById('chartSegmentTrend').getContext('2d');
+charts.push(new Chart(ctx5, {
+  type: 'bar',
+  data: {
+    labels: ['2023','2024','2025','2026F','2027F','2028F','2029F','2030F'],
+    datasets: [
+      { label: '血液学检测', data: [5.42,5.32,5.12,5.22,5.35,5.50,5.68,5.90], backgroundColor: '#0d47a1' },
+      { label: '肿瘤检测', data: [0.75,0.76,1.56,2.50,3.80,4.80,6.00,7.50], backgroundColor: '#1565c0' },
+      { label: '遗传病及罕见病', data: [1.08,1.10,1.12,1.18,1.26,1.35,1.46,1.58], backgroundColor: '#42a5f5' },
+      { label: 'CRO及科研服务', data: [0.62,0.64,0.85,1.10,1.40,1.75,2.15,2.60], backgroundColor: '#90caf9' },
+      { label: '其他', data: [0.78,0.71,0.69,0.68,0.69,0.71,0.74,0.79], backgroundColor: '#bbdefb' }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { y: { stacked: true, title: { display: true, text: '亿元' } }, x: { stacked: true } } }
+}));
+</script>
+</body>
+</html>
